@@ -1,37 +1,28 @@
 {
   "name": "sulten_backend",
   "version": "1.0.0",
-  "description": "Backend to fetch restaurant menus",
+  "description": "Application set to gather restaurant menus",
   "main": "dist/app.js",
   "scripts": {
-    "start": "tsc && node dist/app.js ",
-
-    
-  "start1": "webpack --colors &amp;&amp; concurrently -r -n \"Webpack,Nodemon\" \"npm run webpack-watch\" \"npm run server-watch\"",
-  "webpack-watch": "webpack --watch --colors",
-  "server-watch": "nodemon --watch dist/app.js dist/app.js",
-  
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "prestart": "yarn build",
+    "start": "node .",
+    "dev": "ts-node-dev src/server/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HaunsTM/sulten_backend.git"
+    "url": "git+https://github.com/HaunsTM/sulten.git"
   },
-  "author": "HaunsTM",
-  "license": "Open Source",
-  "bugs": {
-    "url": "https://github.com/HaunsTM/sulten_backend/issues"
-  },
-  "homepage": "https://github.com/HaunsTM/sulten_backend#readme",
   "devDependencies": {
     "@types/express": "^4.17.1",
-    "tslint": "^5.20.0",
+    "@types/node": "^12.11.1",
+    "ts-node-dev": "^1.0.0-pre.43",
+    "tslint": "^5.13.1",
     "typescript": "^3.6.4"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "ts-loader": "^6.2.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9"
+    "express": "^4.17.1"
   }
 }
