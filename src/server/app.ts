@@ -9,7 +9,6 @@ app.get("/", (req, res) => {
 });
 
 
-
 app.get("/get/menus/areaName/:areaName/weekNumber/:weekNumber", (req, res) => {
   // http://localhost:8080/get/menus/areaName/vastraHamnen/weekNumber/201943
   const areaName = req.params['areaName'];
