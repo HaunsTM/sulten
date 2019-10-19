@@ -5,14 +5,21 @@ const app = express();
 const port = 8080 || process.env.PORT;
 
 app.get("/", (req, res) => {
-  res.send("His!");
+  res.send("Hi!");
 });
 
-app.get("/get", (req, res) => {
-  res.send("His get");
+
+
+app.get("/get/menus/areaName/:areaName/weekNumber/:weekNumber", (req, res) => {
+  // http://localhost:8080/get/menus/areaName/vastraHamnen/weekNumber/201943
+  const areaName = req.params['areaName'];
+  const weekNumber = req.params["weekNumber"];
+
+  res.json({areaNames : `"${areaName}"`});
 });
 
 app.listen(port, () => {
   // tslint:disable-next-line:no-console
   console.log(`server started at http://localhost:${port}`);
 });
+ 
