@@ -1,7 +1,9 @@
-CREATE TABLE Dishes (
-	Id INTEGER PRIMARY KEY,
+PRAGMA encoding = 'UTF-8';
 
-	Description TEXT NOT NULL
+CREATE TABLE Dishes (
+	Id 								INTEGER PRIMARY KEY,
+
+	Description 					TEXT
 );
 
 CREATE TABLE Meals (
@@ -23,7 +25,8 @@ CREATE TABLE Restaurants (
 		
 	Active 							INTEGER NOT NULL,
 	Name 							TEXT NOT NULL,
-	MenuUrl							TEXT UNIQUE,
+	MenuUrl							TEXT NOT NULL UNIQUE,
+	TypeScriptClassParser			TEXT UNIQUE,
 	
 	FOREIGN KEY (FK_Areas_Id) REFERENCES Areas (Id)
 );
@@ -31,7 +34,7 @@ CREATE TABLE Restaurants (
 CREATE TABLE Areas (
 	Id								INTEGER PRIMARY KEY,
 
-	Name							TEXT NOT NULL
+	Name							TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE WeekIndexes (
@@ -48,6 +51,7 @@ CREATE TABLE Occurrences (
 
 	FK_WeekIndexes_Id				INTEGER NOT NULL,
 	FK_WeekDays_Id					INTEGER NOT NULL,
+
 	FOREIGN KEY (FK_WeekIndexes_Id) REFERENCES WeekIndexes (Id),
 	FOREIGN KEY (FK_WeekDays_Id) REFERENCES WeekDays (Id)
 );
@@ -55,5 +59,7 @@ CREATE TABLE Occurrences (
 CREATE TABLE WeekDays (
 	Id								INTEGER PRIMARY KEY,
 
-	Name							TEXT NOT NULL
+	JavascriptDayIndex				INTEGER NOT NULL, 
+	Name_ENG						TEXT NOT NULL UNIQUE, 
+	Name_SE							TEXT NOT NULL UNIQUE
 );

@@ -1,4 +1,5 @@
 import express from "express";
+import "reflect-metadata";
 
 // https://developer.okta.com/blog/2019/05/07/nodejs-typescript-api
 const app = express();
