@@ -1,11 +1,15 @@
 import express from "express";
 import "reflect-metadata";
+import {getConnection} from "typeorm";
 
 // https://developer.okta.com/blog/2019/05/07/nodejs-typescript-api
 const app = express();
 const port = 8080 || process.env.PORT;
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  
+const dbSultenConnection = await getConnection("dbSultenConnection");
+let data = await dbSultenConnection.createQueryBuilder().select().from("WeekDays", "WeekDays");
   res.send("Hi!");
 });
 
