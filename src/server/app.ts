@@ -1,7 +1,7 @@
 import express from "express";
 import "reflect-metadata";
 import {createConnection} from "typeorm";
-import {Area} from "./orm/Area";
+import {Area} from "./oRModels/Area";
 
 // https://developer.okta.com/blog/2019/05/07/nodejs-typescript-api
 const app = express();
@@ -23,10 +23,7 @@ app.get("/menus/areaId/:areaId/weekNumber/:weekNumber", (req, res) => {
   res.send("NOT IMPLEMENTED");
 });
 
-
-
-
-
+/* -------------------------------------------------------------------- */
 
 app.get("/admin/initializeAndSetupDb", async (req, res) => {
 
