@@ -1,5 +1,14 @@
 {
     "type": "sqlite",
-    "name": "dbSultenConnection",
-    "database": "./database/dbSulten"
+    "database": "database.sqlite",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+       "src/models/**/*.ts"
+    ],
+    "cli": {
+       "entitiesDir": "src/models",
+       "migrationsDir": "src/migration",
+       "subscribersDir": "src/subscriber"
+    }
  }

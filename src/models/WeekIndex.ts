@@ -13,6 +13,6 @@ export class WeekIndex {
     @Column()
     public WeekYear: number;
 
-    @OneToMany((type) => Occurence, (occurences) => occurences.weekIndexes)
+    @OneToMany((type) => Occurence, (occurences) => occurences.weekIndex)
     public occurences: Occurence[];
 }
