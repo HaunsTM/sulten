@@ -1,54 +1,46 @@
 import express from "express";
-import "reflect-metadata";
-import {createConnection} from "typeorm";
-import {Area} from "./oRModels/Area";
+import Controller from "./interfaces/controller.interface";
+// import errorMiddleware from "./middleware/error.middleware";
 
-// https://developer.okta.com/blog/2019/05/07/nodejs-typescript-api
-const app = express();
-const port = 8080 || process.env.PORT;
+/** Following tutorial https://wanago.io/2018/12/03/typescript-express-tutorial-routing-controllers-middleware/ */
 
-app.get("/availableAreas", async (req, res) => {
+export default class App {
 
-  const dbConnection = await createConnection();
-  const areas = await dbConnection.manager.find(Area);
 
-  res.send(areas);
-});
+  public app: express.Application;
 
-app.get("/menus/areaId/:areaId/weekNumber/:weekNumber", (req, res) => {
-  // http://localhost:8080/menus/areaName/vastraHamnen/weekNumber/201943
-  const areaId = req.params['areaId'];
-  const weekNumber = req.params["weekNumber"];
+  constructor(controllers: Controller[]) {
+    this.app = express();
 
-  res.send("NOT IMPLEMENTED");
-});
+    this.initializeControllers(controllers);
+    // this.initializeErrorHandling();
+  }
 
-/* -------------------------------------------------------------------- */
+  public listen() {
+    //this.app.listen(process.env.PORT, () => {
+    //  console.log(`App listening on the port ${process.env.PORT}`);
+    //});
+    
+  const port = 8080;
+    this.app.listen(port, () => {
+      console.log(`App listening on the port ${port}`);
+    });
+  }
 
-app.get("/admin/initializeAndSetupDb", async (req, res) => {
+  public getServer() {
+    return this.app;
+  }
 
-  const connection = await createConnection();
-  const area = new Area();
+/*
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
+  }
+*/
 
-  area.Name = "Västra Hamnen";
+  private initializeControllers(controllers: Controller[]) {
+    controllers.forEach((controller) => {
+      this.app.use("/", controller.router);
+    });
+  }
 
-  await connection.manager.save(area);
-  const areas = await connection.manager.find(Area);
-
-  res.send(areas);
-});
-
-app.get("/admin/performMenuFetching/all", async (req, res) => {
-
-  res.send("NOT IMPLEMENTED");
-});
-
-app.get("/admin/performMenuFetching/areaId/:areaId", async (req, res) => {
-
-  res.send("NOT IMPLEMENTED");
-});
-
-app.listen(port, () => {
-  // tslint:disable-next-line:no-console
-  console.log(`server started at http://localhost:${port}`);
-});
+}
