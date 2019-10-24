@@ -3,22 +3,22 @@ import {Area} from "./Area";
 import {Meal} from "./Meal";
 
 @Entity()
-export class Restaurant {
+export  class Restaurant {
 
     @PrimaryGeneratedColumn()
-    public Id: number;
+    public id: number;
 
     @Column()
-    public Active: number;
+    public active: number;
 
     @Column()
-    public Name: string;
+    public name: string;
 
     @Column()
-    public MenuUrl: string;
+    public menuUrl: string;
 
     @Column()
-    public TypeScriptClassParser: string;
+    public typeScriptClassParser: string;
 
 
     @ManyToOne((type) => Area, (area) => area.restaurants)

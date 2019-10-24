@@ -7,12 +7,12 @@ import {Restaurant} from "./Restaurant";
 export class Meal {
 
     @PrimaryGeneratedColumn()
-    public Id: number;
+    public id: number;
 
-    @ManyToOne((type) => Dish, (dish) => dish.meals)
+    @ManyToOne((type: Restaurant) => Dish, (dish: Restaurant) => dish.meals)
     public dish: Dish;
-    @ManyToOne((type) => Occurence, (occurence) => occurence.meals)
+    @ManyToOne((type: Occurence) => Occurence, (occurence: Occurence) => occurence.meals)
     public occurence: Occurence;
-    @ManyToOne((type) => Restaurant, (restaurant) => restaurant.meals)
+    @ManyToOne((type: Restaurant) => Restaurant, (restaurant: Restaurant) => restaurant.meals)
     public restaurant: Restaurant;
 }
