@@ -3,9 +3,8 @@ import {EnumArea} from "../enum/area.enum";
 import {EnumWeekday} from "../enum/weekday.enum";
 import {Area} from "../oRModels/Area";
 import {WeekDay} from "../oRModels/WeekDay";
-import { promises } from "fs";
 
-export default class Database {
+export default class DatabaseHelper {
 
     get initialAreas(): Area[] {
 
@@ -30,19 +29,30 @@ export default class Database {
         return weekDays;
     }
 
-    public initializeAndSetupDb =
-        async () => {
+    public async initializeAndSetupDb() {
 
         const connection = await createConnection();
 
 
-        const areaSavePromises = this.initialAreas.forEach( 
-            (a) => { return connection.manager.save(a); } 
-        );
+        this.initialAreas.forEach(
+            async (a) => await connection.manager.save(a) );
+return;
+        this.weekDays.forEach(
+            async (a) => await connection.manager.save(a) );
 
 
-        Promise.all(areaSavePromises);
-        
+return;
+        const areaSavePromises = this.initialAreas.map(
+            (a) => connection.manager.save(a) );
 
+        const weekDaySavePromises = this.weekDays.map(
+                (a) => connection.manager.save(a) );
+        try {
+            await Promise.all(areaSavePromises);
+            await Promise.all(weekDaySavePromises);
+
+        } catch (e) {
+            throw new Error(`Couldn't initialize database: ${e}`);
+        }
     }
   }

@@ -1,4 +1,6 @@
 import * as express from "express";
+import HttpException from "../exceptions/HttpException"
+import DatabaseHelper from "../helpers/database.hlp";
 import Controller from "../interfaces/controller.interface";
 
 export default class AdminController implements Controller {
@@ -15,20 +17,17 @@ export default class AdminController implements Controller {
     this.router.get(`${this.path}/fetchMenusForArea/:id`, this.fetchMenusForAreaId);
   }
 
-  private initializeAndSetupDb =
-    async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+  private async initializeAndSetupDb(request: express.Request, response: express.Response, next: express.NextFunction) {
 
-    response.send("NOT IMPLEMENTED");
+    try {
+      const databaseHelper = new DatabaseHelper();
+      await databaseHelper.initializeAndSetupDb();
 
-    // const connection = await createConnection();
-    // const area = new Area();
-
-    // area.Name = "Västra Hamnen";
-
-    // await connection.manager.save(area);
-    // const areas = await connection.manager.find(Area);
-
-    // response.send(areas);
+      response.status(200);
+      response.send("Database created and initialized successfully!");
+    } catch (e) {
+      next(new HttpException(500, e));
+    }
 
   }
 
