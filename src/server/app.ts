@@ -1,5 +1,5 @@
 import express from "express";
-import Controller from "./interfaces/controller.interface";
+import Controller from "./interfaces/controller.itf";
 // import errorMiddleware from "./middleware/error.middleware";
 
 /** Following tutorial https://wanago.io/2018/12/03/typescript-express-tutorial-routing-controllers-middleware/ */

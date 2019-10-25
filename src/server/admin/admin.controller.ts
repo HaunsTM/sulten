@@ -1,7 +1,7 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
-import Controller from "../interfaces/controller.interface";
+import Controller from "../interfaces/controller.itf";
 
 export default class AdminController implements Controller {
   public path = "/admin";
