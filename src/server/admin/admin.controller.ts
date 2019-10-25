@@ -1,5 +1,5 @@
 import * as express from "express";
-import HttpException from "../exceptions/HttpException"
+import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
 import Controller from "../interfaces/controller.interface";
 

@@ -1,4 +1,4 @@
-import {createConnection} from "typeorm";
+import {getConnection} from "typeorm";
 import {EnumArea} from "../enum/area.enum";
 import {EnumWeekDay} from "../enum/weekDay.enum";
 import {Area} from "../oRModels/Area";
@@ -29,15 +29,15 @@ export default class DatabaseHelper {
         return weekDays;
     }
 
-    public async initializeAndSetupDb() {
+    public async initializeAndSetupDb(): Promise<void> {
 
-        const connection = await createConnection();
+        const dbManager = getConnection().manager;
 
         const areaSavePromises = this.initialAreas.map(
-            (a) => connection.manager.save(a) );
+            (a) => dbManager.save(a) );
 
         const weekDaySavePromises = this.weekDays.map(
-                (a) => connection.manager.save(a) );
+                (a) => dbManager.save(a) );
 
         try {
             await Promise.all(areaSavePromises);
@@ -47,4 +47,17 @@ export default class DatabaseHelper {
             throw new Error(`Couldn't initialize database: ${e}`);
         }
     }
-  }
+
+    public async getAllAreas(): Promise<Area[]> {
+
+        const dbManager = getConnection().manager;
+
+        try {
+            const areas: Area[] = await dbManager.find(Area);
+            return areas;
+        } catch (e) {
+            throw new Error(`Couldn't initialize database: ${e}`);
+        }
+    }
+
+}

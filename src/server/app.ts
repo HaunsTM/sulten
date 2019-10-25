@@ -6,7 +6,6 @@ import Controller from "./interfaces/controller.interface";
 
 export default class App {
 
-
   public app: express.Application;
 
   constructor(controllers: Controller[]) {
@@ -17,13 +16,9 @@ export default class App {
   }
 
   public listen() {
-    //this.app.listen(process.env.PORT, () => {
-    //  console.log(`App listening on the port ${process.env.PORT}`);
-    //});
-    
-  const port = 8080;
-    this.app.listen(port, () => {
-      console.log(`App listening on the port ${port}`);
+    this.app.listen(process.env.PORT, () => {
+      // tslint:disable-next-line:no-console
+      console.log(`App listening on the port ${process.env.PORT}`);
     });
   }
 

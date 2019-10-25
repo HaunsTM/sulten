@@ -1,4 +1,6 @@
 import * as express from "express";
+import HttpException from "../exceptions/HttpException";
+import DatabaseHelper from "../helpers/database.hlp";
 import Controller from "../interfaces/controller.interface";
 
 export default class MenuController implements Controller {
@@ -10,17 +12,22 @@ export default class MenuController implements Controller {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/:id/posts`,  this.availableAreas);
+    this.router.get(`${this.path}/getAllAreas`,  this.getAllAreas);
     this.router.get(`${this.path}/areaId/:areaId/weekNumber/:weekNumber`,  this.getMenuForArea);
   }
 
+  private async getAllAreas(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 
-  private availableAreas =
-    (request: express.Request, response: express.Response, next: express.NextFunction) => {
-//    const dbConnection = await createConnection();
-//    const areas = await dbConnection.manager.find(Area);
+      try {
+        const databaseHelper = new DatabaseHelper();
+        const allAreas = await databaseHelper.getAllAreas();
 
-    response.send("NOT IMPLEMENTED");
+        response.status(200);
+        response.send(allAreas);
+      } catch (e) {
+        next(new HttpException(500, e));
+      }
+
   }
 
   private getMenuForArea =
