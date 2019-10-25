@@ -5,7 +5,7 @@ import {Meal} from "./Meal";
 @Entity()
 export  class Restaurant {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("increment")
     public id: number;
 
     @Column()

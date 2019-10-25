@@ -4,7 +4,7 @@ import {Restaurant} from "./Restaurant";
 @Entity()
 export class Area {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("increment")
     public id: number;
 
     @Column()

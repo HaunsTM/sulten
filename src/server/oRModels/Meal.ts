@@ -6,7 +6,7 @@ import { Restaurant } from "./Restaurant";
 @Entity()
 export class Meal {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("increment")
     public id: number;
 
     @ManyToOne((type: Restaurant) => Dish, (dish: Dish) => dish.meals)

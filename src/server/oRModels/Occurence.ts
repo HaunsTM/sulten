@@ -6,7 +6,7 @@ import {WeekIndex} from "./WeekIndex";
 @Entity()
 export  class Occurence {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("increment")
     public id: number;
 
     @OneToMany((type) => Meal, (meal) => meal.dish)
