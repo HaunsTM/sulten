@@ -4,7 +4,7 @@ import {Occurence} from "./Occurence";
 @Entity()
 export class WeekIndex {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("increment")
     public Id: number;
 
     @Column()

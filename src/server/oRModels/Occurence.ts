@@ -1,13 +1,13 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Meal} from "./Meal";
 import {WeekDay} from "./WeekDay";
 import {WeekIndex} from "./WeekIndex";
 
 @Entity()
-export class Occurence {
+export  class Occurence {
 
-    @PrimaryGeneratedColumn()
-    public Id: number;
+    @PrimaryGeneratedColumn("increment")
+    public id: number;
 
     @OneToMany((type) => Meal, (meal) => meal.dish)
     public meals: Meal[];

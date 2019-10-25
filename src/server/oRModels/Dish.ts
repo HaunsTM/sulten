@@ -2,14 +2,14 @@ import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Meal} from "./Meal";
 
 @Entity()
-export class Dish {
+export  class Dish {
 
-    @PrimaryGeneratedColumn()
-    public Id: number;
+    @PrimaryGeneratedColumn("increment")
+    public id: number;
 
     @Column()
-    public Description: string;
+    public description: string;
 
-    @OneToMany((type) => Meal, (meal) => meal.dish)
+    @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
     public meals: Meal[];
 }

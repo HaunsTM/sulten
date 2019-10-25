@@ -4,17 +4,11 @@ import {Occurence} from "./Occurence";
 @Entity()
 export class WeekDay {
 
-    @PrimaryGeneratedColumn()
-    public Id: number;
+    @PrimaryGeneratedColumn("increment")
+    public id: number;
 
     @Column()
-    public JavascriptDayIndex: number;
-
-    @Column()
-    public Name_ENG: string;
-
-    @Column()
-    public Name_SE: string;
+    public javascriptDayIndex: number;
 
     @OneToMany((type) => Occurence, (occurences) => occurences.weekDay)
     public occurences: Occurence[];

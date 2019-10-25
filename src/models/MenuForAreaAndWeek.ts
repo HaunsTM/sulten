@@ -2,10 +2,10 @@ import {Area} from "./Area";
 import {Meal} from "./Meal";
 import {WeekIndex} from "./WeekIndex";
 
-export class Restaurant {
+export class MenuForAreaAndWeek {
 
-	public readonly weekIndex: WeekIndex;
-	public readonly area: Area;
+	public weekIndex: WeekIndex;
+	public area: Area;
 
 	public meals: Meal[];
 
