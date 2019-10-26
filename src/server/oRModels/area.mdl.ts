@@ -1,8 +1,9 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Restaurant} from "./Restaurant";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { IArea } from "../interfaces/oRModels/area.itf";
+import { Restaurant } from "./restaurant.mdl";
 
 @Entity()
-export class Area {
+export class Area implements IArea {
 
     @PrimaryGeneratedColumn("increment")
     public id: number;
@@ -10,6 +11,8 @@ export class Area {
     @Column()
     public name: string;
 
+    // navigation properties
     @OneToMany((type: Restaurant) => Restaurant, (restaurant: Restaurant) => restaurant.area)
     public restaurants: Restaurant[];
+
 }

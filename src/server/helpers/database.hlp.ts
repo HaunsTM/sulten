@@ -1,8 +1,8 @@
-import {getConnection} from "typeorm";
-import {EnumArea} from "../enum/area.enum";
-import {EnumWeekDay} from "../enum/weekDay.enum";
-import {Area} from "../oRModels/Area";
-import {WeekDay} from "../oRModels/WeekDay";
+import { getConnection } from "typeorm";
+import { EnumArea } from "../enum/area.enum";
+import { EnumWeekDay } from "../enum/weekDay.enum";
+import { Area } from "../oRModels/area.mdl";
+import { WeekDay } from "../oRModels/weekDay.mdl";
 
 export default class DatabaseHelper {
 
