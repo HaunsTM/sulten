@@ -1,9 +1,6 @@
 
-import { JSDOM } from "jsdom";
-import { IWebMealResult } from "../interfaces/webMealResult.itf";
-import { IWebMenuDealer } from "../interfaces/webMenuDealer.itf";
 
-export default class MiaMariasNu implements IWebMenuDealer {
+export default class WebMealResult implements IWebMenuDealer {
 
     public async fetchMealsFromWeb(): Promise<JSDOM> {
         const dom = await JSDOM.fromURL("http://www.miamarias.nu");

@@ -1,4 +1,5 @@
 import { IEntity } from "./entity.itf";
+import { ILabel } from "./label.itf";
 import { IMeal } from "./meal.itf";
 
 export interface IDish extends IEntity {
@@ -8,6 +9,7 @@ export interface IDish extends IEntity {
     description: string;
 
     // navigation properties
+    label: ILabel;
     meals: IMeal[];
 
 }
