@@ -42,9 +42,8 @@ export default class AdminController implements Controller {
       // const meals = miaMariasNu.mealsFromWeb();
       const htmlFetcher = new HtmlFetcher("http://www.miamarias.nu/");
       const htmlFetcherString = await htmlFetcher.htmlFromWeb();
+let i =  0;
 
-        response.status(200);
-        response.send("Database created and initialized successfully!");
     } catch (e) {
         next(new HttpException(500, e));
     }
