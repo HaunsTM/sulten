@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { IWeekDay } from "../interfaces/oRModels/weekday.itf";
+import { IWeekDay } from "../interfaces/oRModels/weekDay.itf";
 import { Occurence } from "./occurence.mdl";
 
 @Entity()

@@ -1,6 +1,6 @@
 import { IEntity } from "./entity.itf";
 import { IMeal } from "./meal.itf";
-import { IWeekDay } from "./weekday.itf";
+import { IWeekDay } from "./weekDay.itf";
 import { IWeekIndex } from "./weekIndex.itf";
 
 export interface IOccurence extends IEntity {

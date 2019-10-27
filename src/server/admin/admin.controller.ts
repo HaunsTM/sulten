@@ -1,7 +1,9 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
+import {HtmlFetcher} from "../helpers/htmlFetcher.hlp";
 import Controller from "../interfaces/controller.itf";
+import { MiaMariasNu } from "./mealDealers/miamarias_nu.dlr";
 
 export default class AdminController implements Controller {
   public path = "/admin";
@@ -20,24 +22,35 @@ export default class AdminController implements Controller {
   private async initializeAndSetupDb(request: express.Request, response: express.Response, next: express.NextFunction) {
 
     try {
-      const databaseHelper = new DatabaseHelper();
-      await databaseHelper.initializeAndSetupDb();
+        const databaseHelper = new DatabaseHelper();
+        await databaseHelper.initializeAndSetupDb();
 
-      response.status(200);
-      response.send("Database created and initialized successfully!");
+        response.status(200);
+        response.send("Database created and initialized successfully!");
     } catch (e) {
-      next(new HttpException(500, e));
+        next(new HttpException(500, e));
     }
 
   }
 
-  private fetchMenusForAllAreas =
-    (request: express.Request, response: express.Response, next: express.NextFunction) => {
+  private async fetchMenusForAllAreas(
+      request: express.Request, response: express.Response, next: express.NextFunction) {
 
-    response.send("NOT IMPLEMENTED");
+    try {
+        // const miaMariasNu = new MiaMariasNu();
+
+      // const meals = miaMariasNu.mealsFromWeb();
+      const htmlFetcher = new HtmlFetcher("http://www.miamarias.nu/");
+      const htmlFetcherString = await htmlFetcher.htmlFromWeb();
+
+        response.status(200);
+        response.send("Database created and initialized successfully!");
+    } catch (e) {
+        next(new HttpException(500, e));
+    }
   }
 
-  private fetchMenusForAreaId = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+  private fetchMenusForAreaId(request: express.Request, response: express.Response, next: express.NextFunction) {
     const id = request.params.id;
 
     response.send("NOT IMPLEMENTED");
