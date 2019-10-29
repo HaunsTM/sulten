@@ -12,7 +12,11 @@ export class WeekDay implements IWeekDay {
     public javascriptDayIndex: number;
 
     // navigation properties
-    @OneToMany((type) => Occurence, (occurences) => occurences.weekDay)
+    @OneToMany((type: Occurence) => Occurence, (occurences: Occurence) => occurences.weekDay)
     public occurences: Occurence[];
 
+    constructor(id: number, javascriptDayIndex: number) {
+        this.id = id;
+        this.javascriptDayIndex = javascriptDayIndex;
+    }
 }

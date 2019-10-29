@@ -13,7 +13,7 @@ export class Dish implements IDish {
     public description: string;
 
     // navigation properties
-    @ManyToOne((type) => Label, (label) => label.dishes)
+    @ManyToOne((type: Label) => Label, (label: Label) => label.dishes)
     public label: Label;
     @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
     public meals: Meal[];

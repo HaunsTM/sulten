@@ -19,9 +19,9 @@ export  class Restaurant implements IRestaurant {
     public typeScriptClassParser: string;
 
     // navigation properties
-    @ManyToOne((type) => Area, (area) => area.restaurants)
+    @ManyToOne((type: Area) => Area, (area: Area) => area.restaurants)
     public area: Area;
-    @OneToMany((type) => Meal, (meal) => meal.dish)
+    @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
     public meals: Meal[];
 
 }

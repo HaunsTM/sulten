@@ -14,7 +14,7 @@ export class WeekIndex implements IWeekIndex {
     public weekYear: number;
 
     // navigation properties
-    @OneToMany((type) => Occurence, (occurences) => occurences.weekIndex)
+    @OneToMany((type: Occurence) => Occurence, (occurences: Occurence) => occurences.weekIndex)
     public occurences: Occurence[];
 
 }

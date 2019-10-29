@@ -15,4 +15,8 @@ export class Area implements IArea {
     @OneToMany((type: Restaurant) => Restaurant, (restaurant: Restaurant) => restaurant.area)
     public restaurants: Restaurant[];
 
+    constructor(id: number, name: string) {
+        this.id = id;
+        this.name = name;
+    }
 }

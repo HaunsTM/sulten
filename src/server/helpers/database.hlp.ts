@@ -10,7 +10,7 @@ export default class DatabaseHelper {
 
     get areas(): Area[] {
 
-        const areas = [ Object.assign( new Area(), {id: null, name: EnumArea.MALMO__VASTRA_HAMNEN}) ];
+        const areas = [ new Area( null, EnumArea.MALMO__VASTRA_HAMNEN ) ];
 
         return areas;
     }
@@ -18,37 +18,37 @@ export default class DatabaseHelper {
     get dishLabels(): Label[] {
 
         const labels = [
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.ARABIC } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.BIRD } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.BREAD } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.BREAKFAST } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.CAKE } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.COFFEE } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.DESSERT } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.DRINK } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.FALAFEL } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.FAST_FOOD } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.FISH_AND_SEAFOOD } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.GRATIN } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.HOTPOT } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.INDIAN } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.MAIN } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.MEAL_OF_THE_DAY } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.MEAT } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.PERSIAN } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.PIE } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.PIZZA } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.PLAIN } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.SALAD } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.SANDWICH } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.SMOOTHIE } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.SNACK } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.SNACKS } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.SOUP } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.STARTER } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.SUPPER } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.THAI } ),
-            Object.assign( new Label(), {id: null, name: EnumDishLabel.VEGETARIAN } ),
+            new Label(null, EnumDishLabel.ARABIC ),
+            new Label(null, EnumDishLabel.BIRD ),
+            new Label(null, EnumDishLabel.BREAD ),
+            new Label(null, EnumDishLabel.BREAKFAST ),
+            new Label(null, EnumDishLabel.CAKE ),
+            new Label(null, EnumDishLabel.COFFEE ),
+            new Label(null, EnumDishLabel.DESSERT ),
+            new Label(null, EnumDishLabel.DRINK ),
+            new Label(null, EnumDishLabel.FALAFEL ),
+            new Label(null, EnumDishLabel.FAST_FOOD ),
+            new Label(null, EnumDishLabel.FISH_AND_SEAFOOD ),
+            new Label(null, EnumDishLabel.GRATIN ),
+            new Label(null, EnumDishLabel.HOTPOT ),
+            new Label(null, EnumDishLabel.INDIAN ),
+            new Label(null, EnumDishLabel.MAIN ),
+            new Label(null, EnumDishLabel.MEAL_OF_THE_DAY ),
+            new Label(null, EnumDishLabel.MEAT ),
+            new Label(null, EnumDishLabel.PERSIAN ),
+            new Label(null, EnumDishLabel.PIE ),
+            new Label(null, EnumDishLabel.PIZZA ),
+            new Label(null, EnumDishLabel.PLAIN ),
+            new Label(null, EnumDishLabel.SALAD ),
+            new Label(null, EnumDishLabel.SANDWICH ),
+            new Label(null, EnumDishLabel.SMOOTHIE ),
+            new Label(null, EnumDishLabel.SNACK ),
+            new Label(null, EnumDishLabel.SNACKS ),
+            new Label(null, EnumDishLabel.SOUP ),
+            new Label(null, EnumDishLabel.STARTER ),
+            new Label(null, EnumDishLabel.SUPPER ),
+            new Label(null, EnumDishLabel.THAI ),
+            new Label(null, EnumDishLabel.VEGETARIAN ),
         ];
 
         return labels;
@@ -57,14 +57,14 @@ export default class DatabaseHelper {
     get weekDays(): WeekDay[] {
 
         const weekDays = [
-            Object.assign( new WeekDay(), { id: null, javascriptDayIndex: EnumWeekDay.MONDAY } ),
-            Object.assign( new WeekDay(), { id: null, javascriptDayIndex: EnumWeekDay.TUESDAY } ),
-            Object.assign( new WeekDay(), { id: null, javascriptDayIndex: EnumWeekDay.WEDNESDAY } ),
-            Object.assign( new WeekDay(), { id: null, javascriptDayIndex: EnumWeekDay.THURSDAY } ),
-            Object.assign( new WeekDay(), { id: null, javascriptDayIndex: EnumWeekDay.FRIDAY } ),
+            new WeekDay(null, EnumWeekDay.MONDAY ),
+            new WeekDay(null, EnumWeekDay.TUESDAY ),
+            new WeekDay(null, EnumWeekDay.WEDNESDAY ),            
+            new WeekDay(null, EnumWeekDay.THURSDAY ),
+            new WeekDay(null, EnumWeekDay.FRIDAY ),
 
-            Object.assign( new WeekDay(), { id: null, javascriptDayIndex: EnumWeekDay.SATURDAY } ),
-            Object.assign( new WeekDay(), { id: null, javascriptDayIndex: EnumWeekDay.SUNDAY } ),
+            new WeekDay(null, EnumWeekDay.SATURDAY ),
+            new WeekDay(null, EnumWeekDay.SUNDAY ),
          ];
 
         return weekDays;

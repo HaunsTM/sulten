@@ -11,11 +11,11 @@ export class Occurence implements IOccurence {
     public id: number;
 
     // navigation properties
-    @OneToMany((type) => Meal, (meal) => meal.dish)
+    @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
     public meals: Meal[];
-    @ManyToOne((type) => WeekDay, (weekDay) => weekDay.occurences)
+    @ManyToOne((type: WeekDay) => WeekDay, (weekDay: WeekDay) => weekDay.occurences)
     public weekDay: WeekDay;
-    @ManyToOne((type) => WeekIndex, (weekIndex) => weekIndex.occurences)
+    @ManyToOne((type: WeekIndex) => WeekIndex, (weekIndex: WeekIndex) => weekIndex.occurences)
     public weekIndex: WeekIndex;
 
 }

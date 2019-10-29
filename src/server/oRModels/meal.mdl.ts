@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Dish } from "./dish.mdl";
 import { IMeal } from "../interfaces/oRModels/meal.itf";
+import { Dish } from "./dish.mdl";
 import { Occurence } from "./occurence.mdl";
 import { Restaurant } from "./restaurant.mdl";
 
