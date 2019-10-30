@@ -12,10 +12,18 @@ export class Dish implements IDish {
     @Column()
     public description: string;
 
+    @Column()
+    public price_SEK: string;
+
     // navigation properties
     @ManyToOne((type: Label) => Label, (label: Label) => label.dishes)
     public label: Label;
     @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
     public meals: Meal[];
 
+    constructor(id: number, description: string, price_SEK: string) {
+        this.id = id;
+        this.description = description;
+        this.price_SEK = price_SEK;
+    }
 }

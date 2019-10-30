@@ -3,7 +3,7 @@ import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
 import {HtmlFetcher} from "../helpers/htmlFetcher.hlp";
 import Controller from "../interfaces/controller.itf";
-import { MiaMariasNu } from "./mealDealers/miamarias_nu.dlr";
+//import { MiaMariasNu } from "./mealDealers/miamarias_nu.dlr";
 
 export default class AdminController implements Controller {
   public path = "/admin";
@@ -40,7 +40,7 @@ export default class AdminController implements Controller {
         // const miaMariasNu = new MiaMariasNu();
 
       // const meals = miaMariasNu.mealsFromWeb();
-      const htmlFetcher = new HtmlFetcher("http://www.miamarias.nu/");
+      const htmlFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
       const htmlFetcherString = await htmlFetcher.htmlFromWeb();
 let i =  0;
 
