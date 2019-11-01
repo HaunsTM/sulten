@@ -14,8 +14,8 @@ export class Label implements ILabel {
     public name: EnumDishLabel;
 
     // navigation properties
-    @OneToMany((type: Dish) => Dish, (dish: Dish) => dish.label)
-    public dishes: Dish[];
+    @OneToMany((type: IDish) => Dish, (dish: IDish) => dish.label)
+    public dishes: IDish[];
 
     constructor(id: number, name: EnumDishLabel) {
         this.id = id;

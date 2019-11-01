@@ -1,4 +1,4 @@
-import { EnumWeekDay } from "../../enum/weekday.enum";
+import { EnumWeekDay } from "../../enum/weekDay.enum";
 import { IEntity } from "./entity.itf";
 import { IOccurence } from "./occurence.itf";
 

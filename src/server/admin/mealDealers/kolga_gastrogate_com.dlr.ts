@@ -1,30 +1,26 @@
 import { EnumDishLabel } from "../../enum/dishLabel.enu";
-import { EnumWeekDay } from "../../enum/weekday.enum";
 import { IHtmlFetcherHelper } from "../../interfaces/htmlFetcherHelper.itf";
-import { IRestaurant } from "../../interfaces/oRModels/restaurant.itf";
-import { IWeekIndex } from "../../interfaces/oRModels/weekIndex.itf";
+import { IWeekDayHelper } from "../../interfaces/weekDayHelper.itf";
 import { IWebMealResult } from "../../interfaces/webMealResult.itf";
 import { IWebMenuDealer } from "../../interfaces/webMenuDealer.itf";
 import { IXPathDishProviderResult } from "../../interfaces/xpathDishProviderResult.itf";
 import { Dish } from "../../oRModels/dish.mdl";
 import { Label } from "../../oRModels/label.mdl";
-import { Meal } from "../../oRModels/meal.mdl";
-import { Occurence } from "../../oRModels/occurence.mdl";
-import { Restaurant } from "../../oRModels/restaurant.mdl";
-import { WeekDay } from "../../oRModels/weekDay.mdl";
 import { WebMealResult } from "./webMealResult";
 import { WeekIndex } from "../../oRModels/weekIndex.mdl";
 
 export class KolgaGastroGate implements IWebMenuDealer {
 
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
+    private _weekDayHelper: IWeekDayHelper = null;
     private _weekIndex: WeekIndex = null;
 
     constructor(htmlFetcherHelper: IHtmlFetcherHelper,
+                weekDayHelper: IWeekDayHelper,
                 weekIndex: WeekIndex) {
 
         this._htmlFetcherHelper = htmlFetcherHelper;
-
+        this._weekDayHelper = weekDayHelper;
         this._weekIndex = weekIndex;
     }
 
@@ -53,57 +49,28 @@ export class KolgaGastroGate implements IWebMenuDealer {
         return mealsForAWeek;
     }
 
-    private async webMealResult(weekDay: string, menuAlternativeIndex: number): Promise<IWebMealResult> {
+    private async webMealResult(weekDayName: string, menuAlternativeIndex: number): Promise<IWebMealResult> {
 
         const label = new Label( null, EnumDishLabel.PLAIN );
         let dish: Dish = null;
         let fetchError: Error = null;
 
         try {
-                dish = await this.getDish( weekDay, menuAlternativeIndex );
-        } catch (e) {
+                dish = await this.getDish( weekDayName, menuAlternativeIndex );
+        } catch ( e ) {
                 fetchError = e;
         }
 
-        const idMeal: number = null;
-
-        const restaurant = new Restaurant(null, null, null, "https://kolga.gastrogate.com/lunch/");
-        const occurence = this.getOccurence(weekDay);
-        const meal = new Meal( idMeal, dish, occurence, restaurant);
+        const weekDay =  this._weekDayHelper.getWeekDay( weekDayName );
 
         const webMealResult =
-            new WebMealResult(dish, label, meal, restaurant, occurence, fetchError);
+            new WebMealResult( this._htmlFetcherHelper.url, dish, label, weekDay, this._weekIndex, fetchError );
 
         return webMealResult;
     }
 
-    private getOccurence(weekDayName: string): Occurence {
-        let weekDay: WeekDay = null;
-        switch (weekDayName) {
-            case "måndag":
-                    weekDay = new WeekDay( null, EnumWeekDay.MONDAY );
-                    break;
-            case "tisdag":
-                    weekDay = new WeekDay( null, EnumWeekDay.TUESDAY );
-                    break;
-            case "onsdag":
-                    weekDay = new WeekDay( null, EnumWeekDay.WEDNESDAY );
-                    break;
-            case "torsdag":
-                    weekDay = new WeekDay( null, EnumWeekDay.THURSDAY );
-                    break;
-            case "fredag":
-                    weekDay = new WeekDay( null, EnumWeekDay.FRIDAY );
-                    break;
-        }
-
-        const occurence = new Occurence( null, weekDay, this._weekIndex );
-
-        return occurence;
-    }
-
-    private async getDish(weekday: string, menuAlternativeIndex: number): Promise<Dish> {
-        const xpath = this.xpathProvider(weekday, menuAlternativeIndex);
+    private async getDish(weekDayName: string, menuAlternativeIndex: number): Promise<Dish> {
+        const xpath = this.xpathProvider(weekDayName, menuAlternativeIndex);
 
         const idDish: number = null;
         const descriptionDish = await this._htmlFetcherHelper.textContentFromHtmlDocument(xpath.descriptionXPath);
@@ -112,11 +79,11 @@ export class KolgaGastroGate implements IWebMenuDealer {
         return new Dish( idDish, descriptionDish, price_SEKDish);
     }
 
-    private xpathProvider(weekday: string, menuAlternativeIndex: number): IXPathDishProviderResult {
+    private xpathProvider(weekDayName: string, menuAlternativeIndex: number): IXPathDishProviderResult {
 
         const result: IXPathDishProviderResult = {
-            descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekday}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${menuAlternativeIndex}]`,
-            price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekday}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${menuAlternativeIndex}]`,
+            descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${menuAlternativeIndex}]`,
+            price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${menuAlternativeIndex}]`,
         };
 
         return result;

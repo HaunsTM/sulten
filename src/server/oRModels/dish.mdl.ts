@@ -18,10 +18,10 @@ export class Dish implements IDish {
     public price_SEK: string;
 
     // navigation properties
-    @ManyToOne((type: Label) => Label, (label: Label) => label.dishes)
-    public label: Label;
-    @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
-    public meals: Meal[];
+    @ManyToOne((type: ILabel) => Label, (label: ILabel) => label.dishes)
+    public label: ILabel;
+    @OneToMany((type: IMeal) => Meal, (meal: IMeal) => meal.dish)
+    public meals: IMeal[];
 
     constructor(id: number, description: string, price_SEK: string) {
         this.id = id;

@@ -17,14 +17,14 @@ export class Meal implements IMeal {
     public error: string;
 
     // navigation properties
-    @ManyToOne((type: Dish) => Dish, (dish: Dish) => dish.meals)
-    public dish: Dish;
-    @ManyToOne((type: Occurence) => Occurence, (occurence: Occurence) => occurence.meals)
-    public occurence: Occurence;
-    @ManyToOne((type: Restaurant) => Restaurant, (restaurant: Restaurant) => restaurant.meals)
-    public restaurant:IRestaurant;
+    @ManyToOne((type: IDish) => Dish, (dish: Dish) => dish.meals)
+    public dish: IDish;
+    @ManyToOne((type: IOccurence) => Occurence, (occurence: IOccurence) => occurence.meals)
+    public occurence: IOccurence;
+    @ManyToOne((type: IRestaurant) => Restaurant, (restaurant: IRestaurant) => restaurant.meals)
+    public restaurant: IRestaurant;
 
-    constructor(id: number, dish: Dish, occurence: Occurence, restaurant: Restaurant) {
+    constructor(id: number, dish: IDish, occurence: IOccurence, restaurant: IRestaurant) {
         this.id = id;
         this.dish = dish;
         this.occurence = occurence;

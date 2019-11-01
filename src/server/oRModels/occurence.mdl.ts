@@ -14,14 +14,14 @@ export class Occurence implements IOccurence {
     public id: number;
 
     // navigation properties
-    @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
-    public meals: Meal[];
-    @ManyToOne((type: WeekDay) => WeekDay, (weekDay: WeekDay) => weekDay.occurences)
-    public weekDay: WeekDay;
-    @ManyToOne((type: WeekIndex) => WeekIndex, (weekIndex: WeekIndex) => weekIndex.occurences)
-    public weekIndex: WeekIndex;
+    @OneToMany((type: IMeal) => Meal, (meal: IMeal) => meal.dish)
+    public meals: IMeal[];
+    @ManyToOne((type: IWeekDay) => WeekDay, (weekDay: IWeekDay) => weekDay.occurences)
+    public weekDay: IWeekDay;
+    @ManyToOne((type: IWeekIndex) => WeekIndex, (weekIndex: IWeekIndex) => weekIndex.occurences)
+    public weekIndex: IWeekIndex;
 
-    constructor(id: number, weekDay: WeekDay, weekIndex: WeekIndex) {
+    constructor(id: number, weekDay: IWeekDay, weekIndex: IWeekIndex) {
         this.id = id;
         this.weekDay = weekDay;
         this.weekIndex = weekIndex;

@@ -19,10 +19,10 @@ export  class Restaurant implements IRestaurant {
     public menuUrl: string;
 
     // navigation properties
-    @ManyToOne((type: Area) => Area, (area: Area) => area.restaurants)
-    public area: Area;
-    @OneToMany((type: Meal) => Meal, (meal: Meal) => meal.dish)
-    public meals: Meal[];
+    @ManyToOne((type: IArea) => Area, (area: IArea) => area.restaurants)
+    public area: IArea;
+    @OneToMany((type: IMeal) => Meal, (meal: IMeal) => meal.dish)
+    public meals: IMeal[];
 
     constructor(id: number, active: number, name: string, menuUrl: string) {
         this.id = id;

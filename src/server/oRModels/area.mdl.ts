@@ -13,8 +13,8 @@ export class Area implements IArea {
     public name: string;
 
     // navigation properties
-    @OneToMany((type: Restaurant) => Restaurant, (restaurant: Restaurant) => restaurant.area)
-    public restaurants: Restaurant[];
+    @OneToMany((type: IRestaurant) => Restaurant, (restaurant: IRestaurant) => restaurant.area)
+    public restaurants: IRestaurant[];
 
     constructor(id: number, name: string) {
         this.id = id;

@@ -3,9 +3,9 @@ import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
 import {HtmlFetcher} from "../helpers/htmlFetcher.hlp";
 import Controller from "../interfaces/controller.itf";
-import { Restaurant } from "../oRModels/restaurant.mdl";
 import { KolgaGastroGate } from "./mealDealers/kolga_gastrogate_com.dlr";
 import { WeekIndex } from "../oRModels/weekIndex.mdl";
+import { WeekDayHelper } from "../helpers/weekDay.hlp";
 
 export default class AdminController implements Controller {
   public path = "/admin";
@@ -40,8 +40,9 @@ export default class AdminController implements Controller {
 
     try {
         const htmlFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
+        const weekDayHelper = new WeekDayHelper();
         const weekIndex = new WeekIndex(null,44,2019)
-        const kolgaGastroGate = new KolgaGastroGate(htmlFetcher,weekIndex)
+        const kolgaGastroGate = new KolgaGastroGate( htmlFetcher, weekDayHelper, weekIndex )
         const agf = await kolgaGastroGate.mealsFromWeb();
 
         
