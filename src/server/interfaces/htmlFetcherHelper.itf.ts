@@ -1,5 +1,6 @@
 export interface IHtmlFetcherHelper {
 
-    textContentFromHtmlDocument(xpathExpression: string): Promise<string>;
+    url: string;
 
+    textContentFromHtmlDocument(xpathExpression: string): Promise<string>;
 }

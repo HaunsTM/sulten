@@ -3,7 +3,9 @@ import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
 import {HtmlFetcher} from "../helpers/htmlFetcher.hlp";
 import Controller from "../interfaces/controller.itf";
-//import { MiaMariasNu } from "./mealDealers/miamarias_nu.dlr";
+import { Restaurant } from "../oRModels/restaurant.mdl";
+import { KolgaGastroGate } from "./mealDealers/kolga_gastrogate_com.dlr";
+import { WeekIndex } from "../oRModels/weekIndex.mdl";
 
 export default class AdminController implements Controller {
   public path = "/admin";
@@ -37,11 +39,15 @@ export default class AdminController implements Controller {
       request: express.Request, response: express.Response, next: express.NextFunction) {
 
     try {
-        // const miaMariasNu = new MiaMariasNu();
+        const htmlFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
+        const weekIndex = new WeekIndex(null,44,2019)
+        const kolgaGastroGate = new KolgaGastroGate(htmlFetcher,weekIndex)
+        const agf = await kolgaGastroGate.mealsFromWeb();
 
+        
+        response.send(agf);
+        let kalle = 1;
       // const meals = miaMariasNu.mealsFromWeb();
-      const htmlFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
-      const htmlFetcherString = await htmlFetcher.htmlFromWeb();
 let i =  0;
 
     } catch (e) {

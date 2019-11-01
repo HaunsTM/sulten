@@ -1,6 +1,7 @@
 import { JSDOM } from "jsdom";
+import { IHtmlFetcherHelper } from "../interfaces/htmlFetcherHelper.itf";
 
-export class HtmlFetcher {
+export class HtmlFetcher implements IHtmlFetcherHelper {
 
     private _url: string;
     private _document: Document = null;
@@ -22,6 +23,10 @@ export class HtmlFetcher {
         const textContent = evaluatedHtmlDocument.singleNodeValue.textContent.toString().trim();
 
         return textContent;
+    }
+
+    public get url(): string {
+        return this._url;
     }
 
     private async evaluatedHtmlDocument(xpathExpression: string): Promise<XPathResult> {

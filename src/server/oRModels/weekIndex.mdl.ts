@@ -17,4 +17,11 @@ export class WeekIndex implements IWeekIndex {
     @OneToMany((type: Occurence) => Occurence, (occurences: Occurence) => occurences.weekIndex)
     public occurences: Occurence[];
 
+    
+    constructor(id: number, weekNumber: number, weekYear: number) {
+        this.id = id;
+        this.weekNumber = weekNumber;
+        this.weekYear = weekYear;
+    }
+
 }

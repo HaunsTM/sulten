@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { IArea } from "../interfaces/oRModels/area.itf";
+import { IRestaurant } from "../interfaces/oRModels/restaurant.itf";
 import { Restaurant } from "./restaurant.mdl";
 
 @Entity()
@@ -19,4 +20,5 @@ export class Area implements IArea {
         this.id = id;
         this.name = name;
     }
+    
 }

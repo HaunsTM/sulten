@@ -1,5 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { IDish } from "../interfaces/oRModels/dish.itf";
+import { ILabel } from "../interfaces/oRModels/label.itf";
+import { IMeal } from "../interfaces/oRModels/meal.itf";
 import { Label } from "./label.mdl";
 import { Meal } from "./meal.mdl";
 

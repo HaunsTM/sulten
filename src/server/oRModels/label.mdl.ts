@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { EnumDishLabel } from "../enum/dishLabel.enu";
+import { IDish } from "../interfaces/oRModels/dish.itf";
 import { ILabel } from "../interfaces/oRModels/label.itf";
 import { Dish } from "./dish.mdl";
 

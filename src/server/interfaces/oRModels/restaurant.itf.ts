@@ -9,7 +9,6 @@ export interface IRestaurant extends IEntity {
     active: number;
     name: string;
     menuUrl: string;
-    typeScriptClassParser: string;
 
     // navigation properties
     area: IArea;
