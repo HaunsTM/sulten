@@ -4,29 +4,36 @@ import { IWeekDayHelper } from "../interfaces/weekDayHelper.itf";
 import { WeekDay } from "../oRModels/weekDay.mdl";
 
 export class WeekDayHelper implements IWeekDayHelper {
-
  
-    public getWeekDay(weekDayName: string): IWeekDay {
+    public getWeekDay(swedishWeekDayName: string ): IWeekDay {
         let weekDay: WeekDay = null;
-        switch (weekDayName) {
-            case "måndag":
-                    weekDay = new WeekDay( null, EnumWeekDay.MONDAY );
-                    break;
-            case "tisdag":
-                    weekDay = new WeekDay( null, EnumWeekDay.TUESDAY );
-                    break;
-            case "onsdag":
-                    weekDay = new WeekDay( null, EnumWeekDay.WEDNESDAY );
-                    break;
-            case "torsdag":
-                    weekDay = new WeekDay( null, EnumWeekDay.THURSDAY );
-                    break;
-            case "fredag":
-                    weekDay = new WeekDay( null, EnumWeekDay.FRIDAY );
-                    break;
+
+        switch ( swedishWeekDayName.toLowerCase() ) {
+                case "mån" || "måndag":
+                        weekDay = new WeekDay( null, EnumWeekDay.MONDAY );
+                        break;
+                case "tis" || "tisdag":
+                        weekDay = new WeekDay( null, EnumWeekDay.TUESDAY );
+                        break;
+                case "ons" || "onsdag":
+                        weekDay = new WeekDay( null, EnumWeekDay.WEDNESDAY );
+                        break;
+                case "tor" || "torsdag":
+                        weekDay = new WeekDay( null, EnumWeekDay.THURSDAY );
+                        break;
+                case "fre" || "fredag":
+                        weekDay = new WeekDay( null, EnumWeekDay.FRIDAY );
+                        break;
+                case "lör" || "lördag":
+                        weekDay = new WeekDay( null, EnumWeekDay.SATURDAY );
+                        break;
+                case "sön" || "söndag":
+                        weekDay = new WeekDay( null, EnumWeekDay.SUNDAY );
+                        break;
         }
 
         return weekDay;
     }
 
 }
+<

@@ -9,7 +9,7 @@ import { Label } from "../../oRModels/label.mdl";
 import { WebMealResult } from "./webMealResult";
 import { WeekIndex } from "../../oRModels/weekIndex.mdl";
 
-export class Kolga_Gastro_Gate_Com implements IWebMenuDealer {
+export class Miamarias_Nu implements IWebMenuDealer {
 
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
     private _weekDayHelper: IWeekDayHelper = null;
@@ -82,7 +82,7 @@ export class Kolga_Gastro_Gate_Com implements IWebMenuDealer {
     private xpathProvider(weekDayName: string, menuAlternativeIndex: number): IXPathDishProviderResult {
 
         const result: IXPathDishProviderResult = {
-            descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${menuAlternativeIndex}]`,
+            descriptionXPath: `//h5[contains(.,"Mån")]/ancestor::div[contains(@class,"et_pb_module")]//tr[td[contains(.,"Ve")][contains(.,"kr")]]/following-sibling::tr`,
             price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${menuAlternativeIndex}]`,
         };
 
