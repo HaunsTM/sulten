@@ -1,10 +1,12 @@
 import { getConnection } from "typeorm";
 import { EnumArea } from "../enum/area.enum";
 import { EnumDishLabel } from "../enum/dishLabel.enu";
-import { EnumWeekDay } from "../enum/weekDay.enum";
+import { EnumWeekDay } from "../enum/weekDay.enu";
 import { Area } from "../oRModels/area.mdl";
 import { WeekDay } from "../oRModels/weekDay.mdl";
 import { Label } from "../oRModels/label.mdl";
+
+import { IWebMealResult } from "../interfaces/webMealResult.itf";
 
 export default class DatabaseHelper {
 
@@ -19,7 +21,6 @@ export default class DatabaseHelper {
 
         const labels = [
             new Label(null, EnumDishLabel.ARABIC ),
-            new Label(null, EnumDishLabel.BIRD ),
             new Label(null, EnumDishLabel.BREAD ),
             new Label(null, EnumDishLabel.BREAKFAST ),
             new Label(null, EnumDishLabel.CAKE ),
@@ -39,6 +40,8 @@ export default class DatabaseHelper {
             new Label(null, EnumDishLabel.PIE ),
             new Label(null, EnumDishLabel.PIZZA ),
             new Label(null, EnumDishLabel.PLAIN ),
+            new Label(null, EnumDishLabel.PORK ),
+            new Label(null, EnumDishLabel.POULTRY ),
             new Label(null, EnumDishLabel.SALAD ),
             new Label(null, EnumDishLabel.SANDWICH ),
             new Label(null, EnumDishLabel.SMOOTHIE ),
@@ -103,6 +106,12 @@ export default class DatabaseHelper {
         } catch (e) {
             throw new Error(`Couldn't initialize database: ${e}`);
         }
+    }
+
+    public async saveToDb(webMeals: IWebMealResult[]): Promise<void> {
+
+        const dbManager = getConnection().manager;
+        const rawData = await dbManager.query(`SELECT * FROM USERS`);
     }
 
 }

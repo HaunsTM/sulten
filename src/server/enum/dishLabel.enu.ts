@@ -20,6 +20,7 @@ export enum EnumDishLabel {
     PIE = "pie",
     PIZZA = "pizza",
     PLAIN = "plain",
+    PORK = "pork",
     POULTRY = "poultry",
     SALAD = "salad",
     SANDWICH = "sandwich",

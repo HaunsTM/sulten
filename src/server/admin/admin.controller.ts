@@ -3,9 +3,10 @@ import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
 import {HtmlFetcher} from "../helpers/htmlFetcher.hlp";
 import Controller from "../interfaces/controller.itf";
-import { KolgaGastroGate } from "./mealDealers/kolga_gastrogate_com.dlr";
+import { Kolga_Gastro_Gate_Com } from "./mealDealers/kolga_gastrogate_com.dlr";
 import { WeekIndex } from "../oRModels/weekIndex.mdl";
 import { WeekDayHelper } from "../helpers/weekDay.hlp";
+import { Miamarias_Nu } from "./mealDealers/miamarias_nu";
 
 export default class AdminController implements Controller {
   public path = "/admin";
@@ -39,14 +40,17 @@ export default class AdminController implements Controller {
       request: express.Request, response: express.Response, next: express.NextFunction) {
 
     try {
-        const htmlFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
-        const weekDayHelper = new WeekDayHelper();
-        const weekIndex = new WeekIndex(null,44,2019)
-        const kolgaGastroGate = new KolgaGastroGate( htmlFetcher, weekDayHelper, weekIndex )
-        const agf = await kolgaGastroGate.mealsFromWeb();
+        const weekIndex = 44;
+        const kolgaFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
+        const kolgaGastroGate = new Kolga_Gastro_Gate_Com( kolgaFetcher, weekIndex )
+        const kolgaGastroGateMealsFromWeb = await kolgaGastroGate.mealsFromWeb();
 
+
+        const miaMariasFetcher = new HtmlFetcher("http://www.miamarias.nu/");
+        const miamariasNu = new Miamarias_Nu( miaMariasFetcher, weekIndex )
+        const miamariasNuMealsFromWeb = await miamariasNu.mealsFromWeb();
         
-        response.send(agf);
+        response.send(miamariasNuMealsFromWeb);
         let kalle = 1;
       // const meals = miaMariasNu.mealsFromWeb();
 let i =  0;

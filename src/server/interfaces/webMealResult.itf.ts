@@ -1,19 +1,19 @@
-import { IDish } from "./oRModels/dish.itf";
-import { ILabel } from "./oRModels/label.itf";
-import { IWeekDay } from "./oRModels/weekDay.itf";
-import { IWeekIndex } from "./oRModels/weekIndex.itf";
+import { EnumDishLabel } from "../enum/dishLabel.enu";
+import { EnumWeekDay } from "../enum/weekday.enu";
 
 export interface IWebMealResult {
 
     fetchUrl: string;
 
-    dish: IDish;
+    dishDescription: string;
 
-    label: ILabel;
+    dishPrice_SEK: string;
 
-    weekDay: IWeekDay;
+    dishLabel: EnumDishLabel;
 
-    weekIndex: IWeekIndex;
+    weekDay: EnumWeekDay;
+
+    weekIndex: number;
 
     fetchError: Error;
 

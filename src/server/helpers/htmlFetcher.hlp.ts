@@ -4,7 +4,6 @@ import { IHtmlFetcherHelper } from "../interfaces/htmlFetcherHelper.itf";
 export class HtmlFetcher implements IHtmlFetcherHelper {
 
     private _url: string;
-    private _document: Document = null;
 
     /**
      * A helper class which can be used when parsing an online webpage
@@ -18,35 +17,50 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
      * Returns trimmed Node.textContent.toString of the text content of a node and its descendants.
      * @param xpathExpression - XPath which should be used to parse a HTML-dom
      */
-    public async textContentFromHtmlDocument(xpathExpression: string): Promise<string> {
-        const evaluatedHtmlDocument = await this.evaluatedHtmlDocument(xpathExpression);
-        const textContent = evaluatedHtmlDocument.singleNodeValue.textContent.toString().trim();
+    public textContentFromHtmlDocument( htmlDocumentFromWeb: Document, xpathExpression: string ): string {
+        const evaluatedHtmlDocument = this.evaluatedHtmlDocument( htmlDocumentFromWeb, xpathExpression);
 
-        return textContent;
+        if (!evaluatedHtmlDocument.singleNodeValue) {
+            throw Error(`Couldn't find a value for xpath "${xpathExpression}" on "${this._url}".`);
+        }
+
+        try {
+
+            const textContent = evaluatedHtmlDocument.singleNodeValue.textContent.toString().trim();
+
+            return textContent;
+
+        } catch ( e ) {
+
+            throw Error(`Couldn't get textContent for xpath "${xpathExpression}" on "${this._url}".`);
+        }
+
     }
 
     public get url(): string {
         return this._url;
     }
 
-    private async evaluatedHtmlDocument(xpathExpression: string): Promise<XPathResult> {
+    public async htmlDocumentFromWeb(): Promise<Document> {
+        try {
+            const jsDom = await JSDOM.fromURL( this._url );
+            const htmlDocumentFromWeb = jsDom.window.document;
 
-        const FIRST_ORDERED_NODE_TYPE = 9;
-        const jsDomFromWeb = await this.htmlDocumentFromWeb();
+            return htmlDocumentFromWeb;
+        } catch ( e ) {
 
-        const evaluated =
-            jsDomFromWeb.evaluate(xpathExpression, jsDomFromWeb, null, FIRST_ORDERED_NODE_TYPE, null);
-
-        return evaluated;
+            throw Error(`Couldn't successfully fetch data from ${this._url}: ${e.message}`);
+        }
     }
 
-    private async htmlDocumentFromWeb(): Promise<Document> {
-        if ( !this._document ) {
-            const jsDom = await JSDOM.fromURL(this._url);
-            this._document = jsDom.window.document;
-            return this._document;
-        }
-        return this._document;
+    private evaluatedHtmlDocument( htmlDocumentFromWeb: Document, xpathExpression: string ): XPathResult {
+
+        const FIRST_ORDERED_NODE_TYPE = 9;
+
+        const evaluated =
+        htmlDocumentFromWeb.evaluate(xpathExpression, htmlDocumentFromWeb, null, FIRST_ORDERED_NODE_TYPE, null);
+
+        return evaluated;
     }
 
 }

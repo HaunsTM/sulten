@@ -1,4 +1,4 @@
-import { EnumWeekDay } from "../enum/weekDay.enum";
+import { EnumWeekDay } from "../enum/weekDay.enu";
 import { IWeekDay } from "../interfaces/oRModels/weekDay.itf";
 import { IWeekDayHelper } from "../interfaces/weekDayHelper.itf";
 import { WeekDay } from "../oRModels/weekDay.mdl";
@@ -36,4 +36,3 @@ export class WeekDayHelper implements IWeekDayHelper {
     }
 
 }
-<

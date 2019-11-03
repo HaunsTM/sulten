@@ -1,44 +1,48 @@
+import { EnumDishLabel } from "../../enum/dishLabel.enu";
+import { EnumWeekDay } from "../../enum/weekday.enu";
 import { IWebMealResult } from "../../interfaces/webMealResult.itf";
-import { IDish } from "../../interfaces/oRModels/dish.itf";
-import { ILabel } from "../../interfaces/oRModels/label.itf";
-import { IWeekDay } from "../../interfaces/oRModels/weekDay.itf";
-import { IWeekIndex } from "../../interfaces/oRModels/weekIndex.itf";
 
 export class WebMealResult implements IWebMealResult {
 
-    private _dish: IDish;
-    private _label: ILabel;
-    private _weekDay: IWeekDay;
-    private _weekIndex: IWeekIndex;
-    private _fetchError: Error;
     private _fetchUrl: string;
+    private _dishDescription: string;
+    private _dishPrice_SEK: string;
+    private _dishLabel: EnumDishLabel;
+    private _weekDay: EnumWeekDay;
+    private _weekIndex: number;
+    private _fetchError: Error;
 
-    constructor(fetchUrl: string, dish: IDish, label: ILabel, weekDay: IWeekDay,
-                weekIndex: IWeekIndex,
+    constructor(fetchUrl: string, dishDescription: string, dishPrice_SEK: string,
+                dishLabel: EnumDishLabel, weekDay: EnumWeekDay,  weekIndex: number,
                 fetchError: Error) {
 
         this._fetchUrl = fetchUrl;
-        this._dish = dish;
-        this._label = label;
+        this._dishDescription = dishDescription;
+        this._dishPrice_SEK = dishPrice_SEK;
+        this._dishLabel = dishLabel;
         this._weekDay = weekDay;
         this._weekIndex = weekIndex;
 
         this._fetchError = fetchError;
     }
 
-    public get dish(): IDish {
-        return this._dish;
+    public get dishDescription(): string {
+        return this._dishDescription;
     }
 
-    public get label(): ILabel {
-        return this._label;
+    public get dishPrice_SEK(): string {
+        return this._dishPrice_SEK;
     }
 
-    public get weekDay(): IWeekDay {
+    public get dishLabel(): EnumDishLabel {
+        return this._dishLabel;
+    }
+
+    public get weekDay(): EnumWeekDay {
         return this._weekDay;
     }
 
-    public get weekIndex(): IWeekIndex {
+    public get weekIndex(): number {
         return this._weekIndex;
     }
 
