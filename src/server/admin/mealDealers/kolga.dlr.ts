@@ -1,13 +1,13 @@
 import { EnumDishLabel } from "../../enum/dishLabel.enu";
 import { EnumWeekDay } from "../../enum/weekday.enu";
 import { IHtmlFetcherHelper } from "../../interfaces/htmlFetcherHelper.itf";
+import { IWebMealDealer } from "../../interfaces/webMealDealer.itf";
 import { IWebMealResult } from "../../interfaces/webMealResult.itf";
-import { IWebMenuDealer } from "../../interfaces/webMenuDealer.itf";
 import { IXPathDishProviderResult } from "../../interfaces/xpathDishProviderResult.itf";
 import { Dish } from "../../oRModels/dish.mdl";
 import { WebMealResult } from "./webMealResult";
 
-export class Kolga_Gastro_Gate_Com implements IWebMenuDealer {
+export class KolgaDealer implements IWebMealDealer {
 
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
     private _weekIndex: number = -1;
@@ -54,18 +54,17 @@ export class Kolga_Gastro_Gate_Com implements IWebMenuDealer {
         let dish: Dish = null;
         let webMealResult: WebMealResult = null;
 
-        let swedishWeekDayNameOnKolga = this.getSwedishWeekDayNameOnKolga( weekDay );
+        const swedishWeekDayNameOnKolga = this.getSwedishWeekDayNameOnKolga( weekDay );
 
         try {
             dish = await this.getDish( htmlDocumentFromWeb, swedishWeekDayNameOnKolga, menuAlternativeIndex );
-        
+
             webMealResult =
-                new WebMealResult( this._htmlFetcherHelper.url, dish.description, dish.price_SEK, label, weekDay, this._weekIndex, null);
+                new WebMealResult( this._htmlFetcherHelper.url, dish.description, dish.priceSEK, label, weekDay, this._weekIndex, null);
         } catch ( e ) {
             webMealResult =
                 new WebMealResult( this._htmlFetcherHelper.url, "", "", label, weekDay, this._weekIndex, e);
         }
-        
 
         return webMealResult;
     }
@@ -73,7 +72,7 @@ export class Kolga_Gastro_Gate_Com implements IWebMenuDealer {
     private getSwedishWeekDayNameOnKolga( weekDay: EnumWeekDay ): string {
         let swedishWeekDayName = "";
 
-        switch ( weekDay ) { 
+        switch ( weekDay ) {
             case EnumWeekDay.MONDAY :
                 swedishWeekDayName = "måndag";
                 break;

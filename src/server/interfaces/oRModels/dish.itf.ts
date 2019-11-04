@@ -8,7 +8,7 @@ export interface IDish extends IEntity {
 
     description: string;
 
-    price_SEK: string;
+    priceSEK: string;
 
     // navigation properties
     label: ILabel;

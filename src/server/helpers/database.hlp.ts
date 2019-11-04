@@ -3,8 +3,8 @@ import { EnumArea } from "../enum/area.enum";
 import { EnumDishLabel } from "../enum/dishLabel.enu";
 import { EnumWeekDay } from "../enum/weekDay.enu";
 import { Area } from "../oRModels/area.mdl";
-import { WeekDay } from "../oRModels/weekDay.mdl";
 import { Label } from "../oRModels/label.mdl";
+import { WeekDay } from "../oRModels/weekDay.mdl";
 
 import { IWebMealResult } from "../interfaces/webMealResult.itf";
 
@@ -62,7 +62,7 @@ export default class DatabaseHelper {
         const weekDays = [
             new WeekDay(null, EnumWeekDay.MONDAY ),
             new WeekDay(null, EnumWeekDay.TUESDAY ),
-            new WeekDay(null, EnumWeekDay.WEDNESDAY ),            
+            new WeekDay(null, EnumWeekDay.WEDNESDAY ),
             new WeekDay(null, EnumWeekDay.THURSDAY ),
             new WeekDay(null, EnumWeekDay.FRIDAY ),
 

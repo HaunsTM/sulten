@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { IDish } from "../interfaces/oRModels/dish.itf";
 import { ILabel } from "../interfaces/oRModels/label.itf";
 import { IMeal } from "../interfaces/oRModels/meal.itf";
@@ -6,6 +6,7 @@ import { Label } from "./label.mdl";
 import { Meal } from "./meal.mdl";
 
 @Entity()
+@Unique(["description"])
 export class Dish implements IDish {
 
     @PrimaryGeneratedColumn("increment")
@@ -15,7 +16,7 @@ export class Dish implements IDish {
     public description: string;
 
     @Column()
-    public price_SEK: string;
+    public priceSEK: string;
 
     // navigation properties
     @ManyToOne((type: ILabel) => Label, (label: ILabel) => label.dishes)
@@ -23,9 +24,9 @@ export class Dish implements IDish {
     @OneToMany((type: IMeal) => Meal, (meal: IMeal) => meal.dish)
     public meals: IMeal[];
 
-    constructor(id: number, description: string, price_SEK: string) {
+    constructor(id: number, description: string, priceSEK: string) {
         this.id = id;
         this.description = description;
-        this.price_SEK = price_SEK;
+        this.priceSEK = priceSEK;
     }
 }

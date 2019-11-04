@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { IMeal } from "../interfaces/oRModels/meal.itf";
 import { IOccurence } from "../interfaces/oRModels/occurence.itf";
 import { IWeekDay } from "../interfaces/oRModels/weekDay.itf";
@@ -8,6 +8,7 @@ import { WeekDay } from "./weekDay.mdl";
 import { WeekIndex } from "./weekIndex.mdl";
 
 @Entity()
+@Unique(["weekDay", "weekIndex"])
 export class Occurence implements IOccurence {
 
     @PrimaryGeneratedColumn("increment")

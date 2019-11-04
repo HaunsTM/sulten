@@ -2,12 +2,12 @@ import { EnumDishLabel } from "../../enum/dishLabel.enu";
 import { EnumWeekDay } from "../../enum/weekday.enu";
 import { IHtmlFetcherHelper } from "../../interfaces/htmlFetcherHelper.itf";
 import { IWebMealResult } from "../../interfaces/webMealResult.itf";
-import { IWebMenuDealer } from "../../interfaces/webMenuDealer.itf";
+import { IWebMealDealer } from "../../interfaces/webMealDealer.itf";
 import { IXPathDishProviderResult } from "../../interfaces/xpathDishProviderResult.itf";
 import { Dish } from "../../oRModels/dish.mdl";
 import { WebMealResult } from "./webMealResult";
 
-export class Miamarias_Nu implements IWebMenuDealer {
+export class MiamariasDealer implements IWebMealDealer {
 
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
     private _weekIndex: number = -1;
@@ -31,24 +31,24 @@ export class Miamarias_Nu implements IWebMenuDealer {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
             this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.MONDAY, EnumDishLabel.FISH_AND_SEAFOOD),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.MONDAY, EnumDishLabel.MEAT),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.MONDAY, EnumDishLabel.VEGETARIAN),
-            
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.TUESDAY, EnumDishLabel.FISH_AND_SEAFOOD),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.TUESDAY, EnumDishLabel.MEAT),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.TUESDAY, EnumDishLabel.VEGETARIAN),
-            
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.WEDNESDAY, EnumDishLabel.FISH_AND_SEAFOOD),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.WEDNESDAY, EnumDishLabel.MEAT),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.WEDNESDAY, EnumDishLabel.VEGETARIAN),
-            
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.THURSDAY, EnumDishLabel.FISH_AND_SEAFOOD),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.THURSDAY, EnumDishLabel.MEAT),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.THURSDAY, EnumDishLabel.VEGETARIAN),
-            
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.FRIDAY, EnumDishLabel.FISH_AND_SEAFOOD),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.FRIDAY, EnumDishLabel.MEAT),
-            this.webMealResult( htmlDocumentFromWeb,EnumWeekDay.FRIDAY, EnumDishLabel.VEGETARIAN),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.MONDAY, EnumDishLabel.MEAT),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.MONDAY, EnumDishLabel.VEGETARIAN),
+
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.TUESDAY, EnumDishLabel.FISH_AND_SEAFOOD),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.TUESDAY, EnumDishLabel.MEAT),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.TUESDAY, EnumDishLabel.VEGETARIAN),
+
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.WEDNESDAY, EnumDishLabel.FISH_AND_SEAFOOD),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.WEDNESDAY, EnumDishLabel.MEAT),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.WEDNESDAY, EnumDishLabel.VEGETARIAN),
+
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.THURSDAY, EnumDishLabel.FISH_AND_SEAFOOD),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.THURSDAY, EnumDishLabel.MEAT),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.THURSDAY, EnumDishLabel.VEGETARIAN),
+
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.FRIDAY, EnumDishLabel.FISH_AND_SEAFOOD),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.FRIDAY, EnumDishLabel.MEAT),
+            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.FRIDAY, EnumDishLabel.VEGETARIAN),
         ];
 
         return mealsForAWeek;
@@ -65,9 +65,8 @@ export class Miamarias_Nu implements IWebMenuDealer {
         try {
             dish = await this.getDish( htmlDocumentFromWeb, swedishWeekDayName, swedishDishLabelOnMiaMarias );
             webMealResult =
-                new WebMealResult( this._htmlFetcherHelper.url, dish.description, dish.price_SEK, label, weekDay, this._weekIndex, null);
+                new WebMealResult( this._htmlFetcherHelper.url, dish.description, dish.priceSEK, label, weekDay, this._weekIndex, null);
         } catch ( e ) {
-            console.log(e.message);
             webMealResult =
                 new WebMealResult( this._htmlFetcherHelper.url, "", "", label, weekDay, this._weekIndex, e);
         }

@@ -1,6 +1,6 @@
 import { IWebMealResult } from "./webMealResult.itf";
 
-export interface IWebMenuDealer {
+export interface IWebMealDealer {
 
   mealsFromWeb(): Promise<IWebMealResult[]>;
 

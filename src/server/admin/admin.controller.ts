@@ -3,10 +3,10 @@ import HttpException from "../exceptions/HttpException";
 import DatabaseHelper from "../helpers/database.hlp";
 import {HtmlFetcher} from "../helpers/htmlFetcher.hlp";
 import Controller from "../interfaces/controller.itf";
-import { Kolga_Gastro_Gate_Com } from "./mealDealers/kolga_gastrogate_com.dlr";
+import { KolgaDealer } from "./mealDealers/kolga.dlr";
 import { WeekIndex } from "../oRModels/weekIndex.mdl";
 import { WeekDayHelper } from "../helpers/weekDay.hlp";
-import { Miamarias_Nu } from "./mealDealers/miamarias_nu";
+import { MiamariasDealer } from "./mealDealers/miamarias.dlr";
 
 export default class AdminController implements Controller {
   public path = "/admin";
@@ -42,18 +42,15 @@ export default class AdminController implements Controller {
     try {
         const weekIndex = 44;
         const kolgaFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
-        const kolgaGastroGate = new Kolga_Gastro_Gate_Com( kolgaFetcher, weekIndex )
+        const kolgaGastroGate = new KolgaDealer( kolgaFetcher, weekIndex );
         const kolgaGastroGateMealsFromWeb = await kolgaGastroGate.mealsFromWeb();
 
 
         const miaMariasFetcher = new HtmlFetcher("http://www.miamarias.nu/");
-        const miamariasNu = new Miamarias_Nu( miaMariasFetcher, weekIndex )
+        const miamariasNu = new MiamariasDealer( miaMariasFetcher, weekIndex );
         const miamariasNuMealsFromWeb = await miamariasNu.mealsFromWeb();
-        
+
         response.send(miamariasNuMealsFromWeb);
-        let kalle = 1;
-      // const meals = miaMariasNu.mealsFromWeb();
-let i =  0;
 
     } catch (e) {
         next(new HttpException(500, e));

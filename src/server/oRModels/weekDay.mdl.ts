@@ -1,10 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { EnumWeekDay } from "../enum/weekDay.enu";
 import { IOccurence } from "../interfaces/oRModels/occurence.itf";
 import { IWeekDay } from "../interfaces/oRModels/weekDay.itf";
 import { Occurence } from "./occurence.mdl";
 
 @Entity()
+@Unique(["javascriptDayIndex"])
 export class WeekDay implements IWeekDay {
 
     @PrimaryGeneratedColumn("increment")

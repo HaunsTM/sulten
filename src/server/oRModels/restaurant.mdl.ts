@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { IArea } from "../interfaces/oRModels/area.itf";
 import { IMeal } from "../interfaces/oRModels/meal.itf";
 import { IRestaurant } from "../interfaces/oRModels/restaurant.itf";
@@ -6,6 +6,7 @@ import { Area } from "./area.mdl";
 import { Meal } from "./meal.mdl";
 
 @Entity()
+@Unique(["menuUrl"])
 export  class Restaurant implements IRestaurant {
 
     @PrimaryGeneratedColumn("increment")
