@@ -114,4 +114,93 @@ export default class DatabaseHelper {
         const rawData = await dbManager.query(`SELECT * FROM USERS`);
     }
 
+    /**
+BEGIN TRANSACTION;
+	DROP TABLE IF EXISTS _Variables;
+	CREATE TEMP TABLE _Variables (name TEXT PRIMARY KEY, value TEXT);
+
+	-- week_day
+	INSERT INTO _Variables(name, value) VALUES ("weekDayId", (SELECT id FROM week_day WHERE week_day.javascriptDayIndex = 4 LIMIT 1));	
+	
+	-- week_index
+	INSERT INTO week_index(weekNumber, weekYear) VALUES (45,2019)
+		ON CONFLICT(weekNumber, weekYear) DO UPDATE SET
+		weekNumber=excluded.weekNumber,
+		weekYear=excluded.weekYear;	
+	INSERT INTO _Variables(name, value) VALUES (
+		"weekIndexId", 
+		(SELECT id FROM week_index WHERE week_index.weekNumber = 45 AND week_index.weekYear = 2019 LIMIT 1)
+	);
+
+	-- occurence
+	INSERT INTO occurence(weekDayId, weekIndexId) VALUES (
+		(SELECT value FROM _Variables WHERE name="weekDayId" LIMIT 1),
+		(SELECT value FROM _Variables WHERE name="weekIndexId" LIMIT 1)
+	) ON CONFLICT(weekDayId, weekIndexId) DO 
+		UPDATE SET
+		weekDayId=excluded.weekDayId,
+		weekIndexId=excluded.weekIndexId;	
+	INSERT INTO _Variables(name, value) VALUES (
+		"occurenceId", (
+		SELECT id FROM occurence 
+			WHERE occurence.weekDayId = (SELECT value FROM _Variables WHERE name="weekDayId" LIMIT 1) AND 
+			occurence.weekIndexId = (SELECT value FROM _Variables WHERE name="weekIndexId" LIMIT 1) LIMIT 1
+		)
+	);
+	
+	-- label
+	INSERT INTO _Variables(name, value) VALUES ("labelId", (SELECT id FROM label WHERE label.name = "dessert" LIMIT 1));
+	
+	-- dish
+	INSERT INTO dish(description, priceSEK, labelId) VALUES ("Köttfärsfylld paprika med tofu och lunga", "75", (SELECT value FROM _Variables WHERE name="labelId" LIMIT 1))
+		ON CONFLICT(description) DO UPDATE SET
+		description=excluded.description,
+		priceSEK=excluded.priceSEK,
+		labelId=excluded.labelId;		
+	INSERT INTO _Variables(name, value) VALUES (
+		"dishId", (
+		SELECT id FROM dish 
+			WHERE dish.description = "Köttfärsfylld paprika med tofu och lunga" AND 
+			dish.priceSEK = "75" AND
+			dish.labelId = (SELECT value FROM _Variables WHERE name="labelId" LIMIT 1) LIMIT 1
+		)
+	);
+	
+	-- area	
+	INSERT INTO _Variables(name, value) VALUES ("areaId", (SELECT id FROM area WHERE area.name = "Malmö - Västra Hamnen" LIMIT 1));
+	
+	-- restaurant
+	INSERT INTO restaurant(active, name, menuUrl) VALUES (1, "kolga", "https://kolga.gastrogate.com/lunch/1/")
+		ON CONFLICT(menuUrl) DO UPDATE SET
+		active=excluded.active,
+		name=excluded.name,
+		menuUrl=excluded.menuUrl;	
+	INSERT INTO _Variables(name, value) VALUES (
+		"restaurantId", (
+		SELECT id FROM restaurant 
+			WHERE restaurant.name = "kolga" AND
+			restaurant.menuUrl = "https://kolga.gastrogate.com/lunch/1/" AND
+			restaurant.active = 1 AND
+			restaurant.areaId = (SELECT value FROM _Variables WHERE name="areaId" LIMIT 1) LIMIT 1
+		)
+	);
+	
+	-- meal
+	INSERT INTO meal(dishId, occurenceId, restaurantId, error) VALUES (
+		(SELECT value FROM _Variables WHERE name="dishId" LIMIT 1),
+		(SELECT value FROM _Variables WHERE name="occurenceId" LIMIT 1),
+		(SELECT value FROM _Variables WHERE name="restaurantId" LIMIT 1),
+		"ftyj"
+	)
+		ON CONFLICT(dishId, occurenceId, restaurantId) DO UPDATE SET
+		dishId=excluded.dishId,
+		occurenceId=excluded.occurenceId,
+		restaurantId=excluded.restaurantId;
+	
+	
+	DROP TABLE IF EXISTS _Variables;
+
+COMMIT;
+     */
+
 }
