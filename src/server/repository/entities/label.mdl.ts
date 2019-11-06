@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { EnumDishLabel } from "../enum/dishLabel.enu";
-import { IDish } from "../interfaces/oRModels/dish.itf";
-import { ILabel } from "../interfaces/oRModels/label.itf";
+import { EnumDishLabel } from "../../enum/dishLabel.enu";
+import { IDish } from "../interfaces/dish.itf";
+import { ILabel } from "../interfaces/label.itf";
 import { Dish } from "./dish.mdl";
 
 @Entity()

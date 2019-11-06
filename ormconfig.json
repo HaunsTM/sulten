@@ -4,10 +4,10 @@
     "synchronize": true,
     "logging": false,
     "entities": [
-       "src/server/oRModels/**/*.ts"
+       "src/server/repository/entities/**/*.ts"
     ],
     "cli": {
-       "entitiesDir": "src/server/oRModels",
+       "entitiesDir": "src/server/repository/entities",
        "migrationsDir": "src/migration",
        "subscribersDir": "src/subscriber"
     }

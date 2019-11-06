@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { IArea } from "../interfaces/oRModels/area.itf";
-import { IRestaurant } from "../interfaces/oRModels/restaurant.itf";
+import { IArea } from "../interfaces/area.itf";
+import { IRestaurant } from "../interfaces/restaurant.itf";
 import { Restaurant } from "./restaurant.mdl";
 
 @Entity()

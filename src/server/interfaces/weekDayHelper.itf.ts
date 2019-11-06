@@ -1,4 +1,4 @@
-import { IWeekDay } from "./oRModels/weekDay.itf";
+import { IWeekDay } from "../repository/interfaces/weekDay.itf";
 
 export interface IWeekDayHelper {
 

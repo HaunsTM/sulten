@@ -1,8 +1,8 @@
 import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { IMeal } from "../interfaces/oRModels/meal.itf";
-import { IOccurence } from "../interfaces/oRModels/occurence.itf";
-import { IWeekDay } from "../interfaces/oRModels/weekDay.itf";
-import { IWeekIndex } from "../interfaces/oRModels/weekIndex.itf";
+import { IMeal } from "../interfaces/meal.itf";
+import { IOccurence } from "../interfaces/occurence.itf";
+import { IWeekDay } from "../interfaces/weekDay.itf";
+import { IWeekIndex } from "../interfaces/weekIndex.itf";
 import { Meal } from "./meal.mdl";
 import { WeekDay } from "./weekDay.mdl";
 import { WeekIndex } from "./weekIndex.mdl";

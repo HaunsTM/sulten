@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { IDish } from "../interfaces/oRModels/dish.itf";
-import { IMeal } from "../interfaces/oRModels/meal.itf";
-import { IOccurence } from "../interfaces/oRModels/occurence.itf";
-import { IRestaurant } from "../interfaces/oRModels/restaurant.itf";
+import { IDish } from "../interfaces/dish.itf";
+import { IMeal } from "../interfaces/meal.itf";
+import { IOccurence } from "../interfaces/occurence.itf";
+import { IRestaurant } from "../interfaces/restaurant.itf";
 import { Dish } from "./dish.mdl";
 import { Occurence } from "./occurence.mdl";
 import { Restaurant } from "./restaurant.mdl";

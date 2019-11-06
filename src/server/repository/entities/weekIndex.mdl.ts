@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { IOccurence } from "../interfaces/oRModels/occurence.itf";
-import { IWeekIndex } from "../interfaces/oRModels/weekIndex.itf";
+import { IOccurence } from "../interfaces/occurence.itf";
+import { IWeekIndex } from "../interfaces/weekIndex.itf";
 import { Occurence } from "./occurence.mdl";
 
 @Entity()

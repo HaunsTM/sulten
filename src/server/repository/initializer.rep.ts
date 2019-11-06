@@ -2,13 +2,11 @@ import { getConnection } from "typeorm";
 import { EnumArea } from "../enum/area.enum";
 import { EnumDishLabel } from "../enum/dishLabel.enu";
 import { EnumWeekDay } from "../enum/weekDay.enu";
-import { Area } from "../oRModels/area.mdl";
-import { Label } from "../oRModels/label.mdl";
-import { WeekDay } from "../oRModels/weekDay.mdl";
+import { Area } from "./entities/area.mdl";
+import { Label } from "./entities/label.mdl";
+import { WeekDay } from "./entities/weekDay.mdl";
 
-import { IWebMealResult } from "../interfaces/webMealResult.itf";
-
-export default class DatabaseHelper {
+export class InitializerHelper {
 
     get areas(): Area[] {
 
@@ -94,24 +92,29 @@ export default class DatabaseHelper {
         } catch (e) {
             throw new Error(`Couldn't initialize database: ${e}`);
         }
-    }
+/*
+        await getManager().transaction(async (transactionalEntityManager) => {
 
-    public async getAllAreas(): Promise<Area[]> {
+            const areaSaves = this.areas.map(
+                (a) => transactionalEntityManager.save(a) );
 
-        const dbManager = getConnection().manager;
+            const dishLabelSaves = this.dishLabels.map(
+                (dLS) => transactionalEntityManager.save(dLS) );
 
-        try {
-            const areas: Area[] = await dbManager.find(Area);
-            return areas;
-        } catch (e) {
-            throw new Error(`Couldn't initialize database: ${e}`);
-        }
-    }
+            const weekDaySaves = this.weekDays.map(
+                    (wD) => transactionalEntityManager.save(wD) );
 
-    public async saveToDb(webMeals: IWebMealResult[]): Promise<void> {
+            try {
+                await Promise.all(areaSaves);
+                await Promise.all(dishLabelSaves);
+                await Promise.all(weekDaySaves);
 
-        const dbManager = getConnection().manager;
-        const rawData = await dbManager.query(`SELECT * FROM USERS`);
+            } catch (e) {
+                throw new Error(`Couldn't initialize database: ${e}`);
+            }
+
+        });
+*/
     }
 
     /**

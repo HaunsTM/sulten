@@ -1,14 +1,12 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
-import DatabaseHelper from "../helpers/database.hlp";
-import {HtmlFetcher} from "../helpers/htmlFetcher.hlp";
-import Controller from "../interfaces/controller.itf";
+import { HtmlFetcher } from "../helpers/htmlFetcher.hlp";
+import IController from "../interfaces/controller.itf";
+import { InitializerHelper } from "../repository/initializer.rep";
 import { KolgaDealer } from "./mealDealers/kolga.dlr";
-import { WeekIndex } from "../oRModels/weekIndex.mdl";
-import { WeekDayHelper } from "../helpers/weekDay.hlp";
 import { MiamariasDealer } from "./mealDealers/miamarias.dlr";
 
-export default class AdminController implements Controller {
+export default class AdminController implements IController {
   public path = "/admin";
   public router = express.Router();
 
@@ -25,8 +23,8 @@ export default class AdminController implements Controller {
   private async initializeAndSetupDb(request: express.Request, response: express.Response, next: express.NextFunction) {
 
     try {
-        const databaseHelper = new DatabaseHelper();
-        await databaseHelper.initializeAndSetupDb();
+        const initializerHelper = new InitializerHelper();
+        await initializerHelper.initializeAndSetupDb();
 
         response.status(200);
         response.send("Database created and initialized successfully!");
@@ -44,7 +42,6 @@ export default class AdminController implements Controller {
         const kolgaFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
         const kolgaGastroGate = new KolgaDealer( kolgaFetcher, weekIndex );
         const kolgaGastroGateMealsFromWeb = await kolgaGastroGate.mealsFromWeb();
-
 
         const miaMariasFetcher = new HtmlFetcher("http://www.miamarias.nu/");
         const miamariasNu = new MiamariasDealer( miaMariasFetcher, weekIndex );

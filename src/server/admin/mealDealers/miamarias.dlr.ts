@@ -4,7 +4,7 @@ import { IHtmlFetcherHelper } from "../../interfaces/htmlFetcherHelper.itf";
 import { IWebMealResult } from "../../interfaces/webMealResult.itf";
 import { IWebMealDealer } from "../../interfaces/webMealDealer.itf";
 import { IXPathDishProviderResult } from "../../interfaces/xpathDishProviderResult.itf";
-import { Dish } from "../../oRModels/dish.mdl";
+import { Dish } from "../../repository/entities/dish.mdl";
 import { WebMealResult } from "./webMealResult";
 
 export class MiamariasDealer implements IWebMealDealer {
