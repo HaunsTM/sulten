@@ -2,7 +2,7 @@ import * as express from "express";
 import HttpException from "../exceptions/HttpException";
 import { HtmlFetcher } from "../helpers/htmlFetcher.hlp";
 import IController from "../interfaces/controller.itf";
-import { InitializerHelper } from "../repository/initializer.rep";
+import { InitializerService } from "../repository/initializer.svc";
 import { KolgaDealer } from "./mealDealers/kolga.dlr";
 import { MiamariasDealer } from "./mealDealers/miamarias.dlr";
 
@@ -23,8 +23,8 @@ export default class AdminController implements IController {
   private async initializeAndSetupDb(request: express.Request, response: express.Response, next: express.NextFunction) {
 
     try {
-        const initializerHelper = new InitializerHelper();
-        await initializerHelper.initializeAndSetupDb();
+        const initializerService = new InitializerService();
+        await initializerService.initializeAndSetupDb();
 
         response.status(200);
         response.send("Database created and initialized successfully!");

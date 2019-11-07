@@ -4,10 +4,7 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import AdminController from "./admin/admin.controller";
 import App from "./app";
-import { validateEnv } from "./helpers/validateEnv.hlp";
 import MenuController from "./menu/menu.controller";
-
-validateEnv();
 
 createConnection()
   .then(async () => {

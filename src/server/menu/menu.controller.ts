@@ -1,6 +1,6 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
-import { AreaRepository } from "../repository/area.rep";
+import { AreaService } from "../repository/area.mod";
 import IController from "../interfaces/controller.itf";
 
 export default class MenuController implements IController {
@@ -19,8 +19,8 @@ export default class MenuController implements IController {
     private async getAllAreas(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 
         try {
-            const areaRepository = new AreaRepository();
-            const allAreas = await areaRepository.getAllAreas();
+            const areaService = new AreaService();
+            const allAreas = await areaService.getAllAreas();
 
             response.status(200);
             response.send(allAreas);

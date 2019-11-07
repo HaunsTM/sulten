@@ -8,6 +8,8 @@ export default class App {
 
   public app: express.Application;
 
+  private readonly PORT = 8080;
+
   constructor(controllers: Controller[]) {
     this.app = express();
 
@@ -16,9 +18,9 @@ export default class App {
   }
 
   public listen() {
-    this.app.listen(process.env.PORT, () => {
+    this.app.listen(this.PORT, () => {
       // tslint:disable-next-line:no-console
-      console.log(`App listening on the port ${process.env.PORT}`);
+      console.log(`App listening on the port ${this.PORT}`);
     });
   }
 

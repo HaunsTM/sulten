@@ -6,7 +6,7 @@ import { Area } from "./entities/area.mdl";
 import { Label } from "./entities/label.mdl";
 import { WeekDay } from "./entities/weekDay.mdl";
 
-export class InitializerHelper {
+export class InitializerService {
 
     get areas(): Area[] {
 

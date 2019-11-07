@@ -8,19 +8,13 @@ import { WeekDay } from "./entities/weekDay.mdl";
 
 import { IWebMealResult } from "../interfaces/webMealResult.itf";
 
-export class AreaRepository {
-
-private repository: Repository<Area>;
+export class AreaModule {
 
     public async getAllAreas(): Promise<Area[]> {
         const areas: Area[] = await getConnection().getRepository(Area).find();
         return areas;
     }
 
-    private initialize() {
-        const connection = getConnection();
-        this.repository = connection.getRepository(Area);
-    }
 
 }
 

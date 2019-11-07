@@ -8,19 +8,11 @@ import { WeekDay } from "./entities/weekDay.mdl";
 
 import { IWebMealResult } from "../interfaces/webMealResult.itf";
 
-export class MealRepository {
+export class MealModule {
 
 
     public async saveSingleMeal(webMealResult: IWebMealResult): Promise<number> {
 
-        const dbManager = getConnection().manager;
-
-        try {
-            const areas: Area[] = await dbManager.find(Area);
-            return areas;
-        } catch (e) {
-            throw new Error(`Couldn't initialize database: ${e}`);
-        }
     }
 
 }
