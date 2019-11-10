@@ -23,6 +23,7 @@
     "typescript": "^3.6.4"
   },
   "dependencies": {
+    "@nestjs/typeorm": "^6.2.0",
     "@types/jsdom": "^12.2.4",
     "express": "^4.17.1",
     "jsdom": "^15.2.0",
