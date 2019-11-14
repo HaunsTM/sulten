@@ -18,6 +18,12 @@ export  class Restaurant implements IRestaurant {
     public name: string;
     @Column()
     public menuUrl: string;
+    @Column()
+    public longitude: number;
+    @Column()
+    public latitude: number;
+    @Column()
+    public typeScriptClassParser: string;
 
     // navigation properties
     @ManyToOne((type: IArea) => Area, (area: IArea) => area.restaurants)
