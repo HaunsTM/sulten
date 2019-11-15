@@ -1,76 +1,121 @@
-PRAGMA encoding = 'UTF-8';
-
 CREATE TABLE `Labels` (
 	`Id` 					INT NOT NULL AUTO_INCREMENT,	
 
 	`Name` 					VARCHAR(255) NOT NULL,
 	
-	FOREIGN KEY (FK_Dishes_Id) REFERENCES Dishes (Id)
+	PRIMARY KEY (`Id`)
 );
 
-
-
 CREATE TABLE `Dishes` (
-	`Id` 							INT NOT NULL AUTO_INCREMENT,	
+	`Id` 							    INT NOT NULL AUTO_INCREMENT,	
 
-	`Description` 					VARCHAR(255) NOT NULL,
+	`Description` 					    VARCHAR(255) NOT NULL,
+	
+	`FK_Label_Id`					    INT NOT NULL,
+	
+	PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `Prices` (
+	`Id` 							    INT NOT NULL AUTO_INCREMENT,	
+
+	`SEK` 					            INT NOT NULL,
+		
+	PRIMARY KEY (`Id`)
 );
 
 CREATE TABLE `Meals` (
-	`Id`								INT NOT NULL AUTO_INCREMENT,	
+	`Id`								INT NOT NULL AUTO_INCREMENT,
+
 	`Error`								VARCHAR(255),
 
-	`FK_Dishes_Id`					INT NOT NULL,
-	`FK_Occurrences_Id`				INT NOT NULL, 
-	`FK_Restaurants_Id`				INT NOT NULL,
+	`FK_Dish_Id`					    INT,
+	`FK_Price_Id`					    INT,
+	`FK_Occurrence_Id`				    INT, 
+	`FK_Restaurant_Id`				    INT NOT NULL,	
 	
-	FOREIGN KEY (FK_Restaurants_Id) REFERENCES Restaurants (Id),
-	FOREIGN KEY (FK_Dishes_Id) REFERENCES Dishes (Id),
-	FOREIGN KEY (FK_Occurrences_Id) REFERENCES Occurrences (Id)
+	PRIMARY KEY (`Id`)
 );
 
 CREATE TABLE `Restaurants` (
 	`Id`								INT NOT NULL AUTO_INCREMENT,
-
-	`FK_Areas_Id`						INT NOT NULL,
 		
 	`Active` 							BIT NOT NULL,
-	`Name` 							VARCHAR(255) NOT NULL,
+	`Name` 							    VARCHAR(255) NOT NULL,
 	`MenuUrl`							VARCHAR(255) NOT NULL,
-	`TypeScriptClassParser`			VARCHAR(255) NOT NULL,
-	`Longitude`			DECIMAL(11, 8) NOT NULL,
-	`Latitude`			DECIMAL(10, 8) NOT NULL,
+	`TypeScriptClassParser`			    VARCHAR(255) NOT NULL,
+	`Longitude`			                DECIMAL(11, 8) NOT NULL,
+	`Latitude`			                DECIMAL(10, 8) NOT NULL,
+
+	`FK_Area_Id`						INT NOT NULL,
 	
-	FOREIGN KEY (FK_Areas_Id) REFERENCES Areas (Id)
+	PRIMARY KEY (`Id`)
 );
 
 CREATE TABLE `Areas` (
 	`Id`								INT NOT NULL AUTO_INCREMENT,
 
-	`Name`							VARCHAR(255) NOT NULL,
+	`Name`							    VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`Id`)
 );
 
 CREATE TABLE `WeekIndexes` (
 	`Id`								INT NOT NULL AUTO_INCREMENT,
 
 	`WeekNumber`						INT NOT NULL,   
-	`WeekYear`						INT NOT NULL,
-
-	UNIQUE(WeekNumber,WeekYear)
+	`WeekYear`						    INT NOT NULL,
+	
+	PRIMARY KEY (`Id`)
 );
 
-CREATE TABLE Occurrences (
+CREATE TABLE `Occurrences` (
 	`Id` 								INT NOT NULL AUTO_INCREMENT,
 
-	`FK_WeekIndexes_Id`				INT NOT NULL,
-	`FK_WeekDays_Id`					INT NOT NULL,
-
-	FOREIGN KEY (FK_WeekIndexes_Id) REFERENCES WeekIndexes (Id),
-	FOREIGN KEY (FK_WeekDays_Id) REFERENCES WeekDays (Id)
+	`FK_WeekIndex_Id`				    INT NOT NULL,
+	`FK_WeekDay_Id`					    INT NOT NULL,
+	
+	PRIMARY KEY (`Id`)
 );
 
 CREATE TABLE `WeekDays` (
 	`Id`								INT NOT NULL AUTO_INCREMENT,
 
-	`JavascriptDayIndex`				INT NOT NULL
+	`JavascriptDayIndex`				INT NOT NULL,
+	
+	PRIMARY KEY (`Id`)
 );
+
+
+ALTER TABLE `Dishes` ADD FOREIGN KEY (`FK_Label_Id`) REFERENCES `Labels`(`Id`);
+
+ALTER TABLE `Meals` ADD FOREIGN KEY (`FK_Dish_Id`) REFERENCES `Dishes`(`Id`);
+ALTER TABLE `Meals` ADD FOREIGN KEY (`FK_Price_Id`) REFERENCES `Prices`(`Id`);
+ALTER TABLE `Meals` ADD FOREIGN KEY (`FK_Occurrence_Id`) REFERENCES `Occurrences`(`Id`);
+ALTER TABLE `Meals` ADD FOREIGN KEY (`FK_Restaurant_Id`) REFERENCES `Restaurants`(`Id`);
+
+ALTER TABLE `Restaurants` ADD FOREIGN KEY (`FK_Area_Id`) REFERENCES `Areas`(`Id`);
+
+ALTER TABLE `Occurrences` ADD FOREIGN KEY (`FK_WeekIndex_Id`) REFERENCES `WeekIndexes`(`Id`);
+ALTER TABLE `Occurrences` ADD FOREIGN KEY (`FK_WeekDay_Id`) REFERENCES `WeekDays`(`Id`);
+
+
+ALTER TABLE	`Labels` ADD UNIQUE (`Name`);
+
+ALTER TABLE	`Dishes` ADD UNIQUE (`Description`);
+ALTER TABLE	`Dishes` ADD UNIQUE (`Description`, `FK_Label_Id`);
+
+ALTER TABLE	`Prices` ADD UNIQUE (`SEK`);
+
+ALTER TABLE	`Meals` ADD UNIQUE (`FK_Dish_Id`, `FK_Price_Id`, `FK_Occurrence_Id`, `FK_Restaurant_Id`);
+
+ALTER TABLE	`Restaurants` ADD UNIQUE (`MenuUrl`);
+ALTER TABLE	`Restaurants` ADD UNIQUE (`TypeScriptClassParser`);
+
+ALTER TABLE	`Areas` ADD UNIQUE (`Name`);
+
+ALTER TABLE	`WeekIndexes` ADD UNIQUE (`WeekNumber`, `WeekYear`);
+
+ALTER TABLE	`Occurrences` ADD UNIQUE (`FK_WeekIndex_Id`, `FK_WeekDay_Id`);
+
+ALTER TABLE	`WeekDays` ADD UNIQUE (`JavascriptDayIndex`);
