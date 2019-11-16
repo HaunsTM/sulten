@@ -23,12 +23,11 @@
     "typescript": "^3.6.4"
   },
   "dependencies": {
-    "@nestjs/typeorm": "^6.2.0",
     "@types/jsdom": "^12.2.4",
     "express": "^4.17.1",
     "jsdom": "^15.2.0",
+    "mysql2": "^2.0.0",
     "reflect-metadata": "^0.1.13",
-    "sqlite3": "^4.1.0",
     "typeorm": "^0.2.20"
   }
 }

@@ -1,56 +1,56 @@
-import { EnumDishLabel } from "../../enum/dishLabel.enu";
-import { EnumWeekDay } from "../../enum/weekday.enu";
-import { IWebMealResult } from "../../interfaces/webMealResult.itf";
+import { LabelName } from "../../enum/LabelName";
+import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
+import { IWebMealResult } from "../../interfaces/IWebMealResult";
 
 export class WebMealResult implements IWebMealResult {
 
     private _fetchUrl: string;
     private _dishDescription: string;
     private _dishPrice_SEK: string;
-    private _dishLabel: EnumDishLabel;
-    private _weekDay: EnumWeekDay;
-    private _weekIndex: number;
+    private _labelName: LabelName;
+    private _weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
+    private _weekNumber: string;
     private _fetchError: Error;
 
-    constructor(fetchUrl: string, dishDescription: string, dishPrice_SEK: string,
-                dishLabel: EnumDishLabel, weekDay: EnumWeekDay,  weekIndex: number,
+    constructor(fetchUrl: string, dishDescription: string, dishPriceSEK: string,
+                labelName: LabelName, weekDay: WeekDayJavascriptDayIndex,  weekNumber: string,
                 fetchError: Error) {
 
         this._fetchUrl = fetchUrl;
         this._dishDescription = dishDescription;
-        this._dishPrice_SEK = dishPrice_SEK;
-        this._dishLabel = dishLabel;
-        this._weekDay = weekDay;
-        this._weekIndex = weekIndex;
+        this._dishPrice_SEK = dishPriceSEK;
+        this._labelName = labelName;
+        this._weekDayJavascriptDayIndex = weekDay;
+        this._weekNumber = weekNumber;
 
         this._fetchError = fetchError;
     }
 
-    public get dishDescription(): string {
+    public get DishDescription(): string {
         return this._dishDescription;
     }
 
-    public get dishPrice_SEK(): string {
+    public get DishPrice_SEK(): string {
         return this._dishPrice_SEK;
     }
 
-    public get dishLabel(): EnumDishLabel {
-        return this._dishLabel;
+    public get LabelName(): LabelName {
+        return this._labelName;
     }
 
-    public get weekDay(): EnumWeekDay {
-        return this._weekDay;
+    public get WeekDayJavascriptDayIndex(): WeekDayJavascriptDayIndex {
+        return this._weekDayJavascriptDayIndex;
     }
 
-    public get weekIndex(): number {
-        return this._weekIndex;
+    public get WeekNumber(): string {
+        return this._weekNumber;
     }
 
-    public get fetchError(): Error {
+    public get FetchError(): Error {
         return this._fetchError;
     }
 
-    public get fetchUrl(): string {
+    public get FetchUrl(): string {
         return this._fetchUrl;
     }
 

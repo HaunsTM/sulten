@@ -1,4 +1,4 @@
-import { IWebMealResult } from "./webMealResult.itf";
+import { IWebMealResult } from "./IWebMealResult";
 
 export interface IWebMealDealer {
 

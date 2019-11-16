@@ -1,16 +1,16 @@
 import { getConnection } from "typeorm";
-import { EnumArea } from "../enum/area.enum";
-import { EnumDishLabel } from "../enum/dishLabel.enu";
-import { EnumWeekDay } from "../enum/weekDay.enu";
-import { Area } from "./entities/area.mdl";
-import { Label } from "./entities/label.mdl";
-import { WeekDay } from "./entities/weekDay.mdl";
+import { AreaName } from "../enum/AreaName";
+import { LabelName } from "../enum/LabelName";
+import { WeekDayJavascriptDayIndex } from "../enum/WeekDayJavascriptDayIndex";
+import { Area } from "./entities/Area";
+import { Label } from "./entities/Label";
+import { WeekDay } from "./entities/WeekDay";
 
 export class InitializerService {
 
     get areas(): Area[] {
 
-        const areas = [ new Area( null, EnumArea.MALMO__VASTRA_HAMNEN ) ];
+        const areas = [ new Area( AreaName.MALMO__VASTRA_HAMNEN ) ];
 
         return areas;
     }
@@ -18,38 +18,38 @@ export class InitializerService {
     get dishLabels(): Label[] {
 
         const labels = [
-            new Label(null, EnumDishLabel.ARABIC ),
-            new Label(null, EnumDishLabel.BREAD ),
-            new Label(null, EnumDishLabel.BREAKFAST ),
-            new Label(null, EnumDishLabel.CAKE ),
-            new Label(null, EnumDishLabel.COFFEE ),
-            new Label(null, EnumDishLabel.DESSERT ),
-            new Label(null, EnumDishLabel.DRINK ),
-            new Label(null, EnumDishLabel.FALAFEL ),
-            new Label(null, EnumDishLabel.FAST_FOOD ),
-            new Label(null, EnumDishLabel.FISH_AND_SEAFOOD ),
-            new Label(null, EnumDishLabel.GRATIN ),
-            new Label(null, EnumDishLabel.HOTPOT ),
-            new Label(null, EnumDishLabel.INDIAN ),
-            new Label(null, EnumDishLabel.MAIN ),
-            new Label(null, EnumDishLabel.MEAL_OF_THE_DAY ),
-            new Label(null, EnumDishLabel.MEAT ),
-            new Label(null, EnumDishLabel.PERSIAN ),
-            new Label(null, EnumDishLabel.PIE ),
-            new Label(null, EnumDishLabel.PIZZA ),
-            new Label(null, EnumDishLabel.PLAIN ),
-            new Label(null, EnumDishLabel.PORK ),
-            new Label(null, EnumDishLabel.POULTRY ),
-            new Label(null, EnumDishLabel.SALAD ),
-            new Label(null, EnumDishLabel.SANDWICH ),
-            new Label(null, EnumDishLabel.SMOOTHIE ),
-            new Label(null, EnumDishLabel.SNACK ),
-            new Label(null, EnumDishLabel.SNACKS ),
-            new Label(null, EnumDishLabel.SOUP ),
-            new Label(null, EnumDishLabel.STARTER ),
-            new Label(null, EnumDishLabel.SUPPER ),
-            new Label(null, EnumDishLabel.THAI ),
-            new Label(null, EnumDishLabel.VEGETARIAN ),
+            new Label( LabelName.ARABIC ),
+            new Label( LabelName.BREAD ),
+            new Label( LabelName.BREAKFAST ),
+            new Label( LabelName.CAKE ),
+            new Label( LabelName.COFFEE ),
+            new Label( LabelName.DESSERT ),
+            new Label( LabelName.DRINK ),
+            new Label( LabelName.FALAFEL ),
+            new Label( LabelName.FAST_FOOD ),
+            new Label( LabelName.FISH_AND_SEAFOOD ),
+            new Label( LabelName.GRATIN ),
+            new Label( LabelName.HOTPOT ),
+            new Label( LabelName.INDIAN ),
+            new Label( LabelName.MAIN ),
+            new Label( LabelName.MEAL_OF_THE_DAY ),
+            new Label( LabelName.MEAT ),
+            new Label( LabelName.PERSIAN ),
+            new Label( LabelName.PIE ),
+            new Label( LabelName.PIZZA ),
+            new Label( LabelName.PLAIN ),
+            new Label( LabelName.PORK ),
+            new Label( LabelName.POULTRY ),
+            new Label( LabelName.SALAD ),
+            new Label( LabelName.SANDWICH ),
+            new Label( LabelName.SMOOTHIE ),
+            new Label( LabelName.SNACK ),
+            new Label( LabelName.SNACKS ),
+            new Label( LabelName.SOUP ),
+            new Label( LabelName.STARTER ),
+            new Label( LabelName.SUPPER ),
+            new Label( LabelName.THAI ),
+            new Label( LabelName.VEGETARIAN ),
         ];
 
         return labels;
@@ -58,14 +58,14 @@ export class InitializerService {
     get weekDays(): WeekDay[] {
 
         const weekDays = [
-            new WeekDay(null, EnumWeekDay.MONDAY ),
-            new WeekDay(null, EnumWeekDay.TUESDAY ),
-            new WeekDay(null, EnumWeekDay.WEDNESDAY ),
-            new WeekDay(null, EnumWeekDay.THURSDAY ),
-            new WeekDay(null, EnumWeekDay.FRIDAY ),
+            new WeekDay( WeekDayJavascriptDayIndex.MONDAY ),
+            new WeekDay( WeekDayJavascriptDayIndex.TUESDAY ),
+            new WeekDay( WeekDayJavascriptDayIndex.WEDNESDAY ),
+            new WeekDay( WeekDayJavascriptDayIndex.THURSDAY ),
+            new WeekDay( WeekDayJavascriptDayIndex.FRIDAY ),
 
-            new WeekDay(null, EnumWeekDay.SATURDAY ),
-            new WeekDay(null, EnumWeekDay.SUNDAY ),
+            new WeekDay( WeekDayJavascriptDayIndex.SATURDAY ),
+            new WeekDay( WeekDayJavascriptDayIndex.SUNDAY ),
          ];
 
         return weekDays;

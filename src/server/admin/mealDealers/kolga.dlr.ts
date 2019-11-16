@@ -1,22 +1,22 @@
-import { EnumDishLabel } from "../../enum/dishLabel.enu";
-import { EnumWeekDay } from "../../enum/weekday.enu";
+import { LabelName } from "../../enum/LabelName";
+import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
 import { IHtmlFetcherHelper } from "../../interfaces/htmlFetcherHelper.itf";
+import { IWebMealResult } from "../../interfaces/IWebMealResult";
+import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { IWebMealDealer } from "../../interfaces/webMealDealer.itf";
-import { IWebMealResult } from "../../interfaces/webMealResult.itf";
-import { IXPathDishProviderResult } from "../../interfaces/xpathDishProviderResult.itf";
-import { Dish } from "../../repository/entities/dish.mdl";
+import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./webMealResult";
 
 export class KolgaDealer implements IWebMealDealer {
 
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
-    private _weekIndex: number = -1;
+    private _weekIndexExpected: string = "";
 
     constructor(htmlFetcherHelper: IHtmlFetcherHelper,
-                weekIndex: number) {
+                weekIndexExpected: string) {
 
         this._htmlFetcherHelper = htmlFetcherHelper;
-        this._weekIndex = weekIndex;
+        this._weekIndexExpected = weekIndexExpected;
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -30,76 +30,117 @@ export class KolgaDealer implements IWebMealDealer {
     private getWebMealResultAForAWeek( htmlDocumentFromWeb: Document ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.MONDAY, EnumDishLabel.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.MONDAY, EnumDishLabel.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 2),
 
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.TUESDAY, EnumDishLabel.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.TUESDAY, EnumDishLabel.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 2),
 
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.WEDNESDAY, EnumDishLabel.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.WEDNESDAY, EnumDishLabel.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 2),
 
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.THURSDAY, EnumDishLabel.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.THURSDAY, EnumDishLabel.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 2),
 
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.FRIDAY, EnumDishLabel.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, EnumWeekDay.FRIDAY, EnumDishLabel.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 2),
         ];
 
         return mealsForAWeek;
     }
 
-    private async webMealResult( htmlDocumentFromWeb: Document, weekDay: EnumWeekDay, label: EnumDishLabel,  menuAlternativeIndex: number): Promise<IWebMealResult> {
+    private async webMealResult(
+        htmlDocumentFromWeb: Document, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
+        label: LabelName, menuAlternativeIndex: number): Promise<IWebMealResult> {
 
-        let dish: Dish = null;
+        let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
-        const swedishWeekDayNameOnKolga = this.getSwedishWeekDayNameOnKolga( weekDay );
+        const swedishWeekDayNameOnKolga = this.getSwedishWeekDayNameOnKolga( weekDayJavascriptDayIndex );
 
         try {
-            dish = await this.getDish( htmlDocumentFromWeb, swedishWeekDayNameOnKolga, menuAlternativeIndex );
+            dishPriceWeekNumber =
+                await this.getDishPriceWeekNumber(
+                    htmlDocumentFromWeb, swedishWeekDayNameOnKolga, menuAlternativeIndex );
+
+            if ( dishPriceWeekNumber.FetchError ) {
+                throw dishPriceWeekNumber.FetchError;
+            }
+
+            if ( this._weekIndexExpected !== dishPriceWeekNumber.WeekIndexWeekNumber) {
+                throw new Error(`Expected to see menu for week ${this._weekIndexExpected}, but found week ${this._weekIndexExpected}`);
+            }
 
             webMealResult =
-                new WebMealResult( this._htmlFetcherHelper.url, dish.description, dish.priceSEK, label, weekDay, this._weekIndex, null);
+                new WebMealResult(
+                    this._htmlFetcherHelper.url, dishPriceWeekNumber.DishDescription,
+                    dishPriceWeekNumber.PriceSEK, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.WeekIndexWeekNumber, null);
+
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this._htmlFetcherHelper.url, "", "", label, weekDay, this._weekIndex, e);
+                new WebMealResult( this._htmlFetcherHelper.url, "", "", label,
+                    weekDayJavascriptDayIndex, this._weekIndexExpected, e);
         }
 
         return webMealResult;
     }
 
-    private getSwedishWeekDayNameOnKolga( weekDay: EnumWeekDay ): string {
+    private getSwedishWeekDayNameOnKolga( weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex ): string {
         let swedishWeekDayName = "";
 
-        switch ( weekDay ) {
-            case EnumWeekDay.MONDAY :
+        switch ( weekDayJavascriptDayIndex ) {
+            case WeekDayJavascriptDayIndex.MONDAY :
                 swedishWeekDayName = "måndag";
                 break;
-            case EnumWeekDay.TUESDAY :
+            case WeekDayJavascriptDayIndex.TUESDAY :
                 swedishWeekDayName = "tisdag";
                 break;
-            case EnumWeekDay.WEDNESDAY :
+            case WeekDayJavascriptDayIndex.WEDNESDAY :
                 swedishWeekDayName = "onsdag";
                 break;
-            case EnumWeekDay.THURSDAY :
+            case WeekDayJavascriptDayIndex.THURSDAY :
                 swedishWeekDayName = "torsdag";
                 break;
-            case EnumWeekDay.FRIDAY :
+            case WeekDayJavascriptDayIndex.FRIDAY :
                 swedishWeekDayName = "fredag";
                 break;
         }
         return swedishWeekDayName;
     }
 
-    private async getDish( htmlDocumentFromWeb: Document, weekDayName: string, menuAlternativeIndex: number): Promise<Dish> {
+    private async getDishPriceWeekNumber(
+        htmlDocumentFromWeb: Document, weekDayName: string,
+        menuAlternativeIndex: number): Promise<DishPriceWeekNumber> {
+
+        let dishDescription: string;
+        let priceSEK: string;
+        let weekIndexWeekNumber: string;
+        let fetchError: Error;
+
+        let dishPriceWeekNumber: DishPriceWeekNumber = null;
+
         const xpath = this.xpathProvider(weekDayName, menuAlternativeIndex);
 
-        const idDish: number = null;
-        const descriptionDish = this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.descriptionXPath);
-        const price_SEKDish = this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.price_SEKXPath);
+        try {
+            dishDescription =
+                this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.descriptionXPath);
 
-        return new Dish( idDish, descriptionDish, price_SEKDish);
+            priceSEK =
+                ( this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.price_SEKXPath ))
+                .match(/\d+(?=\s?kr)/)[0];
+
+            weekIndexWeekNumber =
+                (this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.weekNumberXPath))
+                .match(/(?<=\s*Vecka\s*)\d+/)[0];
+
+        } catch ( error ) {
+            fetchError = error;
+        }
+
+        dishPriceWeekNumber = new DishPriceWeekNumber(dishDescription, priceSEK, weekIndexWeekNumber, fetchError );
+
+        return dishPriceWeekNumber;
     }
 
     private xpathProvider(weekDayName: string, menuAlternativeIndex: number): IXPathDishProviderResult {
@@ -107,6 +148,7 @@ export class KolgaDealer implements IWebMealDealer {
         const result: IXPathDishProviderResult = {
             descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${menuAlternativeIndex}]`,
             price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${menuAlternativeIndex}]`,
+            weekNumberXPath: `//a[contains(@class,'btn btn-info dropdown-toggle')]/text()[contains(.,'Vecka ')]`,
         };
 
         return result;
