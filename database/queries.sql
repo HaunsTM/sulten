@@ -51,9 +51,8 @@ CREATE PROCEDURE GetRestaurant_Id (
 	OUT idOut 						INT)
 BEGIN	
 	
-	INSERT INTO restaurants(`MenuUrl`) VALUES (p_MenuUrl) ON DUPLICATE KEY UPDATE `Id` = LAST_INSERT_ID(`Id`);
-	
-	SELECT LAST_INSERT_ID() INTO idOut;
+    SELECT `Id` INTO idOut FROM restaurants WHERE `MenuUrl` = p_MenuUrl
+
 END$$
 DELIMITER ;
 
@@ -103,12 +102,12 @@ CREATE PROCEDURE CreateAndGetMeal_Id (
 	IN p_Restaurant_MenuUrl         VARCHAR(255),
 	IN p_Price_SEK                  DECIMAL(4, 2),
 	IN p_Label_Name                 VARCHAR(255),
-    IN p_Description_Description	VARCHAR(255),
+    IN p_Dish_Description          	VARCHAR(255),
     IN p_Meal_Error	                VARCHAR(255),
 	OUT idOut 						INT)
 BEGIN
 
-	CALL GetRegisteredScheduler(p_WeekDay_JavaScriptDayIndex, @WeekDay_Id);
+	CALL GetWeekDay_Id(p_WeekDay_JavaScriptDayIndex, @WeekDay_Id);
 
 	CALL GetWeekIndex_Id(p_WeekIndex_WeekNumber, p_WeekIndex_WeekYear, @WeekIndex_Id);
 
@@ -124,7 +123,7 @@ BEGIN
 	CALL GetLabel_Id(p_Label_Name, @Label_Id);
 
 
-	CALL GetDish_Id(p_Description_Description, @Label_Id, @Dish_Id);
+	CALL GetDish_Id(p_Dish_Description, @Label_Id, @Dish_Id);
 
 
 

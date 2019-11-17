@@ -5,7 +5,7 @@ export interface IWebMealResult {
 
     DishDescription: string;
 
-    DishPrice_SEK: string;
+    Price_SEK: string;
 
     LabelName: LabelName;
 
@@ -14,6 +14,8 @@ export interface IWebMealResult {
     WeekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
 
     WeekNumber: string;
+
+    WeekYear: string;
 
     FetchError: Error;
 

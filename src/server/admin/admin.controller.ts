@@ -2,9 +2,11 @@ import * as express from "express";
 import HttpException from "../exceptions/HttpException";
 import { HtmlFetcher } from "../helpers/htmlFetcher.hlp";
 import IController from "../interfaces/controller.itf";
-import { InitializerService } from "../repository/initializer.svc";
-import { KolgaDealer } from "./mealDealers/kolga.dlr";
-import { MiamariasDealer } from "./mealDealers/miamarias.dlr";
+import { InitializerService } from "../repository/InitializerService";
+import { KolgaDealer } from "./MealDealers/KolgaDEALER";
+import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
+
+import { MealService } from "../repository/MealService";
 
 export default class AdminController implements IController {
     public path = "/admin";
@@ -40,13 +42,19 @@ export default class AdminController implements IController {
 
         try {
             const weekIndex = request.params.weekIndex;
+            const weekYear =  new Date().getFullYear().toString();
+
             const kolgaFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
-            const kolgaGastroGate = new KolgaDealer( kolgaFetcher, weekIndex );
+            const kolgaGastroGate = new KolgaDealer( kolgaFetcher, weekYear, weekIndex );
             const kolgaGastroGateMealsFromWeb = await kolgaGastroGate.mealsFromWeb();
 
             const miaMariasFetcher = new HtmlFetcher("http://www.miamarias.nu/");
-            const miamariasNu = new MiamariasDealer( miaMariasFetcher, weekIndex );
+            const miamariasNu = new MiamariasDealer( miaMariasFetcher, weekYear, weekIndex );
             const miamariasNuMealsFromWeb = await miamariasNu.mealsFromWeb();
+
+            let mealService = new MealService();
+
+            await mealService.bulkInsert(miamariasNuMealsFromWeb);
 
             response.send(miamariasNuMealsFromWeb);
 

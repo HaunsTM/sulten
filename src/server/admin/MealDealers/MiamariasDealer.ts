@@ -5,18 +5,23 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { IWebMealDealer } from "../../interfaces/webMealDealer.itf";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
-import { WebMealResult } from "./webMealResult";
+import { WebMealResult } from "./WebMealResult";
 
 export class MiamariasDealer implements IWebMealDealer {
 
+    
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
-    private _weekIndexExpected: string = "";
+    private _weekYear: string = "";
+    private _weekNumberExpected: string = "";
 
-    constructor(htmlFetcherHelper: IHtmlFetcherHelper,
-                weekIndexExpected: string) {
+    constructor(
+        htmlFetcherHelper: IHtmlFetcherHelper,
+        weekYear: string,
+        weekNumberExpected: string) {
 
         this._htmlFetcherHelper = htmlFetcherHelper;
-        this._weekIndexExpected = weekIndexExpected;
+        this._weekYear = weekYear;
+        this._weekNumberExpected = weekNumberExpected;
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -73,19 +78,20 @@ export class MiamariasDealer implements IWebMealDealer {
                 throw dishPriceWeekNumber.FetchError;
             }
 
-            if ( this._weekIndexExpected !== dishPriceWeekNumber.WeekIndexWeekNumber) {
-                throw new Error(`Expected to see menu for week ${this._weekIndexExpected}, but found week ${this._weekIndexExpected}`);
+            if ( this._weekNumberExpected !== dishPriceWeekNumber.WeekIndexWeekNumber) {
+                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${ dishPriceWeekNumber.WeekIndexWeekNumber}`);
             }
 
             webMealResult =
                 new WebMealResult(
                     this._htmlFetcherHelper.url, dishPriceWeekNumber.DishDescription,
                     dishPriceWeekNumber.PriceSEK, label, weekDayJavascriptDayIndex,
-                    dishPriceWeekNumber.WeekIndexWeekNumber, null);
+                    dishPriceWeekNumber.WeekIndexWeekNumber, this._weekYear, null);
+
         } catch ( e ) {
             webMealResult =
                 new WebMealResult( this._htmlFetcherHelper.url, "", "", label,
-                    weekDayJavascriptDayIndex, this._weekIndexExpected, e);
+                    weekDayJavascriptDayIndex, this._weekNumberExpected, this._weekYear, e);
         }
 
         return webMealResult;

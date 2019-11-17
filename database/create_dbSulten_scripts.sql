@@ -43,7 +43,7 @@ CREATE TABLE `Restaurants` (
 	`Active` 							BIT NOT NULL,
 	`Name` 							    VARCHAR(255) NOT NULL,
 	`MenuUrl`							VARCHAR(255) NOT NULL,
-	`TypeScriptClassParser`			    VARCHAR(255) NOT NULL,
+	`WebMealDealerClass`			    VARCHAR(255) NOT NULL,
 	`Longitude`			                DECIMAL(11, 8) NOT NULL,
 	`Latitude`			                DECIMAL(10, 8) NOT NULL,
 
@@ -109,7 +109,7 @@ ALTER TABLE	`Prices` ADD UNIQUE (`SEK`);
 ALTER TABLE	`Meals` ADD UNIQUE (`FK_Dish_Id`, `FK_Price_Id`, `FK_Occurrence_Id`, `FK_Restaurant_Id`);
 
 ALTER TABLE	`Restaurants` ADD UNIQUE (`MenuUrl`);
-ALTER TABLE	`Restaurants` ADD UNIQUE (`TypeScriptClassParser`);
+ALTER TABLE	`Restaurants` ADD UNIQUE (`WebMealDealerClass`);
 
 ALTER TABLE	`Areas` ADD UNIQUE (`Name`);
 
