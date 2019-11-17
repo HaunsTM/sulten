@@ -4,7 +4,7 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 
 export class WebMealResult implements IWebMealResult {
 
-    private _fetchUrl: string;
+    private _menuUrl: string;
     private _dishDescription: string;
     private _dishPrice_SEK: string;
     private _labelName: LabelName;
@@ -12,11 +12,11 @@ export class WebMealResult implements IWebMealResult {
     private _weekNumber: string;
     private _fetchError: Error;
 
-    constructor(fetchUrl: string, dishDescription: string, dishPriceSEK: string,
+    constructor(menuUrl: string, dishDescription: string, dishPriceSEK: string,
                 labelName: LabelName, weekDay: WeekDayJavascriptDayIndex,  weekNumber: string,
                 fetchError: Error) {
 
-        this._fetchUrl = fetchUrl;
+        this._menuUrl = menuUrl;
         this._dishDescription = dishDescription;
         this._dishPrice_SEK = dishPriceSEK;
         this._labelName = labelName;
@@ -38,6 +38,10 @@ export class WebMealResult implements IWebMealResult {
         return this._labelName;
     }
 
+    public get MenuUrl(): string {
+        return this._menuUrl;
+    }
+
     public get WeekDayJavascriptDayIndex(): WeekDayJavascriptDayIndex {
         return this._weekDayJavascriptDayIndex;
     }
@@ -48,10 +52,6 @@ export class WebMealResult implements IWebMealResult {
 
     public get FetchError(): Error {
         return this._fetchError;
-    }
-
-    public get FetchUrl(): string {
-        return this._fetchUrl;
     }
 
 }

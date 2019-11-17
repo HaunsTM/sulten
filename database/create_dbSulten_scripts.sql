@@ -1,7 +1,7 @@
 CREATE TABLE `Labels` (
-	`Id` 					INT NOT NULL AUTO_INCREMENT,	
+	`Id` 					            INT NOT NULL AUTO_INCREMENT,	
 
-	`Name` 					VARCHAR(255) NOT NULL,
+	`Name` 					            VARCHAR(255) NOT NULL,
 	
 	PRIMARY KEY (`Id`)
 );
@@ -19,7 +19,7 @@ CREATE TABLE `Dishes` (
 CREATE TABLE `Prices` (
 	`Id` 							    INT NOT NULL AUTO_INCREMENT,	
 
-	`SEK` 					            INT NOT NULL,
+	`SEK` 					            DECIMAL(4, 2) NOT NULL,
 		
 	PRIMARY KEY (`Id`)
 );
@@ -102,7 +102,6 @@ ALTER TABLE `Occurrences` ADD FOREIGN KEY (`FK_WeekDay_Id`) REFERENCES `WeekDays
 
 ALTER TABLE	`Labels` ADD UNIQUE (`Name`);
 
-ALTER TABLE	`Dishes` ADD UNIQUE (`Description`);
 ALTER TABLE	`Dishes` ADD UNIQUE (`Description`, `FK_Label_Id`);
 
 ALTER TABLE	`Prices` ADD UNIQUE (`SEK`);
