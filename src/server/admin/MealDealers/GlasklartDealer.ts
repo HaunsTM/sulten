@@ -158,13 +158,15 @@ export class GlasklartDealer implements IWebMealDealer {
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };
             break;
-            case LabelName.MEAL_OF_THE_DAY:
+            case LabelName.VEGETARIAN:
                 result = {
                     price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'Veckans vegetariska')]/following-sibling::p[1]`,
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };
             break;
+            default:
+                throw new Error(`No xpath-implementation for label: ${label}`)
         }
 
         return result;

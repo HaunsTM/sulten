@@ -54,7 +54,7 @@ export default class AdminController implements IController {
             const miamariasNuMealsFromWeb = await miamariasDealer.mealsFromWeb();
 
             const glasklartFetcher = new HtmlFetcher("https://glasklart.eu/sv/lunch/");
-            const glasklartDealer = new GlasklartDealer( miaMariasFetcher, weekYear, weekIndex );
+            const glasklartDealer = new GlasklartDealer( glasklartFetcher, weekYear, weekIndex );
             const glasklartMealsFromWeb = await glasklartDealer.mealsFromWeb();
 
             let mealService = new MealService();
@@ -63,7 +63,7 @@ export default class AdminController implements IController {
             await mealService.bulkInsert(miamariasNuMealsFromWeb);
             await mealService.bulkInsert(glasklartMealsFromWeb);
 
-            response.send(miamariasNuMealsFromWeb);
+            response.send(glasklartMealsFromWeb);
 
         } catch (e) {
             next(new HttpException(500, e));
