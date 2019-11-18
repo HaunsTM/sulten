@@ -19,7 +19,7 @@ CREATE TABLE `Dishes` (
 CREATE TABLE `Prices` (
 	`Id` 							    INT NOT NULL AUTO_INCREMENT,	
 
-	`SEK` 					            DECIMAL(4, 2) NOT NULL,
+	`SEK` 					            DECIMAL(6, 2) NOT NULL,
 		
 	PRIMARY KEY (`Id`)
 );

@@ -14,7 +14,7 @@ export class Price {
     @Column("decimal", {
         nullable: false,
         unique: true,
-        precision: 4,
+        precision: 6,
         scale: 2,
         name: "SEK",
         })

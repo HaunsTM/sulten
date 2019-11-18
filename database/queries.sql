@@ -50,15 +50,14 @@ CREATE PROCEDURE GetRestaurant_Id (
 	IN p_MenuUrl					VARCHAR(255),
 	OUT idOut 						INT)
 BEGIN	
-	
-    SELECT `Id` INTO idOut FROM restaurants WHERE `MenuUrl` = p_MenuUrl
-
+	SET idOut =
+    (SELECT `Id` FROM restaurants WHERE `MenuUrl` = p_MenuUrl LIMIT 1);
 END$$
 DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE GetPrice_Id (
-	IN p_SEK						DECIMAL(4, 2),
+	IN p_SEK						DECIMAL(6, 2),
 	OUT idOut 						INT)
 BEGIN	
 	
@@ -100,7 +99,7 @@ CREATE PROCEDURE CreateAndGetMeal_Id (
 	IN p_WeekIndex_WeekNumber	    INT,
 	IN p_WeekIndex_WeekYear         INT,
 	IN p_Restaurant_MenuUrl         VARCHAR(255),
-	IN p_Price_SEK                  DECIMAL(4, 2),
+	IN p_Price_SEK                  DECIMAL(6, 2),
 	IN p_Label_Name                 VARCHAR(255),
     IN p_Dish_Description          	VARCHAR(255),
     IN p_Meal_Error	                VARCHAR(255),

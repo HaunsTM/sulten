@@ -1,5 +1,8 @@
 import { EntityRepository, getConnection, Repository } from "typeorm";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
+import { Dish } from "./entities/Dish";
+import { Occurrence } from "./entities/Occurrence";
+import { Restaurant } from "./entities/Restaurant";
 export class MealService {
 
     public async createAndGetMealId(webMealResult: IWebMealResult): Promise<number> {
@@ -14,12 +17,11 @@ export class MealService {
             const p_Dish_Description = webMealResult.DishDescription;
             const p_Meal_Error = webMealResult.FetchError;
 
-            let mealId: number = -1;
+            const mealId: number = -1;
 
             const spResult = await getConnection()
                 .query(`CALL CreateAndGetMeal_Id(${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',${p_Price_SEK},'${p_Label_Name}','${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
 
-            console.log( `spResult: ${spResult} ` );
             return mealId;
 
         } catch ( error ) {
@@ -28,11 +30,10 @@ export class MealService {
     }
 
     public async bulkInsert(meals: IWebMealResult[]): Promise<void> {
-        const allInserts = meals.map( (m) => { return this.createAndGetMealId(m)} );
+        const allInserts = meals.map( (m) => this.createAndGetMealId(m) );
 
         await Promise.all(allInserts);
     }
-    
 
 }
 

@@ -7,6 +7,7 @@ import { KolgaDealer } from "./MealDealers/KolgaDEALER";
 import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
 
 import { MealService } from "../repository/MealService";
+import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
 
 export default class AdminController implements IController {
     public path = "/admin";
@@ -49,12 +50,18 @@ export default class AdminController implements IController {
             const kolgaGastroGateMealsFromWeb = await kolgaGastroGate.mealsFromWeb();
 
             const miaMariasFetcher = new HtmlFetcher("http://www.miamarias.nu/");
-            const miamariasNu = new MiamariasDealer( miaMariasFetcher, weekYear, weekIndex );
-            const miamariasNuMealsFromWeb = await miamariasNu.mealsFromWeb();
+            const miamariasDealer = new MiamariasDealer( miaMariasFetcher, weekYear, weekIndex );
+            const miamariasNuMealsFromWeb = await miamariasDealer.mealsFromWeb();
+
+            const glasklartFetcher = new HtmlFetcher("https://glasklart.eu/sv/lunch/");
+            const glasklartDealer = new GlasklartDealer( miaMariasFetcher, weekYear, weekIndex );
+            const glasklartMealsFromWeb = await glasklartDealer.mealsFromWeb();
 
             let mealService = new MealService();
 
+            await mealService.bulkInsert(kolgaGastroGateMealsFromWeb);
             await mealService.bulkInsert(miamariasNuMealsFromWeb);
+            await mealService.bulkInsert(glasklartMealsFromWeb);
 
             response.send(miamariasNuMealsFromWeb);
 
