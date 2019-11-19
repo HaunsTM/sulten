@@ -9,7 +9,6 @@ import { WebMealResult } from "./WebMealResult";
 
 export class GlasklartDealer implements IWebMealDealer {
 
-    
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
     private _weekYear: string = "";
     private _weekNumberExpected: string = "";
@@ -115,7 +114,7 @@ export class GlasklartDealer implements IWebMealDealer {
         }
         return swedishWeekDayName;
     }
-    
+
     private async getDishPriceWeekNumber(
         htmlDocumentFromWeb: Document, xPath: IXPathDishProviderResult ): Promise<DishPriceWeekNumber> {
 
@@ -157,16 +156,16 @@ export class GlasklartDealer implements IWebMealDealer {
                     descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'${weekDay}')]/following-sibling::p[1]`,
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };
-            break;
+                break;
             case LabelName.VEGETARIAN:
                 result = {
                     price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'Veckans vegetariska')]/following-sibling::p[1]`,
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };
-            break;
+                break;
             default:
-                throw new Error(`No xpath-implementation for label: ${label}`)
+                throw new Error(`No xpath-implementation for label: ${label}`);
         }
 
         return result;

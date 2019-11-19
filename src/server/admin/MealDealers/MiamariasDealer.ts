@@ -9,7 +9,6 @@ import { WebMealResult } from "./WebMealResult";
 
 export class MiamariasDealer implements IWebMealDealer {
 
-    
     private _htmlFetcherHelper: IHtmlFetcherHelper = null;
     private _weekYear: string = "";
     private _weekNumberExpected: string = "";

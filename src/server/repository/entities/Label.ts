@@ -21,7 +21,7 @@ export class Label {
 
     @OneToMany(() => Dish, (dish: Dish) => dish.fkLabel, { onDelete: "RESTRICT" , onUpdate: "RESTRICT" })
     public dishes: Dish[];
-    
+
     constructor(name: LabelName) {
         this.Name = name;
     }

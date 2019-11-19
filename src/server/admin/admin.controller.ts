@@ -21,8 +21,8 @@ export default class AdminController implements IController {
         this.router.get(`${this.path}/initializeAndSetupDb`, this.initializeAndSetupDb);
         this.router.get(`${this.path}/fetchMenusForAllAreas/:weekIndex`, this.fetchMenusForAllAreas);
         this.router.get(`${this.path}/fetchMenusForArea/:id`, this.fetchMenusForAreaId);
-        this.router.get(`${this.path}/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear`, this.getMealsPerAreaAndWeekAndYear);
-        
+        this.router.get(`${this.path}/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear`,
+            this.getMealsPerAreaAndWeekAndYear);
     }
 
     private async initializeAndSetupDb(
@@ -59,7 +59,7 @@ export default class AdminController implements IController {
             const glasklartDealer = new GlasklartDealer( glasklartFetcher, weekYear, weekIndex );
             const glasklartMealsFromWeb = await glasklartDealer.mealsFromWeb();
 
-            let mealService = new MealService();
+            const mealService = new MealService();
 
             await mealService.bulkInsert(kolgaGastroGateMealsFromWeb);
             await mealService.bulkInsert(miamariasNuMealsFromWeb);

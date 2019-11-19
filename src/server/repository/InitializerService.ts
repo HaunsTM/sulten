@@ -4,8 +4,8 @@ import { LabelName } from "../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../enum/WeekDayJavascriptDayIndex";
 import { Area } from "./entities/Area";
 import { Label } from "./entities/Label";
-import { WeekDay } from "./entities/WeekDay";
 import { Restaurant } from "./entities/Restaurant";
+import { WeekDay } from "./entities/WeekDay";
 
 export class InitializerService {
 
@@ -55,7 +55,6 @@ export class InitializerService {
 
         return labels;
     }
-
 
     get weekDays(): WeekDay[] {
 

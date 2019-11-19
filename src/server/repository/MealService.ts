@@ -4,11 +4,11 @@ import { IWebMealResult } from "../interfaces/IWebMealResult";
 export class MealService {
 
     private readonly MEAL_SQL =
-        "SELECT" +
+        " SELECT" +
         "	restaurants.Name AS restaurantsName, labels.Name AS labelsName, dishes.Description AS dishesDescription," +
         "	prices.SEK AS pricesSEK, weekdays.JavaScriptDayIndex AS weekdaysJavaScriptDayIndex," +
         "	weekindexes.WeekNumber AS weekindexesWeekNumber, weekindexes.WeekYear AS weekindexesWeekYear" +
-        "FROM meals" +
+        " FROM meals" +
         "	JOIN dishes" +
         "		on dishes.id = meals.FK_Dish_Id" +
         "		JOIN labels" +
@@ -61,7 +61,7 @@ export class MealService {
 
         const FILTERED_SQL =
             this.MEAL_SQL +
-            `WHERE` +
+            ` WHERE` +
             `	areas.id = ${areaId} AND` +
             `	weekindexes.WeekNumber = ${weekNumber} AND` +
             `	weekindexes.WeekYear = ${weekYear}`;

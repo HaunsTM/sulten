@@ -4,7 +4,7 @@ import { IWeekDayHelper } from "../interfaces/weekDayHelper.itf";
 import { WeekDay } from "../repository/entities/weekDay.mdl";
 
 export class WeekDayHelper implements IWeekDayHelper {
- 
+
     public getWeekDay(swedishWeekDayName: string ): IWeekDay {
         let weekDay: WeekDay = null;
 
