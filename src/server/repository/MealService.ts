@@ -1,9 +1,30 @@
 import { EntityRepository, getConnection, Repository } from "typeorm";
+import { RestaurantMeal } from "../../dto/RestaurantMeal";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
-import { Dish } from "./entities/Dish";
-import { Occurrence } from "./entities/Occurrence";
-import { Restaurant } from "./entities/Restaurant";
 export class MealService {
+
+    private readonly MEAL_SQL =
+        "SELECT" +
+        "	restaurants.Name AS restaurantsName, labels.Name AS labelsName, dishes.Description AS dishesDescription," +
+        "	prices.SEK AS pricesSEK, weekdays.JavaScriptDayIndex AS weekdaysJavaScriptDayIndex," +
+        "	weekindexes.WeekNumber AS weekindexesWeekNumber, weekindexes.WeekYear AS weekindexesWeekYear" +
+        "FROM meals" +
+        "	JOIN dishes" +
+        "		on dishes.id = meals.FK_Dish_Id" +
+        "		JOIN labels" +
+        "			on labels.id = dishes.FK_Label_Id" +
+        "	JOIN prices" +
+        "		on prices.id = meals.FK_Price_Id" +
+        "	JOIN restaurants" +
+        "		on restaurants.id = meals.FK_Restaurant_Id" +
+        "		JOIN areas" +
+        "			on areas.id = restaurants.FK_Area_Id" +
+        "	JOIN occurrences" +
+        "		on occurrences.id = meals.FK_Occurrence_Id" +
+        "		JOIN weekindexes" +
+        "			on weekindexes.id = occurrences.FK_WeekIndex_Id" +
+        "		JOIN weekdays" +
+        "			on weekdays.id = occurrences.FK_WeekDay_Id";
 
     public async createAndGetMealId(webMealResult: IWebMealResult): Promise<number> {
 
@@ -33,6 +54,22 @@ export class MealService {
         const allInserts = meals.map( (m) => this.createAndGetMealId(m) );
 
         await Promise.all(allInserts);
+    }
+
+    public async getMealsPerAreaAndWeekAndYear(
+        areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMeal[]> {
+
+        const FILTERED_SQL =
+            this.MEAL_SQL +
+            `WHERE` +
+            `	areas.id = ${areaId} AND` +
+            `	weekindexes.WeekNumber = ${weekNumber} AND` +
+            `	weekindexes.WeekYear = ${weekYear}`;
+
+        const filteredData = await getConnection().query(FILTERED_SQL);
+
+        return null;
+
     }
 
 }

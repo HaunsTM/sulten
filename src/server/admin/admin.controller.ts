@@ -21,6 +21,8 @@ export default class AdminController implements IController {
         this.router.get(`${this.path}/initializeAndSetupDb`, this.initializeAndSetupDb);
         this.router.get(`${this.path}/fetchMenusForAllAreas/:weekIndex`, this.fetchMenusForAllAreas);
         this.router.get(`${this.path}/fetchMenusForArea/:id`, this.fetchMenusForAreaId);
+        this.router.get(`${this.path}/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear`, this.getMealsPerAreaAndWeekAndYear);
+        
     }
 
     private async initializeAndSetupDb(
@@ -63,7 +65,7 @@ export default class AdminController implements IController {
             await mealService.bulkInsert(miamariasNuMealsFromWeb);
             await mealService.bulkInsert(glasklartMealsFromWeb);
 
-            response.send(glasklartMealsFromWeb);
+            response.send(miamariasNuMealsFromWeb);
 
         } catch (e) {
             next(new HttpException(500, e));
@@ -74,5 +76,25 @@ export default class AdminController implements IController {
         const id = request.params.id;
 
         response.send("NOT IMPLEMENTED");
+    }
+
+    private async getMealsPerAreaAndWeekAndYear(
+        request: express.Request, response: express.Response, next: express.NextFunction) {
+
+        try {
+            const areaId = +request.params.areaId;
+            const weekNumber = +request.params.weekNumber;
+            const weekYear =  +request.params.weekYear;
+
+            const mealService = new MealService();
+            const mealsPerAreaAndWeekAndYear =
+                await mealService.getMealsPerAreaAndWeekAndYear(areaId, weekNumber, weekYear);
+
+            response.send(mealsPerAreaAndWeekAndYear);
+
+        } catch (e) {
+            next(new HttpException(500, e));
+        }
+
     }
 }
