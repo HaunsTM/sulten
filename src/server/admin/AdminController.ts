@@ -4,9 +4,9 @@ import { HtmlFetcher } from "../helpers/HtmlFetcher";
 import IController from "../interfaces/IController";
 import { InitializerService } from "../repository/InitializerService";
 import { MealService } from "../repository/MealService";
-import { GlasklartDealer } from "./MealDealerss/GlasklartDealer";
-import { KolgaDealer } from "./MealDealerss/KolgaDealer";
-import { MiamariasDealer } from "./MealDealerss/MiamariasDealer";
+import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
+import { KolgaDealer } from "./MealDealers/KolgaDealer";
+import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
 
 export default class AdminController implements IController {
     public path = "/admin";
