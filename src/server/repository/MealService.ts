@@ -1,5 +1,9 @@
+import _ from "lodash";
 import { EntityRepository, getConnection, Repository } from "typeorm";
+import { LabelDishPrice } from "../../dto/LabelDishPrice";
+import { LabelDishPriceDay } from "../../dto/LabelDishPriceDay";
 import { RestaurantMeal } from "../../dto/RestaurantMeal";
+import { RestaurantMealDay } from "../../dto/RestaurantMealDay";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
 export class MealService {
 
@@ -57,7 +61,7 @@ export class MealService {
     }
 
     public async getMealsPerAreaAndWeekAndYear(
-        areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMeal[]> {
+        areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMealDay[]> {
 
         const FILTERED_SQL =
             this.MEAL_SQL +
@@ -66,12 +70,61 @@ export class MealService {
             `	weekindexes.WeekNumber = ${weekNumber} AND` +
             `	weekindexes.WeekYear = ${weekYear}`;
 
-        const filteredData = await getConnection().query(FILTERED_SQL);
+        const mealsAreaAndData = await getConnection().query(FILTERED_SQL);
+        const restaurantsMeals =
+            _(mealsAreaAndData)
+                .groupBy("restaurantsName")
+                .map( ( rw ) => {
 
-        return null;
+                    const labelDishPriceDays = rw.map( (ldp) => {
+                        return new LabelDishPriceDay(
+                            ldp.labelsName, ldp.dishesDescription, ldp.weekdaysJavaScriptDayIndex, ldp.pricesSEK ); },
+                    );
+
+                    const restaurantName = rw[0].restaurantsName;
+                    const restaurantMeal = new RestaurantMealDay(restaurantName, labelDishPriceDays);
+
+                    return restaurantMeal;
+                })
+               .value();
+
+        return restaurantsMeals;
 
     }
 
+    public async getMealsPerAreaAndDayAndWeekAndYear(
+        areaId: number, javaScriptDayIndex: number, weekNumber: number, weekYear: number): Promise<RestaurantMeal[]> {
+
+        const FILTERED_SQL =
+            this.MEAL_SQL +
+            ` WHERE` +
+            `	areas.id = ${areaId} AND` +
+            `	weekdays.JavaScriptDayIndex = ${javaScriptDayIndex} AND` +
+            `	weekindexes.WeekNumber = ${weekNumber} AND` +
+            `	weekindexes.WeekYear = ${weekYear}`;
+
+        const mealsAreaAndData = await getConnection().query(FILTERED_SQL);
+        const restaurantsMeals =
+            _(mealsAreaAndData)
+                .groupBy("restaurantsName")
+                .map( ( rw ) => {
+
+                    const labelDishPrice = rw.map( (ldp) => {
+                        return new LabelDishPrice(
+                            ldp.labelsName, ldp.dishesDescription, ldp.pricesSEK ); },
+                    );
+
+                    const restaurantName = rw[0].restaurantsName;
+                    const javaScriptDayIndex = rw[0].weekdaysJavaScriptDayIndex;
+                    const restaurantMeal = new RestaurantMeal(restaurantName, javaScriptDayIndex, labelDishPrice);
+
+                    return restaurantMeal;
+                })
+               .value();
+
+        return restaurantsMeals;
+
+    }
 }
 
 // https://levelup.gitconnected.com/complete-guide-to-using-typeorm-and-typescript-for-data-persistence-in-node-js-module-bfce169959d9

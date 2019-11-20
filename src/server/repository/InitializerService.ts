@@ -71,7 +71,6 @@ export class InitializerService {
 
         return weekDays;
     }
-
     public async initializeAndSetupDb(): Promise<void> {
 
         const dbManager = getConnection().manager;
@@ -106,7 +105,9 @@ export class InitializerService {
             .findOne({ where: {name: AreaName.MALMO__VASTRA_HAMNEN} });
         const restaurants = [
             new Restaurant( "Kolga", "KolgaDealer", "https://kolga.gastrogate.com/lunch/", ACTIVE, "55.612298", "12.998472", vastraHamnen ),
-            new Restaurant( "Miamarias", "Miamarias", "http://www.miamarias.nu/", ACTIVE, "55.613649", "12.991565", vastraHamnen ),
+            new Restaurant( "Miamarias", "MiamariasDealer", "http://www.miamarias.nu/", ACTIVE, "55.613649", "12.991565", vastraHamnen ),
+            new Restaurant( "Glasklart", "GlasklartDealer", "https://glasklart.eu/sv/lunch/", ACTIVE, "55.615981", "12.990736", vastraHamnen ),
+            new Restaurant( "Zen Thai", "ZenThaiDealer", "http://www.zenthai.se/", ACTIVE, "55.614280", "12.989225", vastraHamnen ),
         ];
 
         const restaurantSaves = restaurants.map(

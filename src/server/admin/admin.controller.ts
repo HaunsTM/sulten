@@ -23,6 +23,8 @@ export default class AdminController implements IController {
         this.router.get(`${this.path}/fetchMenusForArea/:id`, this.fetchMenusForAreaId);
         this.router.get(`${this.path}/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear`,
             this.getMealsPerAreaAndWeekAndYear);
+        this.router.get(`${this.path}/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear`,
+            this.getMealsPerAreaAndDayAndWeekAndYear);
     }
 
     private async initializeAndSetupDb(
@@ -89,6 +91,26 @@ export default class AdminController implements IController {
             const mealService = new MealService();
             const mealsPerAreaAndWeekAndYear =
                 await mealService.getMealsPerAreaAndWeekAndYear(areaId, weekNumber, weekYear);
+
+            response.send(mealsPerAreaAndWeekAndYear);
+
+        } catch (e) {
+            next(new HttpException(500, e));
+        }
+
+    }
+    private async getMealsPerAreaAndDayAndWeekAndYear(
+        request: express.Request, response: express.Response, next: express.NextFunction) {
+
+        try {
+            const areaId = +request.params.areaId;
+            const javaScriptDayIndex = +request.params.javaScriptDayIndex;
+            const weekNumber = +request.params.weekNumber;
+            const weekYear =  +request.params.weekYear;
+
+            const mealService = new MealService();
+            const mealsPerAreaAndWeekAndYear =
+                await mealService.getMealsPerAreaAndDayAndWeekAndYear(areaId, javaScriptDayIndex, weekNumber, weekYear);
 
             response.send(mealsPerAreaAndWeekAndYear);
 
