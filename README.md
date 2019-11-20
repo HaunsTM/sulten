@@ -13,17 +13,17 @@ This is a very short guide on how it is possible to set up the ´dbSulten.db´ (
 
 # Available endpoints
 
-/admin/initializeAndSetupDb
-/admin/fetchMenusForAllAreas/:weekIndex
-/admin/fetchMenusForArea/:id
++ /admin/initializeAndSetupDb
++ /admin/fetchMenusForAllAreas/:weekIndex
++ /admin/fetchMenusForArea/:id
 
-/menu/getAllAreas
-/menu/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear
-/menu/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
++ /menu/getAllAreas
++ /menu/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear
++ /menu/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
 
 ## Examples:
 http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
-```[
+<pre>[
     {
         "RestaurantName": "Kolga",
         "LabelDishPrices": [
@@ -47,12 +47,12 @@ http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
             }
         ]
     }
-]```
+]</pre>
 
 http://localhost:8080/menu/getAllAreas
-```[
+<pre>[
     {
         "Name": "Malmö - Västra Hamnen",
         "Id": 1
     }
-]```
+]</pre>
