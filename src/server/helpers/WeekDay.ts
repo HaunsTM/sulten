@@ -1,5 +1,5 @@
 import { EnumWeekDay } from "../enum/WeekDayJavascriptDayIndex";
-import { IWeekDayHelper } from "../interfaces/weekDayHelper.itf";
+import { IWeekDayHelper } from "../interfaces/IWeekDayHelper";
 import { WeekDay } from "../repository/entities/weekDay.mdl";
 import { IWeekDay } from "../repository/interfaces/weekDay.itf";
 

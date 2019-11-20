@@ -1,13 +1,12 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
-import { HtmlFetcher } from "../helpers/htmlFetcher.hlp";
-import IController from "../interfaces/controller.itf";
+import { HtmlFetcher } from "../helpers/HtmlFetcher";
+import IController from "../interfaces/IController";
 import { InitializerService } from "../repository/InitializerService";
-import { KolgaDealer } from "./MealDealers/KolgaDEALER";
-import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
-
 import { MealService } from "../repository/MealService";
 import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
+import { KolgaDealer } from "./MealDealers/KolgaDealer";
+import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
 
 export default class AdminController implements IController {
     public path = "/admin";
@@ -21,10 +20,6 @@ export default class AdminController implements IController {
         this.router.get(`${this.path}/initializeAndSetupDb`, this.initializeAndSetupDb);
         this.router.get(`${this.path}/fetchMenusForAllAreas/:weekIndex`, this.fetchMenusForAllAreas);
         this.router.get(`${this.path}/fetchMenusForArea/:id`, this.fetchMenusForAreaId);
-        this.router.get(`${this.path}/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear`,
-            this.getMealsPerAreaAndWeekAndYear);
-        this.router.get(`${this.path}/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear`,
-            this.getMealsPerAreaAndDayAndWeekAndYear);
     }
 
     private async initializeAndSetupDb(
@@ -78,45 +73,5 @@ export default class AdminController implements IController {
         const id = request.params.id;
 
         response.send("NOT IMPLEMENTED");
-    }
-
-    private async getMealsPerAreaAndWeekAndYear(
-        request: express.Request, response: express.Response, next: express.NextFunction) {
-
-        try {
-            const areaId = +request.params.areaId;
-            const weekNumber = +request.params.weekNumber;
-            const weekYear =  +request.params.weekYear;
-
-            const mealService = new MealService();
-            const mealsPerAreaAndWeekAndYear =
-                await mealService.getMealsPerAreaAndWeekAndYear(areaId, weekNumber, weekYear);
-
-            response.send(mealsPerAreaAndWeekAndYear);
-
-        } catch (e) {
-            next(new HttpException(500, e));
-        }
-
-    }
-    private async getMealsPerAreaAndDayAndWeekAndYear(
-        request: express.Request, response: express.Response, next: express.NextFunction) {
-
-        try {
-            const areaId = +request.params.areaId;
-            const javaScriptDayIndex = +request.params.javaScriptDayIndex;
-            const weekNumber = +request.params.weekNumber;
-            const weekYear =  +request.params.weekYear;
-
-            const mealService = new MealService();
-            const mealsPerAreaAndWeekAndYear =
-                await mealService.getMealsPerAreaAndDayAndWeekAndYear(areaId, javaScriptDayIndex, weekNumber, weekYear);
-
-            response.send(mealsPerAreaAndWeekAndYear);
-
-        } catch (e) {
-            next(new HttpException(500, e));
-        }
-
     }
 }

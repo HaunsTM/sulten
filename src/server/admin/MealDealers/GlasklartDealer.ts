@@ -1,9 +1,9 @@
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
-import { IHtmlFetcherHelper } from "../../interfaces/htmlFetcherHelper.itf";
+import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
-import { IWebMealDealer } from "../../interfaces/webMealDealer.itf";
+import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 

@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import { IHtmlFetcherHelper } from "../interfaces/htmlFetcherHelper.itf";
+import { IHtmlFetcherHelper } from "../interfaces/IHtmlFetcherHelper";
 
 export class HtmlFetcher implements IHtmlFetcherHelper {
 

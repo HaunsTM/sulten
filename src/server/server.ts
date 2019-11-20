@@ -2,9 +2,9 @@ import "dotenv/config";
 import "reflect-metadata";
 
 import { createConnection } from "typeorm";
-import AdminController from "./admin/admin.controller";
+import AdminController from "./admin/AdminController";
 import App from "./app";
-import MenuController from "./menu/menu.controller";
+import MenuController from "./menu/MenuController";
 
 createConnection()
   .then(async () => {
