@@ -1,17 +1,22 @@
+import "dotenv/config";
 import "reflect-metadata";
 
-import AdminController from "./admin/admin.controller";
+import { createConnection } from "typeorm";
+import AdminController from "./admin/AdminController";
 import App from "./app";
-import MenuController from "./menu/menu.controller";
+import MenuController from "./menu/MenuController";
 
-// https://developer.okta.com/blog/2019/05/07/nodejs-typescript-api
-const port = 8080 || process.env.PORT;
+createConnection()
+  .then(async () => {
+    const app = new App(
+      [
+        new AdminController(),
+        new MenuController(),
+      ],
+    );
 
-const app = new App(
-    [
-      new AdminController(),
-      new MenuController(),
-    ],
-  );
-
-app.listen();
+    app.listen();
+  })
+  .catch(
+    // tslint:disable-next-line:no-console
+    (error) => console.log(error));

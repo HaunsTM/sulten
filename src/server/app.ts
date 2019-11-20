@@ -1,13 +1,14 @@
 import express from "express";
-import Controller from "./interfaces/controller.interface";
+import Controller from "./interfaces/IController";
 // import errorMiddleware from "./middleware/error.middleware";
 
 /** Following tutorial https://wanago.io/2018/12/03/typescript-express-tutorial-routing-controllers-middleware/ */
 
 export default class App {
 
-
   public app: express.Application;
+
+  private readonly PORT = 8080;
 
   constructor(controllers: Controller[]) {
     this.app = express();
@@ -17,13 +18,9 @@ export default class App {
   }
 
   public listen() {
-    //this.app.listen(process.env.PORT, () => {
-    //  console.log(`App listening on the port ${process.env.PORT}`);
-    //});
-    
-  const port = 8080;
-    this.app.listen(port, () => {
-      console.log(`App listening on the port ${port}`);
+    this.app.listen(this.PORT, () => {
+      // tslint:disable-next-line:no-console
+      console.log(`App listening on the port ${this.PORT}`);
     });
   }
 
