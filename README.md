@@ -49,6 +49,63 @@ http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
     }
 ]</pre>
 
+http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
+<pre>[
+    {
+        "JavaScriptDayIndex": 4,
+        "RestaurantName": "Kolga",
+        "LabelDishPrices": [
+            {
+                "LabelName": "meal_of_the_day",
+                "DishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
+                "PriceSEK": "85.00"
+            },
+            {
+                "LabelName": "meal_of_the_day",
+                "DishDescription": "Raggmunkar med stekt bacon och lingon",
+                "PriceSEK": "95.00"
+            }
+        ]
+    },
+    {
+        "JavaScriptDayIndex": 4,
+        "RestaurantName": "Miamarias",
+        "LabelDishPrices": [
+            {
+                "LabelName": "fish_and_seafood",
+                "DishDescription": "Citrusöverbakad kummel med soja- och ingefärssmör, savojkål.",
+                "PriceSEK": "110.00"
+            },
+            {
+                "LabelName": "meat",
+                "DishDescription": "Dillkött. Kokt kalvkött i sötsyrlig dillsås, picklad morot, kokt potatis och pepparrotskräm.",
+                "PriceSEK": "95.00"
+            },
+            {
+                "LabelName": "vegetarian",
+                "DishDescription": "Tagliatelle med valnötspesto, mozzarella och rostad tomat.",
+                "PriceSEK": "90.00"
+            }
+        ]
+    },
+    {
+        "JavaScriptDayIndex": 4,
+        "RestaurantName": "Glasklart",
+        "LabelDishPrices": [
+            {
+                "LabelName": "meal_of_the_day",
+                "DishDescription": "Raggmunk med fläsk och rårörda lingon alt. Bruna bönor med fläsk",
+                "PriceSEK": "100.00"
+            },
+            {
+                "LabelName": "vegetarian",
+                "DishDescription": "Rödbetsbiffar med smörstekt savoykål, rostad potatis och fetaostcreme",
+                "PriceSEK": "100.00"
+            }
+        ]
+    }
+]</pre>
+
 http://localhost:8080/menu/getAllAreas
 <pre>[
     {
