@@ -4,7 +4,6 @@ import {Meal} from "./Meal";
 
 @Entity("restaurants" , {schema: "dbsulten" } )
 @Index("MenuUrl", ["MenuUrl"], {unique: true})
-@Index("WebMealDealerClass", ["WebMealDealerClass"], {unique: true})
 @Index("FK_Area_Id", ["fkArea"])
 export class Restaurant {
 
@@ -33,13 +32,6 @@ export class Restaurant {
         })
     public MenuUrl: string;
 
-    @Column("varchar", {
-        nullable: false,
-        unique: true,
-        name: "WebMealDealerClass",
-        })
-    public WebMealDealerClass: string;
-
     @Column("decimal", {
         nullable: false,
         precision: 11,
@@ -63,12 +55,11 @@ export class Restaurant {
     @OneToMany(() => Meal, (meal: Meal) => meal.fkRestaurant, { onDelete: "RESTRICT" , onUpdate: "RESTRICT" })
     public meals: Meal[];
 
-    constructor(name: string, webMealDealerClass: string, menuUrl: string, active: boolean, longitude: string, latitude: string, fkArea: Area) {
+    constructor(name: string, menuUrl: string, active: boolean, longitude: string, latitude: string, fkArea: Area) {
 
         this.Active = active;
         this.Name = name;
         this.MenuUrl = menuUrl;
-        this.WebMealDealerClass = webMealDealerClass;
         this.Longitude = longitude;
         this.Latitude = latitude;
         this.fkArea = fkArea;
