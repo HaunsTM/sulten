@@ -2,6 +2,7 @@ import { IWebMealResult } from "./IWebMealResult";
 
 export interface IWebMealDealer {
 
-  mealsFromWeb(): Promise<IWebMealResult[]>;
+    restaurantMenuUrl: string;
+    mealsFromWeb(): Promise<IWebMealResult[]>;
 
 }

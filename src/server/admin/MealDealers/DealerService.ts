@@ -4,8 +4,8 @@ import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { GlasklartDealer } from "./GlasklartDealer";
 import { KolgaDealer } from "./KolgaDealer";
 import { MiamariasDealer } from "./MiamariasDealer";
-import { Restaurant } from "src/server/repository/entities/Restaurant";
-import { RestaurantService } from "src/server/repository/RestaurantService";
+import { RestaurantService } from "../../repository/RestaurantService";
+import { Restaurant } from "../../repository/entities/Restaurant";
 
 export class DealerService {
 
@@ -20,8 +20,18 @@ export class DealerService {
         return allDealers;
     }
 
-    public async restaurants(active: boolean): Promise<Restaurant[]> {
-        var rs = new RestaurantService();
+    public async activeDealers(weekYear: string, weekIndex: string): IWebMealDealer[] {
+        const rs = new RestaurantService();
+
+        const active = true;
+        const activeRestaurants = await rs.getRestaurantsByActiveness(active);
+        const activeRestaurantsUrls = activeRestaurants.map( (r) => { return r.MenuUrl; });
+        
+        const allDealers = this.allDealers(weekYear, weekIndex);
+        const allDealersUrls = allDealers.filter( (d) => { return d.mealsFromWeb})
+
+        const activeDealers = 
     }
+
 
 }
