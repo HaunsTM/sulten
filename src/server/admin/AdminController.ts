@@ -47,7 +47,9 @@ export default class AdminController implements IController {
 
             const dealerService = new DealerService();
             const mealService = new MealService();
+
             const allMeals = await dealerService.mealsFromActiveDealers(weekYear, weekIndex);
+
             await mealService.bulkInsert(allMeals);
             response.send(allMeals);
 

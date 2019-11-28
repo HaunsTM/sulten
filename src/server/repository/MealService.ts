@@ -9,7 +9,8 @@ export class MealService {
 
     private readonly MEAL_SQL =
         " SELECT" +
-        "	restaurants.Name AS restaurantsName, labels.Name AS labelsName, dishes.Description AS dishesDescription," +
+        "	restaurants.Name AS restaurantsName, restaurants.MenuUrl AS restaurantsMenuUrl, labels.Name AS labelsName, " +
+        "   dishes.Description AS dishesDescription," +
         "	prices.SEK AS pricesSEK, weekdays.JavaScriptDayIndex AS weekdaysJavaScriptDayIndex," +
         "	weekindexes.WeekNumber AS weekindexesWeekNumber, weekindexes.WeekYear AS weekindexesWeekYear" +
         " FROM meals" +
@@ -82,7 +83,9 @@ export class MealService {
                     );
 
                     const restaurantName = rw[0].restaurantsName;
-                    const restaurantMeal = new RestaurantMealDay(restaurantName, labelDishPriceDays);
+                    const restaurantsMenuUrl = rw[0].restaurantsMenuUrl;
+                    const restaurantMeal =
+                        new RestaurantMealDay(restaurantName, restaurantsMenuUrl, labelDishPriceDays);
 
                     return restaurantMeal;
                 })
@@ -115,8 +118,9 @@ export class MealService {
                     );
 
                     const restaurantName = rw[0].restaurantsName;
-                    const javaScriptDayIndex = rw[0].weekdaysJavaScriptDayIndex;
-                    const restaurantMeal = new RestaurantMeal(restaurantName, javaScriptDayIndex, labelDishPrice);
+                    const restaurantsMenuUrl = rw[0].restaurantsMenuUrl;
+                    const restaurantMeal =
+                        new RestaurantMeal(restaurantName, restaurantsMenuUrl, javaScriptDayIndex, labelDishPrice);
 
                     return restaurantMeal;
                 })
