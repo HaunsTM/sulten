@@ -55,9 +55,8 @@ export class Restaurant {
     @OneToMany(() => Meal, (meal: Meal) => meal.fkRestaurant, { onDelete: "RESTRICT" , onUpdate: "RESTRICT" })
     public meals: Meal[];
 
-    constructor(name: string, menuUrl: string, active: boolean, longitude: string, latitude: string, fkArea: Area) {
+    constructor(name: string, menuUrl: string, longitude: string, latitude: string, fkArea?: Area) {
 
-        this.Active = active;
         this.Name = name;
         this.MenuUrl = menuUrl;
         this.Longitude = longitude;

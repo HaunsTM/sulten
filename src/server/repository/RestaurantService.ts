@@ -27,9 +27,9 @@ export class RestaurantService {
                 .map( ( r ) => {
 
                     const restaurant =
-                        new Restaurant(r.restaurantsId, r.restaurantsActive,
-                        r.restaurantsName, r.restaurantsMenuUrl,
-                        r.restaurantsLongitude, r.restaurantsLatitude);
+                        new Restaurant(
+                            r.restaurantsName, r.restaurantsMenuUrl,
+                            r.restaurantsLongitude, r.restaurantsLatitude, null);
 
                     return restaurant;
                 })

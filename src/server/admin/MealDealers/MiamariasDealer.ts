@@ -23,6 +23,10 @@ export class MiamariasDealer implements IWebMealDealer {
         this._weekNumberExpected = weekNumberExpected;
     }
 
+    get restaurantMenuUrl(): string {
+        return this._htmlFetcherHelper.url;
+    }
+
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
 
         const htmlDocumentFromWeb = await this._htmlFetcherHelper.htmlDocumentFromWeb();
