@@ -4,60 +4,60 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 
 export class WebMealResult implements IWebMealResult {
 
-    private _menuUrl: string;
-    private _dishDescription: string;
-    private _priceSEK: string;
-    private _labelName: LabelName;
-    private _weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
-    private _weekNumber: string;
-    private _weekYear: string;
-    private _fetchError: Error;
+    private menuUrl: string;
+    private dishDescription: string;
+    private priceSEK: string;
+    private labelName: LabelName;
+    private weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
+    private weekNumber: string;
+    private weekYear: string;
+    private fetchError: Error;
 
     constructor(menuUrl: string, dishDescription: string, priceSEK: string,
                 labelName: LabelName, weekDay: WeekDayJavascriptDayIndex,  weekNumber: string,
                 weekYear: string, fetchError: Error) {
 
-        this._menuUrl = menuUrl;
-        this._dishDescription = dishDescription;
-        this._priceSEK = priceSEK;
-        this._labelName = labelName;
-        this._weekDayJavascriptDayIndex = weekDay;
-        this._weekNumber = weekNumber;
-        this._weekYear = weekYear;
+        this.menuUrl = menuUrl;
+        this.dishDescription = dishDescription;
+        this.priceSEK = priceSEK;
+        this.labelName = labelName;
+        this.weekDayJavascriptDayIndex = weekDay;
+        this.weekNumber = weekNumber;
+        this.weekYear = weekYear;
 
-        this._fetchError = fetchError;
+        this.fetchError = fetchError;
     }
 
     public get DishDescription(): string {
-        return this._dishDescription;
+        return this.dishDescription;
     }
 
     public get Price_SEK(): string {
-        return this._priceSEK;
+        return this.priceSEK;
     }
 
     public get LabelName(): LabelName {
-        return this._labelName;
+        return this.labelName;
     }
 
     public get MenuUrl(): string {
-        return this._menuUrl;
+        return this.menuUrl;
     }
 
     public get WeekDayJavascriptDayIndex(): WeekDayJavascriptDayIndex {
-        return this._weekDayJavascriptDayIndex;
+        return this.weekDayJavascriptDayIndex;
     }
 
     public get WeekNumber(): string {
-        return this._weekNumber;
+        return this.weekNumber;
     }
 
     public get WeekYear(): string {
-        return this._weekYear;
+        return this.weekYear;
     }
 
     public get FetchError(): Error {
-        return this._fetchError;
+        return this.fetchError;
     }
 
 }

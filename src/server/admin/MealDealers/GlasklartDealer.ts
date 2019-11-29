@@ -1,9 +1,9 @@
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
 import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
+import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
-import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
@@ -21,6 +21,10 @@ export class GlasklartDealer implements IWebMealDealer {
         this._htmlFetcherHelper = htmlFetcherHelper;
         this._weekYear = weekYear;
         this._weekNumberExpected = weekNumberExpected;
+    }
+
+    get restaurantMenuUrl(): string {
+        return this._htmlFetcherHelper.url;
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {

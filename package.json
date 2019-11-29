@@ -8,7 +8,7 @@
     "build": "tsc",
     "prestart": "yarn build",
     "start": "node .",
-    "dev": "ts-node-dev --inspect -- src/server/server.ts",
+    "dev": "ts-node-dev --inspect=9230 -- src/server/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

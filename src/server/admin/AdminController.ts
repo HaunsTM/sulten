@@ -7,6 +7,7 @@ import { MealService } from "../repository/MealService";
 import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
 import { KolgaDealer } from "./MealDealers/KolgaDealer";
 import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
+import { DealerService } from "./MealDealers/DealerService";
 
 export default class AdminController implements IController {
     public path = "/admin";
@@ -44,25 +45,13 @@ export default class AdminController implements IController {
             const weekIndex = request.params.weekIndex;
             const weekYear =  new Date().getFullYear().toString();
 
-            const kolgaFetcher = new HtmlFetcher("https://kolga.gastrogate.com/lunch/");
-            const kolgaGastroGate = new KolgaDealer( kolgaFetcher, weekYear, weekIndex );
-            const kolgaGastroGateMealsFromWeb = await kolgaGastroGate.mealsFromWeb();
-
-            const miaMariasFetcher = new HtmlFetcher("http://www.miamarias.nu/");
-            const miamariasDealer = new MiamariasDealer( miaMariasFetcher, weekYear, weekIndex );
-            const miamariasNuMealsFromWeb = await miamariasDealer.mealsFromWeb();
-
-            const glasklartFetcher = new HtmlFetcher("https://glasklart.eu/sv/lunch/");
-            const glasklartDealer = new GlasklartDealer( glasklartFetcher, weekYear, weekIndex );
-            const glasklartMealsFromWeb = await glasklartDealer.mealsFromWeb();
-
+            const dealerService = new DealerService();
             const mealService = new MealService();
 
-            await mealService.bulkInsert(kolgaGastroGateMealsFromWeb);
-            await mealService.bulkInsert(miamariasNuMealsFromWeb);
-            await mealService.bulkInsert(glasklartMealsFromWeb);
+            const allMeals = await dealerService.mealsFromActiveDealers(weekYear, weekIndex);
 
-            response.send(miamariasNuMealsFromWeb);
+            await mealService.bulkInsert(allMeals);
+            response.send(allMeals);
 
         } catch (e) {
             next(new HttpException(500, e));
