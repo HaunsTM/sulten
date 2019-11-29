@@ -4,7 +4,7 @@ This is a very short guide on how it is possible to set up the ´dbSulten.db´ (
 
 1. Download and install [MariaDB](https://mariadb.org/download/) on your computer
 1. Setup MariaDb by running: `sudo mysql_secure_installation`
-1. Login to MariaDb: `sudo mariadb -u root -p`
+1. Login to MariaDb: `sudo mariadb -u root -p (root)`
 1. Create a database `CREATE DATABASE dbSulten;`
 1. Write `use sultenDb;`
 1. Run `source /absolute/location/sulten/database/create_dbSulten_scripts.sql`
@@ -15,7 +15,7 @@ This is a very short guide on how it is possible to set up the ´dbSulten.db´ (
 # Dependencies
 
 1. run `yarn` to install dependencies
-1. start development server `yarn run dev`
+1. start development server `yarn dev`
 1. when you have got your server up and running (`App listening on the port 8080`), go to this endpoint once (_O-N-C-E_): `http://localhost:8080/admin/initializeAndSetupDb`
 
 # Available endpoints
