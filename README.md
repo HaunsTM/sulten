@@ -3,26 +3,35 @@
 This is a very short guide on how it is possible to set up the ´dbSulten.db´ (Sulten database) on your computer:
 
 1. Download and install [MariaDB](https://mariadb.org/download/) on your computer
-1. MANUALLY create a database named `dbSulten`
-1. run the scripts found in `./database`
-* `./database/create_dbSulten_scripts.sql`
-* `./database/queries.sql`
+1. Setup MariaDb by running: `sudo mysql_secure_installation`
+1. Login to MariaDb: `sudo mariadb -u root -p`
+1. Create a database `CREATE DATABASE dbSulten;`
+1. Write `use sultenDb;`
+1. Run `source /absolute/location/sulten/database/create_dbSulten_scripts.sql`
+1. Run `source /absolute/location/sulten/database/queries.sql`
+1. See bunch of rows being created.
+1. Exit.
+
+# Dependencies
+
 1. run `yarn` to install dependencies
 1. start development server `yarn run dev`
-1. when you have got your server up and running (`App listening on the port 8080`), go to this endpoint once (*O-N-C-E*): `http://localhost:8080/admin/initializeAndSetupDb`
+1. when you have got your server up and running (`App listening on the port 8080`), go to this endpoint once (_O-N-C-E_): `http://localhost:8080/admin/initializeAndSetupDb`
 
 # Available endpoints
 
-+ /admin/initializeAndSetupDb
-+ /admin/fetchMenusForAllAreas/:weekIndex
-+ /admin/fetchMenusForArea/:id
+- /admin/initializeAndSetupDb
+- /admin/fetchMenusForAllAreas/:weekIndex
+- /admin/fetchMenusForArea/:id
 
-+ /menu/getAllAreas
-+ /menu/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear
-+ /menu/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
+- /menu/getAllAreas
+- /menu/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear
+- /menu/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
 
 ## Examples:
+
 http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
+
 <pre>[
     {
         "RestaurantName": "Kolga",
@@ -50,6 +59,7 @@ http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
 ]</pre>
 
 http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
+
 <pre>[
     {
         "JavaScriptDayIndex": 4,
@@ -107,6 +117,7 @@ http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
 ]</pre>
 
 http://localhost:8080/menu/getAllAreas
+
 <pre>[
     {
         "Name": "Malmö - Västra Hamnen",
