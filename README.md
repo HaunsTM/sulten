@@ -3,8 +3,8 @@
 This is a very short guide on how it is possible to set up the ´dbSulten.db´ (Sulten database) on your computer:
 
 1. Download and install [MariaDB](https://mariadb.org/download/) on your computer
-1. Setup MariaDb by running: `sudo mysql_secure_installation`
-1. Login to MariaDb: `sudo mariadb -u root -p (root)`
+1. Setup MariaDb by running: `sudo mysql_secure_installation` (set password to root)
+1. Login to MariaDb: `sudo mariadb -u root -p`
 1. Create a database `CREATE DATABASE dbSulten;`
 1. Write `use sultenDb;`
 1. Run `source /absolute/location/sulten/database/create_dbSulten_scripts.sql`
