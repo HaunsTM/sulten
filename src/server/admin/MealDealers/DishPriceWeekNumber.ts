@@ -18,19 +18,19 @@ export class DishPriceWeekNumber implements IDishPriceWeekNumber {
         this._fetchError = fetchError;
     }
 
-    public get DishDescription(): string {
+    public get dishDescription(): string {
         return this._dishDescription;
     }
 
-    public get PriceSEK(): string {
+    public get priceSEK(): string {
         return this._priceSEK;
     }
 
-    public get WeekIndexWeekNumber(): string {
+    public get weekIndexWeekNumber(): string {
         return this._weekIndexWeekNumber;
     }
 
-    public get FetchError(): Error {
+    public get fetchError(): Error {
         return this._fetchError;
     }
 

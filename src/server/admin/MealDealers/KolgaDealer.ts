@@ -23,8 +23,12 @@ export class KolgaDealer implements IWebMealDealer {
         this._weekNumberExpected = weekNumberExpected;
     }
 
-    get restaurantMenuUrl(): string {
-        return this._htmlFetcherHelper.url;
+    get initialBaseMenuUrl(): string {
+        return this._htmlFetcherHelper.initialBaseMenuUrl;
+    }
+
+    get actualRestaurantMenuUrl(): string {
+        return this._htmlFetcherHelper.actualRestaurantMenuUrl;
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -71,23 +75,23 @@ export class KolgaDealer implements IWebMealDealer {
                 await this.getDishPriceWeekNumber(
                     htmlDocumentFromWeb, swedishWeekDayNameOnKolga, menuAlternativeIndex );
 
-            if ( dishPriceWeekNumber.FetchError ) {
-                throw dishPriceWeekNumber.FetchError;
+            if ( dishPriceWeekNumber.fetchError ) {
+                throw dishPriceWeekNumber.fetchError;
             }
 
-            if ( this._weekNumberExpected !== dishPriceWeekNumber.WeekIndexWeekNumber) {
-                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${dishPriceWeekNumber.WeekIndexWeekNumber}`);
+            if ( this._weekNumberExpected !== dishPriceWeekNumber.weekIndexWeekNumber) {
+                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${dishPriceWeekNumber.weekIndexWeekNumber}`);
             }
 
             webMealResult =
                 new WebMealResult(
-                    this._htmlFetcherHelper.url, dishPriceWeekNumber.DishDescription,
-                    dishPriceWeekNumber.PriceSEK, label, weekDayJavascriptDayIndex,
-                    dishPriceWeekNumber.WeekIndexWeekNumber, this._weekYear, null);
+                    this.initialBaseMenuUrl, dishPriceWeekNumber.dishDescription,
+                    dishPriceWeekNumber.priceSEK, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.weekIndexWeekNumber, this._weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this._htmlFetcherHelper.url, "", "", label,
+                new WebMealResult( this.initialBaseMenuUrl, "", "", label,
                     weekDayJavascriptDayIndex, this._weekNumberExpected, this._weekYear, e);
         }
 

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { EntityRepository, getConnection, Repository } from "typeorm";
+import { getConnection } from "typeorm";
 import { LabelDishPrice } from "../../dto/LabelDishPrice";
 import { LabelDishPriceDay } from "../../dto/LabelDishPriceDay";
 import { RestaurantMeal } from "../../dto/RestaurantMeal";
@@ -9,44 +9,44 @@ export class MealService {
 
     private readonly MEAL_SQL =
         " SELECT" +
-        "	restaurants.Name AS restaurantsName, restaurants.MenuUrl AS restaurantsMenuUrl, labels.Name AS labelsName, " +
-        "   dishes.Description AS dishesDescription," +
-        "	prices.SEK AS pricesSEK, weekdays.JavaScriptDayIndex AS weekdaysJavaScriptDayIndex," +
-        "	weekindexes.WeekNumber AS weekindexesWeekNumber, weekindexes.WeekYear AS weekindexesWeekYear" +
+        "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl, labels.name AS labelsName, " +
+        "   dishes.description AS dishesDescription," +
+        "	prices.sek AS pricesSEK, weekdays.javaScriptDayIndex AS weekdaysJavaScriptDayIndex," +
+        "	weekindexes.weekNumber AS weekindexesWeekNumber, weekindexes.weekYear AS weekindexesWeekYear" +
         " FROM meals" +
         "	JOIN dishes" +
-        "		on dishes.id = meals.FK_Dish_Id" +
+        "		on dishes.id = meals.fKDishId" +
         "		JOIN labels" +
-        "			on labels.id = dishes.FK_Label_Id" +
+        "			on labels.id = dishes.fKLabelId" +
         "	JOIN prices" +
-        "		on prices.id = meals.FK_Price_Id" +
+        "		on prices.id = meals.fKPriceId" +
         "	JOIN restaurants" +
-        "		on restaurants.id = meals.FK_Restaurant_Id" +
+        "		on restaurants.id = meals.fKRestaurantId" +
         "		JOIN areas" +
-        "			on areas.id = restaurants.FK_Area_Id" +
+        "			on areas.id = restaurants.fKAreaId" +
         "	JOIN occurrences" +
-        "		on occurrences.id = meals.FK_Occurrence_Id" +
+        "		on occurrences.id = meals.fKOccurrenceId" +
         "		JOIN weekindexes" +
-        "			on weekindexes.id = occurrences.FK_WeekIndex_Id" +
+        "			on weekindexes.id = occurrences.fKWeekIndexId" +
         "		JOIN weekdays" +
-        "			on weekdays.id = occurrences.FK_WeekDay_Id";
+        "			on weekdays.id = occurrences.fKWeekDayId";
 
     public async createAndGetMealId(webMealResult: IWebMealResult): Promise<number> {
 
         try {
-            const p_WeekDay_JavaScriptDayIndex = +webMealResult.WeekDayJavascriptDayIndex;
-            const p_WeekIndex_WeekNumber = +webMealResult.WeekNumber;
-            const p_WeekIndex_WeekYear = +webMealResult.WeekYear;
-            const p_Restaurant_MenuUrl = webMealResult.MenuUrl;
-            const p_Price_SEK = +webMealResult.Price_SEK;
-            const p_Label_Name = webMealResult.LabelName;
-            const p_Dish_Description = webMealResult.DishDescription;
-            const p_Meal_Error = webMealResult.FetchError;
+            const p_WeekDay_JavaScriptDayIndex = +webMealResult.weekDayJavascriptDayIndex;
+            const p_WeekIndex_WeekNumber = +webMealResult.weekNumber;
+            const p_WeekIndex_WeekYear = +webMealResult.weekYear;
+            const p_Restaurant_MenuUrl = webMealResult.menuUrl;
+            const p_Price_SEK = +webMealResult.price_SEK;
+            const p_Label_Name = webMealResult.labelName;
+            const p_Dish_Description = webMealResult.dishDescription;
+            const p_Meal_Error = webMealResult.fetchError;
 
             const mealId: number = -1;
 
             const spResult = await getConnection()
-                .query(`CALL CreateAndGetMeal_Id(${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',${p_Price_SEK},'${p_Label_Name}','${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
+                .query(`CALL CreateAndGetMealId(${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',${p_Price_SEK},'${p_Label_Name}','${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
 
             return mealId;
 
@@ -58,7 +58,7 @@ export class MealService {
     public async bulkInsert(meals: IWebMealResult[]): Promise<void> {
         const allInserts = meals.map( (m) => this.createAndGetMealId(m) );
 
-        await Promise.all(allInserts);
+        const allInsertsResult = await Promise.all(allInserts);
     }
 
     public async getMealsPerAreaAndWeekAndYear(
@@ -68,8 +68,8 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `	areas.id = ${areaId} AND` +
-            `	weekindexes.WeekNumber = ${weekNumber} AND` +
-            `	weekindexes.WeekYear = ${weekYear}`;
+            `	weekindexes.weekNumber = ${weekNumber} AND` +
+            `	weekindexes.weekYear = ${weekYear}`;
 
         const mealsAreaAndData = await getConnection().query(FILTERED_SQL);
         const restaurantsMeals =
@@ -102,9 +102,9 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `	areas.id = ${areaId} AND` +
-            `	weekdays.JavaScriptDayIndex = ${javaScriptDayIndex} AND` +
-            `	weekindexes.WeekNumber = ${weekNumber} AND` +
-            `	weekindexes.WeekYear = ${weekYear}`;
+            `	weekdays.javaScriptDayIndex = ${javaScriptDayIndex} AND` +
+            `	weekindexes.weekNumber = ${weekNumber} AND` +
+            `	weekindexes.weekYear = ${weekYear}`;
 
         const mealsAreaAndData = await getConnection().query(FILTERED_SQL);
         const restaurantsMeals =

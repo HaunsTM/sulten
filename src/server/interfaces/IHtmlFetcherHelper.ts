@@ -1,7 +1,9 @@
-export interface IHtmlFetcherHelper {
+import { IWebMenuUrl } from "./IWebMenuUrl";
 
-    url: string;
+export interface IHtmlFetcherHelper extends IWebMenuUrl {
 
     textContentFromHtmlDocument(htmlDocumentFromWeb: Document, xpathExpression: string): string;
+
     htmlDocumentFromWeb(): Promise<Document>;
+
 }

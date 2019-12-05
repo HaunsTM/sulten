@@ -1,16 +1,16 @@
 export class LabelDishPrice {
 
-    public LabelName: string;
-    public DishDescription: string;
-    public PriceSEK: number;
+    public labelName: string;
+    public dishDescription: string;
+    public priceSEK: number;
 
     constructor(
         labelName: string,
         dishDescription: string,
         pricesSEK: number) {
 
-            this.LabelName = labelName;
-            this.DishDescription = dishDescription;
-            this.PriceSEK = pricesSEK;
+            this.labelName = labelName;
+            this.dishDescription = dishDescription;
+            this.priceSEK = pricesSEK;
     }
 }

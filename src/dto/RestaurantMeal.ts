@@ -2,10 +2,10 @@ import { LabelDishPrice } from "./LabelDishPrice";
 
 export class RestaurantMeal {
 
-    public RestaurantName: string;
-    public RestaurantMenuUrl: string;
-    public JavaScriptDayIndex: number;
-    public LabelDishPrices: LabelDishPrice[];
+    public restaurantName: string;
+    public restaurantMenuUrl: string;
+    public javaScriptDayIndex: number;
+    public labelDishPrices: LabelDishPrice[];
 
     constructor(
         restaurantName: string,
@@ -13,9 +13,9 @@ export class RestaurantMeal {
         javaScriptDayIndex: number,
         labelDishPrices: LabelDishPrice[]) {
 
-            this.JavaScriptDayIndex = javaScriptDayIndex;
-            this.RestaurantName = restaurantName;
-            this.RestaurantMenuUrl = restaurantMenuUrl;
-            this.LabelDishPrices = labelDishPrices;
+            this.javaScriptDayIndex = javaScriptDayIndex;
+            this.restaurantName = restaurantName;
+            this.restaurantMenuUrl = restaurantMenuUrl;
+            this.labelDishPrices = labelDishPrices;
     }
 }

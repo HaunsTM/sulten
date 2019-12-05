@@ -1,9 +1,12 @@
+
 export interface IDishPriceWeekNumber {
 
-    DishDescription: string;
-    PriceSEK: string;
-    WeekIndexWeekNumber: string;
+    dishDescription: string;
 
-    FetchError: Error;
+    priceSEK: string;
+
+    weekIndexWeekNumber: string;
+
+    fetchError: Error;
 
 }

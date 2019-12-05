@@ -1,9 +1,9 @@
 export class LabelDishPriceDay {
 
-    public LabelName: string;
-    public DishDescription: string;
-    public JavaScriptDayIndex: number;
-    public PriceSEK: number;
+    public labelName: string;
+    public dishDescription: string;
+    public javaScriptDayIndex: number;
+    public priceSEK: number;
 
     constructor(
         labelName: string,
@@ -11,9 +11,9 @@ export class LabelDishPriceDay {
         javaScriptDayIndex: number,
         pricesSEK: number) {
 
-            this.LabelName = labelName;
-            this.DishDescription = dishDescription;
-            this.JavaScriptDayIndex = javaScriptDayIndex;
-            this.PriceSEK = pricesSEK;
+            this.labelName = labelName;
+            this.dishDescription = dishDescription;
+            this.javaScriptDayIndex = javaScriptDayIndex;
+            this.priceSEK = pricesSEK;
     }
 }
