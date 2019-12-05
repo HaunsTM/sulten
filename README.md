@@ -20,7 +20,6 @@ This is a very short guide on how it is possible to set up the ´dbSulten.db´ (
 
 # Available endpoints
 
-- /admin/initializeAndSetupDb
 - /admin/fetchMenusForAllAreas/:weekIndex
 - /admin/fetchMenusForArea/:id
 
