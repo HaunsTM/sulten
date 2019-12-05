@@ -29,7 +29,7 @@ export class RestaurantService {
                     const restaurant =
                         new Restaurant(
                             r.restaurantsName, r.restaurantsMenuUrl,
-                            r.restaurantsLongitude, r.restaurantsLatitude, null);
+                            r.restaurantsLongitude, r.restaurantsLatitude);
 
                     return restaurant;
                 })

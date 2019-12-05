@@ -77,19 +77,19 @@ export class MiamariasDealer implements IWebMealDealer {
                 await this.getDishPriceWeekNumber(
                     htmlDocumentFromWeb, swedishWeekDayName, swedishDishLabelOnMiaMarias );
 
-            if ( dishPriceWeekNumber.FetchError ) {
-                throw dishPriceWeekNumber.FetchError;
+            if ( dishPriceWeekNumber.fetchError ) {
+                throw dishPriceWeekNumber.fetchError;
             }
 
-            if ( this._weekNumberExpected !== dishPriceWeekNumber.WeekIndexWeekNumber) {
-                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${ dishPriceWeekNumber.WeekIndexWeekNumber}`);
+            if ( this._weekNumberExpected !== dishPriceWeekNumber.weekIndexWeekNumber) {
+                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${ dishPriceWeekNumber.weekIndexWeekNumber}`);
             }
 
             webMealResult =
                 new WebMealResult(
-                    this._htmlFetcherHelper.url, dishPriceWeekNumber.DishDescription,
-                    dishPriceWeekNumber.PriceSEK, label, weekDayJavascriptDayIndex,
-                    dishPriceWeekNumber.WeekIndexWeekNumber, this._weekYear, null);
+                    this._htmlFetcherHelper.url, dishPriceWeekNumber.dishDescription,
+                    dishPriceWeekNumber.priceSEK, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.weekIndexWeekNumber, this._weekYear, null);
 
         } catch ( e ) {
             webMealResult =

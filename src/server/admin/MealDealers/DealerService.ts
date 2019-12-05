@@ -26,7 +26,7 @@ export class DealerService {
         const activeRestaurants = await rs.getRestaurantsByActiveness(active);
         const activeRestaurantsUrls =
             activeRestaurants.map( (r) => {
-                return r.MenuUrl;
+                return r.menuUrl;
             });
 
         const allDealers = this.allDealers(weekYear, weekIndex);
