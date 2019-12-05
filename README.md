@@ -9,6 +9,7 @@ This is a very short guide on how it is possible to set up the ´dbSulten.db´ (
 1. Write `use sultenDb;`
 1. Run `source /absolute/location/sulten/database/create_dbSulten_scripts.sql`
 1. Run `source /absolute/location/sulten/database/queries.sql`
+1. Run `source /absolute/location/sulten/database/initialData.sql`
 1. See bunch of rows being created.
 1. Exit.
 
@@ -16,7 +17,6 @@ This is a very short guide on how it is possible to set up the ´dbSulten.db´ (
 
 1. run `yarn` to install dependencies
 1. start development server `yarn dev`
-1. when you have got your server up and running (`App listening on the port 8080`), go to this endpoint once (_O-N-C-E_): `http://localhost:8080/admin/initializeAndSetupDb`
 
 # Available endpoints
 
@@ -34,25 +34,25 @@ http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
 
 <pre>[
     {
-        "RestaurantName": "Kolga",
-        "LabelDishPrices": [
+        "restaurantName": "Kolga",
+        "labelDishPrices": [
             {
-                "LabelName": "meal_of_the_day",
-                "DishDescription": "Spagetti Carbonara med riven ost",
-                "JavaScriptDayIndex": 1,
-                "PriceSEK": "95.00"
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Spagetti Carbonara med riven ost",
+                "javaScriptDayIndex": 1,
+                "priceSEK": "95.00"
             },
             {
-                "LabelName": "meal_of_the_day",
-                "DishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
-                "JavaScriptDayIndex": 4,
-                "PriceSEK": "85.00"
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
+                "javaScriptDayIndex": 4,
+                "priceSEK": "85.00"
             },
             {
-                "LabelName": "meal_of_the_day",
-                "DishDescription": "Raggmunkar med stekt bacon och lingon",
-                "JavaScriptDayIndex": 4,
-                "PriceSEK": "95.00"
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Raggmunkar med stekt bacon och lingon",
+                "javaScriptDayIndex": 4,
+                "priceSEK": "95.00"
             }
         ]
     }
@@ -62,55 +62,55 @@ http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
 
 <pre>[
     {
-        "JavaScriptDayIndex": 4,
-        "RestaurantName": "Kolga",
-        "LabelDishPrices": [
+        "javaScriptDayIndex": 4,
+        "restaurantName": "Kolga",
+        "labelDishPrices": [
             {
-                "LabelName": "meal_of_the_day",
-                "DishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
-                "PriceSEK": "85.00"
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
+                "priceSEK": "85.00"
             },
             {
-                "LabelName": "meal_of_the_day",
-                "DishDescription": "Raggmunkar med stekt bacon och lingon",
-                "PriceSEK": "95.00"
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Raggmunkar med stekt bacon och lingon",
+                "priceSEK": "95.00"
             }
         ]
     },
     {
-        "JavaScriptDayIndex": 4,
-        "RestaurantName": "Miamarias",
-        "LabelDishPrices": [
+        "javaScriptDayIndex": 4,
+        "restaurantName": "Miamarias",
+        "labelDishPrices": [
             {
-                "LabelName": "fish_and_seafood",
-                "DishDescription": "Citrusöverbakad kummel med soja- och ingefärssmör, savojkål.",
-                "PriceSEK": "110.00"
+                "labelName": "fish_and_seafood",
+                "dishDescription": "Citrusöverbakad kummel med soja- och ingefärssmör, savojkål.",
+                "priceSEK": "110.00"
             },
             {
-                "LabelName": "meat",
-                "DishDescription": "Dillkött. Kokt kalvkött i sötsyrlig dillsås, picklad morot, kokt potatis och pepparrotskräm.",
-                "PriceSEK": "95.00"
+                "labelName": "meat",
+                "dishDescription": "Dillkött. Kokt kalvkött i sötsyrlig dillsås, picklad morot, kokt potatis och pepparrotskräm.",
+                "priceSEK": "95.00"
             },
             {
-                "LabelName": "vegetarian",
+                "labelName": "vegetarian",
                 "DishDescription": "Tagliatelle med valnötspesto, mozzarella och rostad tomat.",
-                "PriceSEK": "90.00"
+                "priceSEK": "90.00"
             }
         ]
     },
     {
-        "JavaScriptDayIndex": 4,
-        "RestaurantName": "Glasklart",
-        "LabelDishPrices": [
+        "javaScriptDayIndex": 4,
+        "restaurantName": "Glasklart",
+        "labelDishPrices": [
             {
-                "LabelName": "meal_of_the_day",
-                "DishDescription": "Raggmunk med fläsk och rårörda lingon alt. Bruna bönor med fläsk",
-                "PriceSEK": "100.00"
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Raggmunk med fläsk och rårörda lingon alt. Bruna bönor med fläsk",
+                "priceSEK": "100.00"
             },
             {
-                "LabelName": "vegetarian",
-                "DishDescription": "Rödbetsbiffar med smörstekt savoykål, rostad potatis och fetaostcreme",
-                "PriceSEK": "100.00"
+                "labelName": "vegetarian",
+                "dishDescription": "Rödbetsbiffar med smörstekt savoykål, rostad potatis och fetaostcreme",
+                "priceSEK": "100.00"
             }
         ]
     }
@@ -120,7 +120,7 @@ http://localhost:8080/menu/getAllAreas
 
 <pre>[
     {
-        "Name": "Malmö - Västra Hamnen",
-        "Id": 1
+        "name": "Malmö - Västra Hamnen",
+        "id": 1
     }
 ]</pre>
