@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { EntityRepository, getConnection, Repository } from "typeorm";
+import { getConnection } from "typeorm";
 import { LabelDishPrice } from "../../dto/LabelDishPrice";
 import { LabelDishPriceDay } from "../../dto/LabelDishPriceDay";
 import { RestaurantMeal } from "../../dto/RestaurantMeal";

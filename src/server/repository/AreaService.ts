@@ -1,4 +1,4 @@
-import { EntityRepository, getConnection, Repository } from "typeorm";
+import { getConnection } from "typeorm";
 import { Area } from "./entities/Area";
 
 export class AreaService {

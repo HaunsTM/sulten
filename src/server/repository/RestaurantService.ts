@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { EntityRepository, getConnection, Repository } from "typeorm";
+import { getConnection } from "typeorm";
 import { Restaurant } from "./entities/Restaurant";
 
 export class RestaurantService {
