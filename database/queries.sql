@@ -1,92 +1,92 @@
-DROP PROCEDURE IF EXISTS GetWeekDay_Id;
-DROP PROCEDURE IF EXISTS GetWeekIndex_Id;
-DROP PROCEDURE IF EXISTS GetOccurence_Id;
-DROP PROCEDURE IF EXISTS GetRestaurant_Id;
-DROP PROCEDURE IF EXISTS GetPrice_Id;
-DROP PROCEDURE IF EXISTS GetLabel_Id;
-DROP PROCEDURE IF EXISTS GetDish_Id;
-DROP PROCEDURE IF EXISTS CreateAndGetMeal_Id;
+DROP PROCEDURE IF EXISTS getWeekDayId;
+DROP PROCEDURE IF EXISTS getWeekIndexId;
+DROP PROCEDURE IF EXISTS getOccurenceId;
+DROP PROCEDURE IF EXISTS getRestaurantId;
+DROP PROCEDURE IF EXISTS getPriceId;
+DROP PROCEDURE IF EXISTS getLabelId;
+DROP PROCEDURE IF EXISTS getDishId;
+DROP PROCEDURE IF EXISTS createAndGetMealId;
 
 DELIMITER $$
-CREATE PROCEDURE GetWeekDay_Id (
-	IN p_JavaScriptDayIndex		    INT,
+CREATE PROCEDURE getWeekDayId (
+	IN pJavaScriptDayIndex		    INT,
 	OUT idOut 						INT)
 BEGIN	
 	
-	INSERT INTO weekdays(`JavaScriptDayIndex`) VALUES (p_JavaScriptDayIndex) ON DUPLICATE KEY UPDATE `Id` = LAST_INSERT_ID(`Id`);
+	INSERT INTO weekdays(`javaScriptDayIndex`) VALUES (pJavaScriptDayIndex) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetWeekIndex_Id (
-	IN p_WeekNumber				    INT,
-	IN p_WeekYear					INT,
+CREATE PROCEDURE getWeekIndexId (
+	IN pWeekNumber				    INT,
+	IN pWeekYear					INT,
 	OUT idOut 						INT)
 BEGIN	
 	
-	INSERT INTO weekindexes(`WeekNumber`,`WeekYear`) VALUES (p_WeekNumber, p_WeekYear) ON DUPLICATE KEY UPDATE `Id` = LAST_INSERT_ID(`Id`);
+	INSERT INTO weekindexes(`weekNumber`,`weekYear`) VALUES (pWeekNumber, pWeekYear) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetOccurence_Id (
-	IN p_WeekIndex_Id				INT,
-	IN p_WeekDay_Id				    INT,
+CREATE PROCEDURE getOccurenceId (
+	IN pWeekIndexId				    INT,
+	IN pWeekDayId				    INT,
 	OUT idOut 						INT)
 BEGIN	
 	
-	INSERT INTO occurrences(`FK_WeekIndex_Id`,`FK_WeekDay_Id`) VALUES (p_WeekIndex_Id, p_WeekDay_Id) ON DUPLICATE KEY UPDATE `Id` = LAST_INSERT_ID(`Id`);
+	INSERT INTO occurrences(`fKWeekIndexId`,`fKWeekDayId`) VALUES (pWeekIndexId, pWeekDayId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetRestaurant_Id (
-	IN p_MenuUrl					VARCHAR(255),
+CREATE PROCEDURE getRestaurantId (
+	IN pMenuUrl					    VARCHAR(255),
 	OUT idOut 						INT)
 BEGIN	
 	SET idOut =
-    (SELECT `Id` FROM restaurants WHERE `MenuUrl` = p_MenuUrl LIMIT 1);
+    (SELECT `id` FROM restaurants WHERE `menuUrl` = pMenuUrl LIMIT 1);
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetPrice_Id (
-	IN p_SEK						DECIMAL(6, 2),
+CREATE PROCEDURE getPriceId (
+	IN pSEK						    DECIMAL(6, 2),
 	OUT idOut 						INT)
 BEGIN	
 	
-	INSERT INTO prices(`SEK`) VALUES (p_SEK) ON DUPLICATE KEY UPDATE `Id` = LAST_INSERT_ID(`Id`);
+	INSERT INTO prices(`sek`) VALUES (pSEK) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetLabel_Id (
-	IN p_Name					    VARCHAR(255),
+CREATE PROCEDURE getLabelId (
+	IN pName					    VARCHAR(255),
 	OUT idOut 						INT)
 BEGIN	
 	
-	INSERT INTO labels(`Name`) VALUES (p_Name) ON DUPLICATE KEY UPDATE `Id` = LAST_INSERT_ID(`Id`);
+	INSERT INTO labels(`name`) VALUES (pName) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE GetDish_Id (
-	IN p_Description				VARCHAR(255),
-	IN p_Label_Id				    INT,
+CREATE PROCEDURE getDishId (
+	IN pDescription				    VARCHAR(255),
+	IN pLabelId				        INT,
 	OUT idOut 						INT)
 BEGIN	
 	
-	INSERT INTO dishes(`Description`, `FK_Label_Id`) VALUES (p_Description, p_Label_Id) ON DUPLICATE KEY UPDATE `Id` = LAST_INSERT_ID(`Id`);
+	INSERT INTO dishes(`description`, `fKLabelId`) VALUES (pDescription, pLabelId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
@@ -94,41 +94,41 @@ DELIMITER ;
 
 
 DELIMITER $$
-CREATE PROCEDURE CreateAndGetMeal_Id (
-	IN p_WeekDay_JavaScriptDayIndex INT,
-	IN p_WeekIndex_WeekNumber	    INT,
-	IN p_WeekIndex_WeekYear         INT,
-	IN p_Restaurant_MenuUrl         VARCHAR(255),
-	IN p_Price_SEK                  DECIMAL(6, 2),
-	IN p_Label_Name                 VARCHAR(255),
-    IN p_Dish_Description          	VARCHAR(255),
-    IN p_Meal_Error	                VARCHAR(255),
+CREATE PROCEDURE createAndGetMealId (
+	IN pWeekDay_JavaScriptDayIndex  INT,
+	IN pWeekIndex_WeekNumber	    INT,
+	IN pWeekIndex_WeekYear          INT,
+	IN pRestaurant_MenuUrl          VARCHAR(255),
+	IN pPrice_SEK                   DECIMAL(6, 2),
+	IN pLabel_Name                  VARCHAR(255),
+    IN pDish_Description          	VARCHAR(255),
+    IN pMeal_Error	                VARCHAR(255),
 	OUT idOut 						INT)
 BEGIN
 
-	CALL GetWeekDay_Id(p_WeekDay_JavaScriptDayIndex, @WeekDay_Id);
+	CALL getWeekDayId(pWeekDay_JavaScriptDayIndex, @WeekDayId);
 
-	CALL GetWeekIndex_Id(p_WeekIndex_WeekNumber, p_WeekIndex_WeekYear, @WeekIndex_Id);
+	CALL getWeekIndexId(pWeekIndex_WeekNumber, pWeekIndex_WeekYear, @WeekIndexId);
 
-	CALL GetOccurence_Id(@WeekIndex_Id, @WeekDay_Id, @Occurence_Id);
-
-
-	CALL GetRestaurant_Id(p_Restaurant_MenuUrl, @Restaurant_Id);
+	CALL getOccurenceId(@WeekIndexId, @WeekDayId, @OccurenceId);
 
 
-	CALL GetPrice_Id(p_Price_SEK, @Price_Id);
+	CALL getRestaurantId(pRestaurant_MenuUrl, @RestaurantId);
+
+
+	CALL getPriceId(pPrice_SEK, @PriceId);
 
     
-	CALL GetLabel_Id(p_Label_Name, @Label_Id);
+	CALL getLabelId(pLabel_Name, @LabelId);
 
 
-	CALL GetDish_Id(p_Dish_Description, @Label_Id, @Dish_Id);
+	CALL getDishId(pDish_Description, @LabelId, @DishId);
 
 
 
-	INSERT INTO meals(`FK_Dish_Id`, `FK_Price_Id`, `FK_Occurrence_Id`, `FK_Restaurant_Id`, `Error`) 
-        VALUES (@Dish_Id, @Price_Id, @Occurence_Id, @Restaurant_Id, p_Meal_Error) 
-    ON DUPLICATE KEY UPDATE `Error` = p_Meal_Error, `Id` = LAST_INSERT_ID(`Id`);
+	INSERT INTO meals(`fKDishId`, `fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `error`) 
+        VALUES (@DishId, @PriceId, @OccurenceId, @RestaurantId, pMeal_Error) 
+    ON DUPLICATE KEY UPDATE `Error` = pMeal_Error, `id` = LAST_INSERT_ID(`id`);
 
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$

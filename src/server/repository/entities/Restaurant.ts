@@ -1,66 +1,27 @@
-import {BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId} from "typeorm";
-import {Area} from "./Area";
-import {Meal} from "./Meal";
-
-@Entity("restaurants" , {schema: "dbsulten" } )
-@Index("MenuUrl", ["MenuUrl"], {unique: true})
-@Index("FK_Area_Id", ["fkArea"])
 export class Restaurant {
 
-    @PrimaryGeneratedColumn({
-        type: "int",
-        name: "Id",
-        })
-    public Id: number;
+    public id: number;
 
-    @Column("bit", {
-        nullable: false,
-        name: "Active",
-        })
-    public Active: boolean;
+    public active: boolean;
 
-    @Column("varchar", {
-        nullable: false,
-        name: "Name",
-        })
-    public Name: string;
+    public name: string;
 
-    @Column("varchar", {
-        nullable: false,
-        unique: true,
-        name: "MenuUrl",
-        })
-    public MenuUrl: string;
+    public menuUrl: string;
 
-    @Column("decimal", {
-        nullable: false,
-        precision: 11,
-        scale: 8,
-        name: "Longitude",
-        })
-    public Longitude: string;
+    public longitude: string;
 
-    @Column("decimal", {
-        nullable: false,
-        precision: 10,
-        scale: 8,
-        name: "Latitude",
-        })
-    public Latitude: string;
+    public latitude: string;
 
-    @ManyToOne(() => Area, (area: Area) => area.restaurants, {  nullable: false, onDelete: "RESTRICT", onUpdate: "RESTRICT" })
-    @JoinColumn({ name: "FK_Area_Id"})
-    public fkArea: Area | null;
+    constructor( name: string, menuUrl: string, longitude: string, latitude: string ) {
 
-    @OneToMany(() => Meal, (meal: Meal) => meal.fkRestaurant, { onDelete: "RESTRICT" , onUpdate: "RESTRICT" })
-    public meals: Meal[];
+        this.name = name;
 
-    constructor(name: string, menuUrl: string, longitude: string, latitude: string, fkArea?: Area) {
+        this.menuUrl = menuUrl;
 
-        this.Name = name;
-        this.MenuUrl = menuUrl;
-        this.Longitude = longitude;
-        this.Latitude = latitude;
-        this.fkArea = fkArea;
+        this.longitude = longitude;
+
+        this.latitude = latitude;
+
     }
+
 }

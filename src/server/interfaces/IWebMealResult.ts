@@ -3,20 +3,20 @@ import { WeekDayJavascriptDayIndex } from "../enum/WeekDayJavascriptDayIndex";
 
 export interface IWebMealResult {
 
-    DishDescription: string;
+    dishDescription: string;
 
-    Price_SEK: string;
+    price_SEK: string;
 
-    LabelName: LabelName;
+    labelName: LabelName;
 
-    MenuUrl: string;
+    menuUrl: string;
 
-    WeekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
+    weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
 
-    WeekNumber: string;
+    weekNumber: string;
 
-    WeekYear: string;
+    weekYear: string;
 
-    FetchError: Error;
+    fetchError: Error;
 
 }
