@@ -3,14 +3,21 @@ import { IHtmlFetcherHelper } from "../interfaces/IHtmlFetcherHelper";
 
 export class HtmlFetcher implements IHtmlFetcherHelper {
 
-    private _url: string;
+    public actualRestaurantMenuUrl: string = "";
+
+    private _initialBaseMenuUrl: string = "";
+
+    public get initialBaseMenuUrl(): string {
+        return this._initialBaseMenuUrl;
+    }
 
     /**
      * A helper class which can be used when parsing an online webpage
-     * @param url - Url of the webpage
+     * @param baseUrl - Url of the webpage
      */
-    constructor(url: string) {
-        this._url = url;
+    constructor(initialBaseMenuUrl: string) {
+        this._initialBaseMenuUrl = initialBaseMenuUrl;
+        this.actualRestaurantMenuUrl = initialBaseMenuUrl;
     }
 
     /**
@@ -21,7 +28,7 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
         const evaluatedHtmlDocument = this.evaluatedHtmlDocument( htmlDocumentFromWeb, xpathExpression);
 
         if (!evaluatedHtmlDocument.singleNodeValue) {
-            throw Error(`Couldn't find a value for xpath "${xpathExpression}" on "${this._url}".`);
+            throw Error(`Couldn't find a value for xpath "${xpathExpression}" on "${this.actualRestaurantMenuUrl}".`);
         }
 
         try {
@@ -32,24 +39,21 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
 
         } catch ( e ) {
 
-            throw Error(`Couldn't get textContent for xpath "${xpathExpression}" on "${this._url}".`);
+            throw Error("Couldn't get textContent for xpath " +
+                        `"${xpathExpression}" on "${this.actualRestaurantMenuUrl}".`);
         }
 
     }
 
-    public get url(): string {
-        return this._url;
-    }
-
     public async htmlDocumentFromWeb(): Promise<Document> {
         try {
-            const jsDom = await JSDOM.fromURL( this._url );
+            const jsDom = await JSDOM.fromURL( this.actualRestaurantMenuUrl );
             const htmlDocumentFromWeb = jsDom.window.document;
 
             return htmlDocumentFromWeb;
         } catch ( e ) {
 
-            throw Error(`Couldn't successfully fetch data from ${this._url}: ${e.message}`);
+            throw Error(`Couldn't successfully fetch data from ${this.actualRestaurantMenuUrl}: ${e.message}`);
         }
     }
 

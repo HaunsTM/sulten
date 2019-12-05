@@ -44,7 +44,7 @@ INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (2);
 INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (3);
 INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (4);
 INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (5);
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (7);
+INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (6);
 
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Kolga", "https://kolga.gastrogate.com/lunch/", "55.612298", "12.998472", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
@@ -54,3 +54,5 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 	(1, "Glasklart", "https://glasklart.eu/sv/lunch/", "55.615981", "12.990736", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Zen Thai", "http://www.zenthai.se/", "55.614280", "12.989225", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Restaurang Variation", "https://www.nyavariation.se/files/matsedel/", "55.607987", "12.981666", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));

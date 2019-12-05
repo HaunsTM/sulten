@@ -2,18 +2,21 @@ import { HtmlFetcher } from "../../helpers/HtmlFetcher";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { RestaurantService } from "../../repository/RestaurantService";
+
 import { GlasklartDealer } from "./GlasklartDealer";
 import { KolgaDealer } from "./KolgaDealer";
 import { MiamariasDealer } from "./MiamariasDealer";
+import { RestaurangVariationDealer } from "./RestaurangVariationDealer";
 
 export class DealerService {
 
     public allDealers(weekYear: string, weekIndex: string): IWebMealDealer[] {
         const allDealers: IWebMealDealer[] = [
 
+            new GlasklartDealer( new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
             new KolgaDealer( new HtmlFetcher("https://kolga.gastrogate.com/lunch/"), weekYear, weekIndex ),
             new MiamariasDealer( new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
-            new GlasklartDealer( new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
+            new RestaurangVariationDealer( new HtmlFetcher("https://www.nyavariation.se/files/matsedel/"), weekYear, weekIndex ),
         ];
 
         return allDealers;
@@ -32,7 +35,7 @@ export class DealerService {
         const allDealers = this.allDealers(weekYear, weekIndex);
 
         const activeDealers = allDealers.filter( (dealer) => {
-            return activeRestaurantsUrls.includes(dealer.restaurantMenuUrl);
+            return activeRestaurantsUrls.includes(dealer.initialBaseMenuUrl);
         });
 
         return activeDealers;
