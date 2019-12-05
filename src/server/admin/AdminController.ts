@@ -1,11 +1,7 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
-import { HtmlFetcher } from "../helpers/HtmlFetcher";
 import IController from "../interfaces/IController";
 import { MealService } from "../repository/MealService";
-import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
-import { KolgaDealer } from "./MealDealers/KolgaDealer";
-import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
 import { DealerService } from "./MealDealers/DealerService";
 
 export default class AdminController implements IController {

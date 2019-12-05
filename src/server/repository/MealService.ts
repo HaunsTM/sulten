@@ -58,7 +58,7 @@ export class MealService {
     public async bulkInsert(meals: IWebMealResult[]): Promise<void> {
         const allInserts = meals.map( (m) => this.createAndGetMealId(m) );
 
-        await Promise.all(allInserts);
+        const allInsertsResult = await Promise.all(allInserts);
     }
 
     public async getMealsPerAreaAndWeekAndYear(

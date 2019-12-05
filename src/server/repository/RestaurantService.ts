@@ -5,10 +5,10 @@ import { Restaurant } from "./entities/Restaurant";
 export class RestaurantService {
 
     private readonly RESTAURANT_SQL =
-        " SELECT restaurants.Id AS restaurantsId, restaurants.Active AS restaurantsActive, " +
-        "     restaurants.Name AS restaurantsName, restaurants.MenuUrl AS restaurantsMenuUrl,  " +
-        "     restaurants.Longitude AS restaurantsLongitude, restaurants.Latitude AS restaurantsLatitude, " +
-        "     restaurants.FK_Area_Id AS restaurantsFK_Area_Id " +
+        " SELECT restaurants.id AS restaurantsId, restaurants.active AS restaurantsActive, " +
+        "     restaurants.name AS restaurantsName, restaurants.MenuUrl AS restaurantsMenuUrl,  " +
+        "     restaurants.longitude AS restaurantsLongitude, restaurants.latitude AS restaurantsLatitude, " +
+        "     restaurants.fKAreaId AS restaurantsFKAreaId " +
         " FROM restaurants ";
 
     public async getRestaurantsByActiveness(active: boolean): Promise<Restaurant[]> {

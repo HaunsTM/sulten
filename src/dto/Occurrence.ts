@@ -1,16 +1,16 @@
 export class Occurence {
 
-    public WeekdayJavaScriptDayIndex: number;
-    public WeekIndexWeekNumber: number;
-    public WeekIndexWeekYear: number;
+    public weekdayJavaScriptDayIndex: number;
+    public weekindexWeekNumber: number;
+    public weekindexWeekYear: number;
 
     constructor(
         weekdayJavaScriptDayIndex: number,
         weekindexWeekNumber: number,
         weekindexWeekYear: number) {
 
-            this.WeekdayJavaScriptDayIndex = weekdayJavaScriptDayIndex;
-            this.WeekIndexWeekNumber = weekindexWeekNumber;
-            this.WeekIndexWeekYear = weekindexWeekYear;
+            this.weekdayJavaScriptDayIndex = weekdayJavaScriptDayIndex;
+            this.weekindexWeekNumber = weekindexWeekNumber;
+            this.weekindexWeekYear = weekindexWeekYear;
     }
 }
