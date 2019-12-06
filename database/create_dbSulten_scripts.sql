@@ -2,10 +2,10 @@ DROP DATABASE IF EXISTS `dbSulten`;
 CREATE DATABASE `dbSulten`;
 USE `dbSulten`;
 
-CREATE TABLE `Labels` (
+CREATE TABLE `labels` (
 	`id` 					            INT NOT NULL AUTO_INCREMENT,	
 
-	`Name` 					            VARCHAR(255) NOT NULL,
+	`name` 					            VARCHAR(255) NOT NULL,
 	
 	PRIMARY KEY (`id`)
 );
@@ -20,7 +20,7 @@ CREATE TABLE `dishes` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Prices` (
+CREATE TABLE `prices` (
 	`id` 							    INT NOT NULL AUTO_INCREMENT,	
 
 	`sek` 					            DECIMAL(6, 2) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE `Prices` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Meals` (
+CREATE TABLE `meals` (
 	`id`								INT NOT NULL AUTO_INCREMENT,
 
 	`error`								VARCHAR(255),

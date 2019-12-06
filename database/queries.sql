@@ -1,3 +1,5 @@
+USE `dbSulten`;
+
 DROP PROCEDURE IF EXISTS getWeekDayId;
 DROP PROCEDURE IF EXISTS getWeekIndexId;
 DROP PROCEDURE IF EXISTS getOccurenceId;
