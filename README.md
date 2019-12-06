@@ -23,7 +23,7 @@ The first thing you have to do is to populate the database with actual restauran
 
 **Please be aware that SOME restaurants removes content successively during a week = the content changes.**
 
-By convention, the sulten logic is adapted to full menus. Most likely, the best time for fetching full menus is at mondays (it seems that most of current menus are published by then) .
+By convention, the sulten logic is adapted to full menus. Most likely, the best time for fetching full menus is at mondays (it seems that most of the current menus are published by then).
 
 # Available endpoints
 
