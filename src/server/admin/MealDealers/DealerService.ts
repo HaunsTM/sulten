@@ -1,4 +1,5 @@
 import { HtmlFetcher } from "../../helpers/HtmlFetcher";
+import { PdfFetcher } from "../../helpers/PdfFetcher";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { RestaurantService } from "../../repository/RestaurantService";
@@ -16,7 +17,7 @@ export class DealerService {
             new GlasklartDealer( new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
             new KolgaDealer( new HtmlFetcher("https://kolga.gastrogate.com/lunch/"), weekYear, weekIndex ),
             new MiamariasDealer( new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
-            new RestaurangVariationDealer( new HtmlFetcher("https://www.nyavariation.se/files/matsedel/"), weekYear, weekIndex ),
+            new RestaurangVariationDealer( new PdfFetcher("https://www.nyavariation.se/files/matsedel/"), weekYear, weekIndex ),
         ];
 
         return allDealers;
