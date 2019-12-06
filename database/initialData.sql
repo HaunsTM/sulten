@@ -1,3 +1,4 @@
+USE `dbSulten`;
 
 INSERT INTO `areas` (`name`) VALUES ('Malmö - Centrum');
 INSERT INTO `areas` (`name`) VALUES ('Malmö - Västra Hamnen');
