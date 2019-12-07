@@ -85,33 +85,30 @@ export class RestaurangVariationDealer implements IWebMealDealer {
     private getWebMealResultAForAWeek( textContentFromPdfDocument: string ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 0),
             this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, 2),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.SALAD, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.SALAD, 4),
 
-
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 0),
             this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, 2),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.SALAD, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.SALAD, 4),
 
-
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 0),
             this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, 2),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.SALAD, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.SALAD, 4),
 
-
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 0),
             this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, 2),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.SALAD, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.SALAD, 4),
 
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 0),
             this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, 2),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.SALAD, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, 3),
+            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.SALAD, 4),
         ];
 
         return mealsForAWeek;
@@ -124,12 +121,10 @@ export class RestaurangVariationDealer implements IWebMealDealer {
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnVariation( weekDayJavascriptDayIndex );
-
         try {
             dishPriceWeekNumber =
                 await this.getDishPriceWeekNumber(
-                    textContentFromPdfDocument, swedishWeekDayName, menuAlternativeIndex );
+                    textContentFromPdfDocument, weekDayJavascriptDayIndex, menuAlternativeIndex );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -155,7 +150,7 @@ export class RestaurangVariationDealer implements IWebMealDealer {
     }
 
     private async getDishPriceWeekNumber(
-        textContentFromPdfDocument: string, weekDayName: string,
+        textContentFromPdfDocument: string, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
         menuAlternativeIndex: number): Promise<DishPriceWeekNumber> {
 
         const dishPriceWeekNumberPromise =
@@ -167,14 +162,17 @@ export class RestaurangVariationDealer implements IWebMealDealer {
 
                 let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-                const rP = this.regexProvider(weekDayName, menuAlternativeIndex);
+                const rP = this.regexProvider(weekDayJavascriptDayIndex, menuAlternativeIndex);
 
                 try {
-                    dishDescription = textContentFromPdfDocument.match(rP.descriptionRegex)[menuAlternativeIndex];
+                    const dishes = rP.descriptionRegex.exec(textContentFromPdfDocument);
+                    dishDescription = dishes[menuAlternativeIndex];
 
-                    priceSEK = textContentFromPdfDocument.match(rP.price_SEKRegex)[0];
+                    // priceSEK = textContentFromPdfDocument.match(rP.price_SEKRegex)[0];
+                    priceSEK = rP.price_SEKRegex.exec(textContentFromPdfDocument)[1];
 
-                    weekIndexWeekNumber = textContentFromPdfDocument.match(rP.descriptionRegex)[0];
+                    // weekIndexWeekNumber = textContentFromPdfDocument.match(rP.weekNumberRegex)[0];
+                    weekIndexWeekNumber = rP.weekNumberRegex.exec(textContentFromPdfDocument)[1];
                     dishPriceWeekNumber =
                         new DishPriceWeekNumber(dishDescription, priceSEK, weekIndexWeekNumber, null );
 
@@ -190,12 +188,25 @@ export class RestaurangVariationDealer implements IWebMealDealer {
         return dishPriceWeekNumberPromise;
     }
 
-    private regexProvider(weekDayName: string, menuAlternativeIndex: number): IRegexDishProviderResult {
+    private regexProvider(
+        weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex, menuAlternativeIndex: number): IRegexDishProviderResult {
+
+        const swedishWeekDayName = this.getSwedishWeekDayNameOnVariation( weekDayJavascriptDayIndex );
+
+        const descriptionRegexPattern  = weekDayJavascriptDayIndex < 5 ?
+            `(?<=${swedishWeekDayName} dagens buffé)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)(?=(?:mån|tis|ons|tors|fre)dag)`
+            : `(?<=${swedishWeekDayName} dagens buffé)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)`;
+
+        const price_SEKRegexPattern = menuAlternativeIndex < 3 ?
+            `(?:DAGENS BUFFÉ.*?(\\d+)\\skr\\b)` 
+            : `(?:SOPPA MED SALLAD.*?(\\d+)\\skr\\b)`;
+
+        const weekNumberRegexPattern = `(?:vecka\\s+(\\d+)\\s)`;
 
         const result: IRegexDishProviderResult = {
-            descriptionRegex: new RegExp(`(?<=${weekDayName} Dagens buffé  )(?:•\\s+([^•]+)[^•]+)(?:•\\s+([^•]+)[^•]+)(?:•\\s+([^•]+)[^•]+)(?:•\\s+([^•]+)[^•]+)`, "gm"),
-            price_SEKRegex: menuAlternativeIndex < 3 ? RegExp(`DAGENS BUFFÉ.*?(\\d+)\\skr\\b`, "gm") : RegExp(`SOPPA MED SALLAD.*?(\\d+)\\skr\\b`, "gm"),
-            weekNumberRegex: RegExp(`vecka\\s+(\\d+)\\s`, "gm"),
+            descriptionRegex: new RegExp(descriptionRegexPattern, "gmi"),
+            price_SEKRegex: new RegExp( price_SEKRegexPattern, "gm"),
+            weekNumberRegex: RegExp(weekNumberRegexPattern, "gm"),
         };
 
         return result;
