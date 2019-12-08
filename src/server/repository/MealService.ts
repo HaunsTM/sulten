@@ -64,15 +64,30 @@ export class MealService {
     public async getMealsPerAreaAndWeekAndYear(
         areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMealDay[]> {
 
-        const FILTERED_SQL =
+        const connection = getConnection();
+        const queryRunner = connection.createQueryRunner();
+
+        const filteredSQL =
             this.MEAL_SQL +
             ` WHERE` +
-            `	areas.id = ${areaId} AND` +
-            `	weekindexes.weekNumber = ${weekNumber} AND` +
-            `	weekindexes.weekYear = ${weekYear}`;
+            `    areas.id = @p_areaId AND` +
+            `    weekindexes.weekNumber = @p_weekNumber AND` +
+            `    weekindexes.weekYear = @p_weekYear;`;
 
-        const mealsAreaAndData = await getConnection().query(FILTERED_SQL);
-        const restaurantsMeals =
+        try {
+            // lets now open a new transaction:
+            await queryRunner.startTransaction();
+
+            await queryRunner.query(`SET @p_areaId = ${areaId};`);
+            await queryRunner.query(`SET @p_weekNumber = ${weekNumber};`);
+            await queryRunner.query(`SET @p_weekYear = ${weekYear};`);
+
+            const mealsAreaAndData = await queryRunner.query(filteredSQL);
+
+            // commit transaction now:
+            await queryRunner.commitTransaction();
+
+            const restaurantsMeals =
             _(mealsAreaAndData)
                 .groupBy("restaurantsName")
                 .map( ( rw ) => {
@@ -91,43 +106,80 @@ export class MealService {
                 })
                .value();
 
-        return restaurantsMeals;
+            return restaurantsMeals;
+
+        } catch (err) {
+
+            // since we have errors lets rollback changes we made
+            await queryRunner.rollbackTransaction();
+
+        } finally {
+
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
 
     }
 
     public async getMealsPerAreaAndDayAndWeekAndYear(
         areaId: number, javaScriptDayIndex: number, weekNumber: number, weekYear: number): Promise<RestaurantMeal[]> {
 
-        const FILTERED_SQL =
+        const connection = getConnection();
+        const queryRunner = connection.createQueryRunner();
+
+        const filteredSQL =
             this.MEAL_SQL +
             ` WHERE` +
-            `	areas.id = ${areaId} AND` +
-            `	weekdays.javaScriptDayIndex = ${javaScriptDayIndex} AND` +
-            `	weekindexes.weekNumber = ${weekNumber} AND` +
-            `	weekindexes.weekYear = ${weekYear}`;
+            `    areas.id = @p_areaId AND` +
+            `    weekdays.javaScriptDayIndex = @p_javaScriptDayIndex AND` +
+            `    weekindexes.weekNumber = @p_weekNumber AND` +
+            `    weekindexes.weekYear = @p_weekYear;`;
 
-        const mealsAreaAndData = await getConnection().query(FILTERED_SQL);
-        const restaurantsMeals =
-            _(mealsAreaAndData)
-                .groupBy("restaurantsName")
-                .map( ( rw ) => {
+        try {
+            // lets now open a new transaction:
+            await queryRunner.startTransaction();
 
-                    const labelDishPrice = rw.map( (ldp) => {
-                        return new LabelDishPrice(
-                            ldp.labelsName, ldp.dishesDescription, ldp.pricesSEK ); },
-                    );
+            await queryRunner.query(`SET @p_areaId = ${areaId};`);
+            await queryRunner.query(`SET @p_javaScriptDayIndex = ${javaScriptDayIndex};`);
+            await queryRunner.query(`SET @p_weekNumber = ${weekNumber};`);
+            await queryRunner.query(`SET @p_weekYear = ${weekYear};`);
 
-                    const restaurantName = rw[0].restaurantsName;
-                    const restaurantsMenuUrl = rw[0].restaurantsMenuUrl;
-                    const restaurantMeal =
-                        new RestaurantMeal(restaurantName, restaurantsMenuUrl, javaScriptDayIndex, labelDishPrice);
+            const mealsAreaAndData = await queryRunner.query(filteredSQL);
 
-                    return restaurantMeal;
-                })
-               .value();
+            // commit transaction now:
+            await queryRunner.commitTransaction();
 
-        return restaurantsMeals;
+            const restaurantsMeals =
+                _(mealsAreaAndData)
+                    .groupBy("restaurantsName")
+                    .map( ( rw ) => {
 
+                        const labelDishPrice = rw.map( (ldp) => {
+                            return new LabelDishPrice(
+                                ldp.labelsName, ldp.dishesDescription, ldp.pricesSEK ); },
+                        );
+
+                        const restaurantName = rw[0].restaurantsName;
+                        const restaurantsMenuUrl = rw[0].restaurantsMenuUrl;
+                        const restaurantMeal =
+                            new RestaurantMeal(restaurantName, restaurantsMenuUrl, javaScriptDayIndex, labelDishPrice);
+
+                        return restaurantMeal;
+                    })
+                    .value();
+
+            return restaurantsMeals;
+
+        } catch (err) {
+
+            // since we have errors lets rollback changes we made
+            await queryRunner.rollbackTransaction();
+
+        } finally {
+
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
+        }
     }
 }
 
