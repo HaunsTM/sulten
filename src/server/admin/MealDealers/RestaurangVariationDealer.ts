@@ -6,7 +6,6 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
-import { resolve } from "dns";
 
 export class RestaurangVariationDealer implements IWebMealDealer {
 

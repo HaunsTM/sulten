@@ -14,8 +14,8 @@ export class DealerService {
     public allDealers(weekYear: string, weekIndex: string): IWebMealDealer[] {
         const allDealers: IWebMealDealer[] = [
 
-            new GlasklartDealer( new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
             new KolgaDealer( new HtmlFetcher("https://kolga.gastrogate.com/lunch/"), weekYear, weekIndex ),
+            new GlasklartDealer( new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
             new MiamariasDealer( new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
             new RestaurangVariationDealer( new PdfFetcher("https://www.nyavariation.se/files/matsedel/"), weekYear, weekIndex ),
         ];
