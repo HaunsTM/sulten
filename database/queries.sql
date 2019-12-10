@@ -186,7 +186,7 @@ BEGIN
 	CALL getPriceId(@pPrice_SEK, @PriceId);    
 	CALL getLabelId(@pLabel_Name, @LabelId);
 	CALL getDishId(@pDish_Description, @LabelId, @DishId);
-    CALL deletePossibleOldMeal(@pWeekDay_JavaScriptDayIndex, @pWeekIndex_WeekNumber, @pWeekIndex_WeekYear, @pRestaurant_MenuUrl, @pPrice_SEK, @pLabel_Name);
+    -- CALL deletePossibleOldMeal(@pWeekDay_JavaScriptDayIndex, @pWeekIndex_WeekNumber, @pWeekIndex_WeekYear, @pRestaurant_MenuUrl, @pPrice_SEK, @pLabel_Name);
 
 	INSERT INTO meals(`fKDishId`, `fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `error`) 
         VALUES (@DishId, @PriceId, @OccurenceId, @RestaurantId, @pMeal_Error) 

@@ -7,7 +7,7 @@ import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderRes
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export class RestaurangVariationDealer implements IWebMealDealer {
+export class Lokal17Dealer implements IWebMealDealer {
 
 
     private _pdfFetcherHelper: IPdfFetcherHelper = null;
