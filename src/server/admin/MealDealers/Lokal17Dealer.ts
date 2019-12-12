@@ -1,25 +1,28 @@
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
+import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IPdfFetcherHelper } from "../../interfaces/IPdfFetcherHelper";
+import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
-import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
 export class Lokal17Dealer implements IWebMealDealer {
 
-
-    private _pdfFetcherHelper: IPdfFetcherHelper = null;
-    private _weekYear: string = "";
-    private _weekNumberExpected: string = "";
+    private _epochHelper: IEpochHelper;
+    private _pdfFetcherHelper: IPdfFetcherHelper;
+    private _weekYear: string;
+    private _weekNumberExpected: string;
 
     constructor(
         pdfFetcherHelper: IPdfFetcherHelper,
+        epochHelper: IEpochHelper,
         weekYear: string,
         weekNumberExpected: string) {
 
         this._pdfFetcherHelper = pdfFetcherHelper;
+        this._epochHelper = epochHelper;
         this._weekYear = weekYear;
         this._weekNumberExpected = weekNumberExpected;
 
@@ -50,7 +53,7 @@ export class Lokal17Dealer implements IWebMealDealer {
 
         const updatedHtmlFetcherHelperUrl =
             this._pdfFetcherHelper.initialBaseMenuUrl + `${this._weekYear}/v-${this._weekNumberExpected}.pdf`;
-
+     //       IEpochHelper
         this._pdfFetcherHelper.actualRestaurantMenuUrl = updatedHtmlFetcherHelperUrl;
     }
 
@@ -197,7 +200,7 @@ export class Lokal17Dealer implements IWebMealDealer {
             : `(?<=${swedishWeekDayName} dagens buffé)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)`;
 
         const price_SEKRegexPattern = menuAlternativeIndex < 3 ?
-            `(?:DAGENS BUFFÉ.*?(\\d+)\\skr\\b)` 
+            `(?:DAGENS BUFFÉ.*?(\\d+)\\skr\\b)`
             : `(?:SOPPA MED SALLAD.*?(\\d+)\\skr\\b)`;
 
         const weekNumberRegexPattern = `(?:vecka\\s+(\\d+)\\s)`;

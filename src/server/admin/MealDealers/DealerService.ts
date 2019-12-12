@@ -1,5 +1,7 @@
+import { EpochHelper } from "../../helpers/EpochHelper";
 import { HtmlFetcher } from "../../helpers/HtmlFetcher";
 import { PdfFetcher } from "../../helpers/PdfFetcher";
+import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { RestaurantService } from "../../repository/RestaurantService";
@@ -15,11 +17,16 @@ export class DealerService {
     public allDealers(weekYear: string, weekIndex: string): IWebMealDealer[] {
         const allDealers: IWebMealDealer[] = [
 
-            new GlasklartDealer( new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
-            new KolgaDealer( new HtmlFetcher("https://kolga.gastrogate.com/lunch/"), weekYear, weekIndex ),
-            new Lokal17Dealer( new PdfFetcher("https://lokal17.se/"), weekYear, weekIndex ),
-            new MiamariasDealer( new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
-            new RestaurangVariationDealer( new PdfFetcher("https://www.nyavariation.se/files/matsedel/"), weekYear, weekIndex ),
+            new GlasklartDealer(
+                new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
+            new KolgaDealer(
+                new HtmlFetcher("https://kolga.gastrogate.com/lunch/"), weekYear, weekIndex ),
+            new Lokal17Dealer(
+                new PdfFetcher("https://lokal17.se/"), new EpochHelper(), weekYear, weekIndex ),
+            new MiamariasDealer(
+                new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
+            new RestaurangVariationDealer(
+                new PdfFetcher("https://www.nyavariation.se/files/matsedel/"), weekYear, weekIndex ),
         ];
 
         return allDealers;
@@ -47,7 +54,7 @@ export class DealerService {
     public async mealsFromActiveDealers(weekYear: string, weekIndex: string): Promise<IWebMealResult[]> {
 
         const activeDealers = await this.activeDealers(weekYear, weekIndex);
-        const activeDealersMenuFetcherJobs = activeDealers.map( (d) => { 
+        const activeDealersMenuFetcherJobs = activeDealers.map( (d) => {
             return d.mealsFromWeb();
         });
 

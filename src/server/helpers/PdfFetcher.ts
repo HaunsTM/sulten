@@ -27,7 +27,7 @@ export class PdfFetcher implements IPdfFetcherHelper {
             const page = await pdfDocumentFromWeb.getPage(pageNumber);
             const tokenizedText = await page.getTextContent();
             const pageText =
-                tokenizedText.items.map( (t) => { return t.str }).join("");
+                tokenizedText.items.map( (t) => t.str).join("");
 
             return pageText;
 

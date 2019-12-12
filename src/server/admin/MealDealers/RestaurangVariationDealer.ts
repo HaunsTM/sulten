@@ -1,14 +1,13 @@
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
 import { IPdfFetcherHelper } from "../../interfaces/IPdfFetcherHelper";
+import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
-import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
 export class RestaurangVariationDealer implements IWebMealDealer {
-
 
     private _pdfFetcherHelper: IPdfFetcherHelper = null;
     private _weekYear: string = "";
@@ -197,7 +196,7 @@ export class RestaurangVariationDealer implements IWebMealDealer {
             : `(?<=${swedishWeekDayName} dagens buffé)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)(?:\\s*•\\s+([^•]+)\\b\\s+)`;
 
         const price_SEKRegexPattern = menuAlternativeIndex < 3 ?
-            `(?:DAGENS BUFFÉ.*?(\\d+)\\skr\\b)` 
+            `(?:DAGENS BUFFÉ.*?(\\d+)\\skr\\b)`
             : `(?:SOPPA MED SALLAD.*?(\\d+)\\skr\\b)`;
 
         const weekNumberRegexPattern = `(?:vecka\\s+(\\d+)\\s)`;
