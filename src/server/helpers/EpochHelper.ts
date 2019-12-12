@@ -9,10 +9,61 @@ export class EpochHelper implements IEpochHelper {
         return new Date(anotherDayInTheWeek.setDate(diff));
     }
 
-    private getMonth1_12(date: Date): number {
-        const month1_12 = date.getMonth() + 1;
-        return month1_12;
+    public getMonthThatStartedTheWeek(): number;
+    public getMonthThatStartedTheWeek(weekYear: number, weekNumber: number): number;
+
+    public getMonthThatStartedTheWeek(arg1?: number, arg2?: number): number {
+
+        let currentWeekYear = -1;
+        let currentWeekNumber = -1;
+
+        if ( arg1 !== undefined && arg1 !== undefined ) {
+            currentWeekYear = arg1;
+            currentWeekNumber = arg2;
+        } else {
+            const today = new Date();
+
+            currentWeekYear = today.getFullYear();
+            currentWeekNumber = this.getISO8601WeekNumber(today);
+        }
+
+        const currentDatesAndWeeks = this.datesAndWeeksArray(currentWeekYear);
+
+        const dateInCurrentWeek = currentDatesAndWeeks.find( (p) => p.weekNumber === currentWeekNumber ).date;
+        const firstDayInCurrentWeek = this.getDateOfMonday(dateInCurrentWeek);
+
+        const monthThatStartedTheWeek1to12 = firstDayInCurrentWeek.getMonth() + 1;
+        return monthThatStartedTheWeek1to12;
     }
+
+    private datesAndWeeksArray(weekYear: number): Array<{date: Date, weekNumber: number}> {
+        const firstDateOfTheYear = new Date(weekYear, 0, 1);
+        let mondayInFirstWeek = this.getDateOfMonday(firstDateOfTheYear);
+        let tempDate = mondayInFirstWeek;
+
+        let tempYear = weekYear;
+        let datesAndWeeks = new Array<{date: Date, weekNumber: number}>();
+
+        while (tempYear <= weekYear ) {
+            let weekNumber = this.getISO8601WeekNumber(tempDate);
+
+            datesAndWeeks.push( { date: tempDate, weekNumber } );
+
+            const futureDate = this.addDays(tempDate, 1);
+
+            tempYear = futureDate.getFullYear();
+            tempDate = futureDate;
+        }
+        const datesAndWeeksArray = Array.from(datesAndWeeks);
+        return datesAndWeeksArray;
+    }
+
+    private addDays(date: Date, days: number): Date {
+        const copy = new Date(Number(date));
+        copy.setDate(date.getDate() + days);
+        return copy
+      }
+
     private getISO8601WeekNumber(initialDate: Date): number {
         initialDate.setHours(0, 0, 0, 0);
 
@@ -27,62 +78,6 @@ export class EpochHelper implements IEpochHelper {
         // Adjust to Thursday in week 1 and count number of weeks from date to week1.
         return 1 +
             Math.round(((initialDate.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-    }
-
-    public getMonthThatStartedThisWeek() {
-
-    }
- getRandomSentence( length: number, terminateWithPunctuation: boolean ): string;
-    getRandomSentence( minNumberOfWords: number, maxNumberOfWords: number, terminateWithPunctuation: boolean ): string;
-    getRandomSentence( arg1: number, arg2: any, arg3?: boolean ): string {
-
-        if ( arg3 !== undefined ) {
-            const minNumberOfWords: number = arg1;
-            const maxNumberOfWords: number = arg2;
-            const terminateWithPunctuation: boolean = arg3;
-
-            const numberOfWordsInSentence = Math.floor( Math.random() * maxNumberOfWords ) + minNumberOfWords;
-            let sentence = '';
-            let previousWord = '';
-            let currentWord = '';
-
-            for ( let i = 0; i < numberOfWordsInSentence; i++ ) {
-
-                while (previousWord === currentWord) {
-                    currentWord = this.getRandomWord();
-                }
-
-                if ( i === 0 ) {
-                    currentWord = currentWord.replace(/^(.)/g, currentWord[0].toUpperCase());
-
-                    sentence += currentWord + ' ';
-
-                } else if ( ( i + 1 ) === numberOfWordsInSentence ) {
-
-                    if ( terminateWithPunctuation ) {
-                        sentence += currentWord + this.getRandomPunctuation();
-                    } else {
-                        sentence += currentWord;
-                    }
-                } else {
-                    sentence += currentWord + ' ';
-                }
-                previousWord = currentWord;
-            }
-
-            return sentence;
-
-        } else {
-
-            const length: number = arg1;
-            const terminateWithPunctuation: boolean = arg2;
-
-            const retVal = terminateWithPunctuation ?
-                this.getRandomSentence(length, length, false).substring(0, length - 1 ) + this.getRandomPunctuation()
-                : this.getRandomSentence(length, length, false).substring(0, length);
-
-            return retVal;
-        }
     }
 
 }

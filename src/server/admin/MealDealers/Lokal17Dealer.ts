@@ -40,6 +40,7 @@ export class Lokal17Dealer implements IWebMealDealer {
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
 
         const pdfDocumentFromWeb = await this._pdfFetcherHelper.pdfDocumentFromWeb();
+
         const textContentFromPdfDocument =
             await this._pdfFetcherHelper.textContentFromPdfDocument(pdfDocumentFromWeb, 1);
 
@@ -50,6 +51,8 @@ export class Lokal17Dealer implements IWebMealDealer {
     }
 
     private updateCurrentHtmlFetcherHelperUrl() {
+        const monthThatStartedTheWeek1to12 =
+            this._epochHelper.getMonthThatStartedTheWeek(+this._weekYear, +this._weekNumberExpected);
 
         const updatedHtmlFetcherHelperUrl =
             this._pdfFetcherHelper.initialBaseMenuUrl + `${this._weekYear}/v-${this._weekNumberExpected}.pdf`;
