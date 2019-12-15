@@ -12,7 +12,7 @@ export class MealService {
         "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl, labels.name AS labelsName, " +
         "   dishes.description AS dishesDescription," +
         "	prices.sek AS pricesSEK, weekDays.javaScriptDayIndex AS weekDaysJavaScriptDayIndex," +
-        "	weekindexes.weekNumber AS weekindexesWeekNumber, weekindexes.weekYear AS weekindexesWeekYear" +
+        "	weekIndexes.weekNumber AS weekIndexesWeekNumber, weekIndexes.weekYear AS weekIndexesWeekYear" +
         " FROM meals" +
         "	JOIN dishes" +
         "		on dishes.id = meals.fKDishId" +
@@ -26,8 +26,8 @@ export class MealService {
         "			on areas.id = restaurants.fKAreaId" +
         "	JOIN occurrences" +
         "		on occurrences.id = meals.fKOccurrenceId" +
-        "		JOIN weekindexes" +
-        "			on weekindexes.id = occurrences.fKWeekIndexId" +
+        "		JOIN weekIndexes" +
+        "			on weekIndexes.id = occurrences.fKWeekIndexId" +
         "		JOIN weekDays" +
         "			on weekDays.id = occurrences.fKWeekDayId";
 
@@ -71,8 +71,8 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `    areas.id = @p_areaId AND` +
-            `    weekindexes.weekNumber = @p_weekNumber AND` +
-            `    weekindexes.weekYear = @p_weekYear;`;
+            `    weekIndexes.weekNumber = @p_weekNumber AND` +
+            `    weekIndexes.weekYear = @p_weekYear;`;
 
         try {
             // lets now open a new transaction:
@@ -132,8 +132,8 @@ export class MealService {
             ` WHERE` +
             `    areas.id = @p_areaId AND` +
             `    weekDays.javaScriptDayIndex = @p_javaScriptDayIndex AND` +
-            `    weekindexes.weekNumber = @p_weekNumber AND` +
-            `    weekindexes.weekYear = @p_weekYear;`;
+            `    weekIndexes.weekNumber = @p_weekNumber AND` +
+            `    weekIndexes.weekYear = @p_weekYear;`;
 
         try {
             // lets now open a new transaction:

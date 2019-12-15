@@ -34,7 +34,7 @@ BEGIN
 	SET @pWeekNumber = pWeekNumber;
 	SET @pWeekYear = pWeekYear;
 
-	INSERT INTO weekindexes(`weekNumber`,`weekYear`) VALUES (@pWeekNumber, @pWeekYear) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO weekIndexes(`weekNumber`,`weekYear`) VALUES (@pWeekNumber, @pWeekYear) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
@@ -141,8 +141,8 @@ BEGIN
 			on restaurants.id =  m.fKRestaurantId
 		JOIN occurrences
 			on occurrences.id =  m.fKOccurrenceId
-			JOIN weekindexes
-				on weekindexes.id = occurrences.fKWeekIndexId
+			JOIN weekIndexes
+				on weekIndexes.id = occurrences.fKWeekIndexId
 			JOIN weekDays
 				on weekDays.id = occurrences.fKWeekDayId
 	WHERE		
@@ -150,8 +150,8 @@ BEGIN
 		labels.name = @pLabel_Name AND 
 		prices.sek = @pPrice_SEK AND 
 		weekDays.javaScriptDayIndex = @pWeekDay_JavaScriptDayIndex AND 
-		weekindexes.weekNumber = @pWeekIndex_WeekNumber AND 
-		weekindexes.weekYear = @pWeekIndex_WeekYear;
+		weekIndexes.weekNumber = @pWeekIndex_WeekNumber AND 
+		weekIndexes.weekYear = @pWeekIndex_WeekYear;
 
 END$$
 DELIMITER ;
