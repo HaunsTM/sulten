@@ -35,5 +35,4 @@ export class EpochHelper implements IEpochHelper {
         return monthThatStartedTheWeek1to12;
     }
 
-
 }

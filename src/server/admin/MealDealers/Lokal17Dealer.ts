@@ -128,7 +128,7 @@ export class Lokal17Dealer implements IWebMealDealer {
         try {
             dishPriceWeekNumber =
                 await this.getDishPriceWeekNumber(
-                    textContentFromPdfDocument, weekDayJavascriptDayIndex, menuAlternativeIndex );
+                    textContentFromPdfDocument, weekDayJavascriptDayIndex, label, menuAlternativeIndex );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -154,7 +154,7 @@ export class Lokal17Dealer implements IWebMealDealer {
     }
 
     private async getDishPriceWeekNumber(
-        textContentFromPdfDocument: string, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
+        textContentFromPdfDocument: string, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex, label: LabelName,
         menuAlternativeIndex: number): Promise<DishPriceWeekNumber> {
 
         const dishPriceWeekNumberPromise =
@@ -166,16 +166,14 @@ export class Lokal17Dealer implements IWebMealDealer {
 
                 let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-                const rP = this.regexProvider(weekDayJavascriptDayIndex, menuAlternativeIndex);
+                const rP = this.regexProvider(weekDayJavascriptDayIndex, label, menuAlternativeIndex);
 
                 try {
                     const dishes = rP.descriptionRegex.exec(textContentFromPdfDocument);
                     dishDescription = dishes[menuAlternativeIndex];
 
-                    // priceSEK = textContentFromPdfDocument.match(rP.price_SEKRegex)[0];
                     priceSEK = rP.price_SEKRegex.exec(textContentFromPdfDocument)[1];
 
-                    // weekIndexWeekNumber = textContentFromPdfDocument.match(rP.weekNumberRegex)[0];
                     weekIndexWeekNumber = rP.weekNumberRegex.exec(textContentFromPdfDocument)[1];
                     dishPriceWeekNumber =
                         new DishPriceWeekNumber(dishDescription, priceSEK, weekIndexWeekNumber, null );
@@ -193,23 +191,39 @@ export class Lokal17Dealer implements IWebMealDealer {
     }
 
     private regexProvider(
-        weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex, menuAlternativeIndex: number): IRegexDishProviderResult {
+        weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
+        label: LabelName, menuAlternativeIndex: number): IRegexDishProviderResult {
 
         const swedishWeekDayName = this.getSwedishWeekDayNameOnLokal17( weekDayJavascriptDayIndex );
+        let descriptionRegexPattern = "";
+        let price_SEKRegexPattern = "";
 
-        const descriptionRegexPattern  = weekDayJavascriptDayIndex < 5 ?
-            `(?<=${swedishWeekDayName})\\s+(.+?)\\s+(?=(?:tis|ons|tors|fre)dag(?:ar)?)`
-            : `(?<=${swedishWeekDayName}(?:ar))\\s+(.+?)\\s+(?=(?:\\d+kr))`;
+        switch (label) {
+            case LabelName.MEAL_OF_THE_DAY:
+                descriptionRegexPattern  = weekDayJavascriptDayIndex < 5 ?
+                    `(?<=${swedishWeekDayName})\\s+(.+?)\\s+(?=(?:tis|ons|tors|fre)dag|Vegetarisk)`
+                    : `(?<=${swedishWeekDayName}ar)\\s+(.+?)(?=\\d+kr)`;
+                price_SEKRegexPattern = weekDayJavascriptDayIndex < 5 ?
+                    `(?<=${swedishWeekDayName}).+?(\\d+)kr`
+                    : `(?<=${swedishWeekDayName}ar).+?(\\d+)kr`;
+                break;
 
-        const price_SEKRegexPattern = menuAlternativeIndex < 3 ?
-            `(?:DAGENS BUFFÉ.*?(\\d+)\\skr\\b)`
-            : `(?:SOPPA MED SALLAD.*?(\\d+)\\skr\\b)`;
+            case LabelName.VEGETARIAN :
+                    descriptionRegexPattern = `(?<=Vegetarisk)\\s+(.+?)(?=\\d+kr)`;
+                    price_SEKRegexPattern = `(?<=Vegetarisk).+?(\\d+)kr`;
+                    break;
+            case LabelName.DESSERT:
+                descriptionRegexPattern =
+                    `(?<=Något Sött)(?:\\s\\s(.+?))(?:\\s\\s(.+?))?(?=\\d+kr)`;
+                price_SEKRegexPattern = `(?<=Något Sött).+?(\\d+)kr`;
+                break;
+        }
 
-        const weekNumberRegexPattern = `(?<=LUNCH VECKA)\\s*(\\d+)`;
+        const weekNumberRegexPattern = `(?<=LUNCH VECKA)\\s+(\\d+)`;
 
         const result: IRegexDishProviderResult = {
             descriptionRegex: new RegExp(descriptionRegexPattern, "gmi"),
-            price_SEKRegex: new RegExp( price_SEKRegexPattern, "gm"),
+            price_SEKRegex: new RegExp( price_SEKRegexPattern, "gmi"),
             weekNumberRegex: RegExp(weekNumberRegexPattern, "gm"),
         };
 

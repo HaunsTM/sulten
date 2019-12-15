@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 import express from "express";
 import Controller from "./interfaces/IController";
 // import errorMiddleware from "./middleware/error.middleware";

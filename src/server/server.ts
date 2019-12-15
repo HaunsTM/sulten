@@ -1,6 +1,4 @@
-import "dotenv/config";
-import "reflect-metadata";
-
+#!/usr/bin/env nodejs
 import { createConnection } from "typeorm";
 import AdminController from "./admin/AdminController";
 import App from "./app";

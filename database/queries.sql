@@ -18,7 +18,7 @@ BEGIN
 
 	SET @pJavaScriptDayIndex = pJavaScriptDayIndex;
 
-	INSERT INTO weekdays(`javaScriptDayIndex`) VALUES (@pJavaScriptDayIndex) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO weekDays(`javaScriptDayIndex`) VALUES (@pJavaScriptDayIndex) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
@@ -143,13 +143,13 @@ BEGIN
 			on occurrences.id =  m.fKOccurrenceId
 			JOIN weekindexes
 				on weekindexes.id = occurrences.fKWeekIndexId
-			JOIN weekdays
-				on weekdays.id = occurrences.fKWeekDayId
+			JOIN weekDays
+				on weekDays.id = occurrences.fKWeekDayId
 	WHERE		
 		restaurants.menuUrl = @pRestaurant_MenuUrl AND 
 		labels.name = @pLabel_Name AND 
 		prices.sek = @pPrice_SEK AND 
-		weekdays.javaScriptDayIndex = @pWeekDay_JavaScriptDayIndex AND 
+		weekDays.javaScriptDayIndex = @pWeekDay_JavaScriptDayIndex AND 
 		weekindexes.weekNumber = @pWeekIndex_WeekNumber AND 
 		weekindexes.weekYear = @pWeekIndex_WeekYear;
 

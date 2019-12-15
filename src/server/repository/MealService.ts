@@ -11,7 +11,7 @@ export class MealService {
         " SELECT" +
         "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl, labels.name AS labelsName, " +
         "   dishes.description AS dishesDescription," +
-        "	prices.sek AS pricesSEK, weekdays.javaScriptDayIndex AS weekdaysJavaScriptDayIndex," +
+        "	prices.sek AS pricesSEK, weekDays.javaScriptDayIndex AS weekDaysJavaScriptDayIndex," +
         "	weekindexes.weekNumber AS weekindexesWeekNumber, weekindexes.weekYear AS weekindexesWeekYear" +
         " FROM meals" +
         "	JOIN dishes" +
@@ -28,8 +28,8 @@ export class MealService {
         "		on occurrences.id = meals.fKOccurrenceId" +
         "		JOIN weekindexes" +
         "			on weekindexes.id = occurrences.fKWeekIndexId" +
-        "		JOIN weekdays" +
-        "			on weekdays.id = occurrences.fKWeekDayId";
+        "		JOIN weekDays" +
+        "			on weekDays.id = occurrences.fKWeekDayId";
 
     public async createAndGetMealId(webMealResult: IWebMealResult): Promise<number> {
 
@@ -94,7 +94,7 @@ export class MealService {
 
                     const labelDishPriceDays = rw.map( (ldp) => {
                         return new LabelDishPriceDay(
-                            ldp.labelsName, ldp.dishesDescription, ldp.weekdaysJavaScriptDayIndex, ldp.pricesSEK ); },
+                            ldp.labelsName, ldp.dishesDescription, ldp.weekDaysJavaScriptDayIndex, ldp.pricesSEK ); },
                     );
 
                     const restaurantName = rw[0].restaurantsName;
@@ -131,7 +131,7 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `    areas.id = @p_areaId AND` +
-            `    weekdays.javaScriptDayIndex = @p_javaScriptDayIndex AND` +
+            `    weekDays.javaScriptDayIndex = @p_javaScriptDayIndex AND` +
             `    weekindexes.weekNumber = @p_weekNumber AND` +
             `    weekindexes.weekYear = @p_weekYear;`;
 

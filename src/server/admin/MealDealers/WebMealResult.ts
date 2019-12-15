@@ -29,11 +29,11 @@ export class WebMealResult implements IWebMealResult {
     }
 
     public get dishDescription(): string {
-        return this._dishDescription;
+        return this._dishDescription.trim();
     }
 
     public get price_SEK(): string {
-        return this._priceSEK;
+        return this._priceSEK.trim();
     }
 
     public get labelName(): LabelName {
@@ -41,7 +41,7 @@ export class WebMealResult implements IWebMealResult {
     }
 
     public get menuUrl(): string {
-        return this._menuUrl;
+        return this._menuUrl.trim();
     }
 
     public get weekDayJavascriptDayIndex(): WeekDayJavascriptDayIndex {
@@ -49,11 +49,11 @@ export class WebMealResult implements IWebMealResult {
     }
 
     public get weekNumber(): string {
-        return this._weekNumber;
+        return this._weekNumber.trim();
     }
 
     public get weekYear(): string {
-        return this._weekYear;
+        return this._weekYear.trim();
     }
 
     public get fetchError(): Error {
