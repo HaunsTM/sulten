@@ -4,7 +4,7 @@
   "description": "Application set to gather restaurant menus",
   "main": "dist/app.js",
   "scripts": {
-    "prebuild": "tsconfig.json --fix",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "prestart": "yarn build",
     "start": "node .",

@@ -160,15 +160,15 @@ export class GlasklartDealer implements IWebMealDealer {
         switch (label) {
             case LabelName.MEAL_OF_THE_DAY:
                 result = {
-                    price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'${weekDay}')]/following-sibling::p[1]`,
+                    price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };
                 break;
             case LabelName.VEGETARIAN:
                 result = {
-                    price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'Veckans vegetariska')]/following-sibling::p[1]`,
+                    price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };
                 break;

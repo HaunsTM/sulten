@@ -24,4 +24,5 @@ export class AreaService {
 
 }
 
+// tslint:disable-next-line:max-line-length
 // https://levelup.gitconnected.com/complete-guide-to-using-typeorm-and-typescript-for-data-persistence-in-node-js-module-bfce169959d9

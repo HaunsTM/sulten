@@ -55,7 +55,9 @@ export class Lokal17Dealer implements IWebMealDealer {
             this._epochHelper.getMonthThatStartedTheWeek(+this._weekYear, +this._weekNumberExpected);
 
         const updatedHtmlFetcherHelperUrl =
-            this._pdfFetcherHelper.initialBaseMenuUrl + `app/uploads/${this._weekYear}/${monthThatStartedTheWeek1to12}/Lunch-vecka-${this._weekNumberExpected}-${this._weekYear}.pdf`;
+            this._pdfFetcherHelper.initialBaseMenuUrl +
+            `app/uploads/${this._weekYear}/${monthThatStartedTheWeek1to12}/` +
+            `Lunch-vecka-${this._weekNumberExpected}-${this._weekYear}.pdf`;
         this._pdfFetcherHelper.actualRestaurantMenuUrl = updatedHtmlFetcherHelperUrl;
     }
 
@@ -89,30 +91,50 @@ export class Lokal17Dealer implements IWebMealDealer {
     private getWebMealResultAForAWeek( textContentFromPdfDocument: string ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.DESSERT, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.DESSERT, 2),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.DESSERT, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.DESSERT, 2),
 
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.DESSERT, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.DESSERT, 2),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.DESSERT, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.DESSERT, 2),
 
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.DESSERT, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.DESSERT, 2),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.DESSERT, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.DESSERT, 2),
 
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.DESSERT, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.DESSERT, 2),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.DESSERT, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.DESSERT, 2),
 
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.DESSERT, 1),
-            this.webMealResult( textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.DESSERT, 2),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.DESSERT, 1),
+            this.webMealResult(
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.DESSERT, 2),
         ];
 
         return mealsForAWeek;
@@ -135,7 +157,8 @@ export class Lokal17Dealer implements IWebMealDealer {
             }
 
             if ( this._weekNumberExpected !== dishPriceWeekNumber.weekIndexWeekNumber) {
-                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${dishPriceWeekNumber.weekIndexWeekNumber}`);
+                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, ` +
+                    `but found week ${dishPriceWeekNumber.weekIndexWeekNumber}`);
             }
 
             webMealResult =

@@ -51,7 +51,7 @@ export class MealService {
             return mealId;
 
         } catch ( error ) {
-            console.log( error );
+            const breakpoint = 0;
         }
     }
 
@@ -183,4 +183,5 @@ export class MealService {
     }
 }
 
+// tslint:disable-next-line:max-line-length
 // https://levelup.gitconnected.com/complete-guide-to-using-typeorm-and-typescript-for-data-persistence-in-node-js-module-bfce169959d9
