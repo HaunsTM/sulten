@@ -3,16 +3,7 @@
   "version": "1.0.0",
   "description": "Application set to gather restaurant menus",
   "main": "dist/app.js",
-  "scripts": {
-      /*
-    "prebuild": "tsconfig.json --fix",
-    "build": "tsc",
-    "prestart": "yarn build",
-    "start": "node .",
-    "dev": "ts-node-dev --inspect=9230 -- src/server/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-    */
-    
+  "scripts": {    
     "dev": "ts-node src/app.ts",
     "start": "ts-node dist/app.js",
     "build": "tsc -p ."
