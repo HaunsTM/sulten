@@ -2,6 +2,25 @@ DROP DATABASE IF EXISTS `dbSulten`;
 CREATE DATABASE `dbSulten`;
 USE `dbSulten`;
 
+CREATE TABLE `alternatives` (
+	`id` 					            INT NOT NULL AUTO_INCREMENT,	
+
+	`index` 					        VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `labelsAlternatives` (
+	`id` 					            INT NOT NULL AUTO_INCREMENT,	
+
+	`fKAlternativeId`			        INT NOT NULL,
+	`fKLabelId`					        INT NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+
+
 CREATE TABLE `labels` (
 	`id` 					            INT NOT NULL AUTO_INCREMENT,	
 
@@ -89,6 +108,8 @@ CREATE TABLE `weekDays` (
 	PRIMARY KEY (`id`)
 );
 
+ALTER TABLE `labelsAlternatives` ADD FOREIGN KEY (`fKAlternativeId`) REFERENCES `alternatives`(`id`);
+ALTER TABLE `labelsAlternatives` ADD FOREIGN KEY (`fKLabelId`) REFERENCES `labels`(`id`);
 
 ALTER TABLE `dishes` ADD FOREIGN KEY (`fKLabelId`) REFERENCES `labels`(`id`);
 
@@ -102,6 +123,9 @@ ALTER TABLE `restaurants` ADD FOREIGN KEY (`fKAreaId`) REFERENCES `areas`(`id`);
 ALTER TABLE `occurrences` ADD FOREIGN KEY (`fKWeekIndexId`) REFERENCES `weekIndexes`(`id`);
 ALTER TABLE `occurrences` ADD FOREIGN KEY (`fKWeekDayId`) REFERENCES `weekDays`(`id`);
 
+ALTER TABLE	`alternatives` ADD UNIQUE (`index`);
+
+ALTER TABLE	`labelsAlternatives` ADD UNIQUE (`fKAlternativeId`, `fKLabelId`);
 
 ALTER TABLE	`labels` ADD UNIQUE (`name`);
 
