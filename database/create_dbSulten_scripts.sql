@@ -5,7 +5,7 @@ USE `dbSulten`;
 CREATE TABLE `alternatives` (
 	`id` 					            INT NOT NULL AUTO_INCREMENT,	
 
-	`index` 					        VARCHAR(255) NOT NULL,
+	`index` 					        INT NOT NUll,
 	
 	PRIMARY KEY (`id`)
 );

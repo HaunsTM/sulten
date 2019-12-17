@@ -38,6 +38,26 @@ INSERT INTO `labels` (`name`) VALUES ('supper');
 INSERT INTO `labels` (`name`) VALUES ('thai');
 INSERT INTO `labels` (`name`) VALUES ('vegetarian');
 
+INSERT INTO `alternatives` (`index`) VALUES (1);
+INSERT INTO `alternatives` (`index`) VALUES (2);
+INSERT INTO `alternatives` (`index`) VALUES (3);
+INSERT INTO `alternatives` (`index`) VALUES (4);
+INSERT INTO `alternatives` (`index`) VALUES (5);
+INSERT INTO `alternatives` (`index`) VALUES (6);
+INSERT INTO `alternatives` (`index`) VALUES (7);
+INSERT INTO `alternatives` (`index`) VALUES (8);
+INSERT INTO `alternatives` (`index`) VALUES (9);
+INSERT INTO `alternatives` (`index`) VALUES (10);
+INSERT INTO `alternatives` (`index`) VALUES (11);
+INSERT INTO `alternatives` (`index`) VALUES (12);
+INSERT INTO `alternatives` (`index`) VALUES (13);
+INSERT INTO `alternatives` (`index`) VALUES (14);
+INSERT INTO `alternatives` (`index`) VALUES (15);
+INSERT INTO `alternatives` (`index`) VALUES (16);
+INSERT INTO `alternatives` (`index`) VALUES (17);
+INSERT INTO `alternatives` (`index`) VALUES (18);
+INSERT INTO `alternatives` (`index`) VALUES (19);
+INSERT INTO `alternatives` (`index`) VALUES (20);
 
 INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (0);
 INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (1);
