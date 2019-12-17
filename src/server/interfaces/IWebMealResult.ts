@@ -1,7 +1,10 @@
+import { AlternativeIndex } from "../enum/AlternativeIndex";
 import { LabelName } from "../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../enum/WeekDayJavascriptDayIndex";
 
 export interface IWebMealResult {
+
+    alternativeIndex: AlternativeIndex;
 
     dishDescription: string;
 

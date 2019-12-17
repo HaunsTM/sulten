@@ -1,4 +1,4 @@
-export enum Alternative {
+export enum AlternativeIndex {
     ONE = "1",
     TWO = "2",
     THREE = "3",

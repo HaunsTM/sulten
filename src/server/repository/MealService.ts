@@ -40,13 +40,14 @@ export class MealService {
             const p_Restaurant_MenuUrl = webMealResult.menuUrl;
             const p_Price_SEK = +webMealResult.price_SEK;
             const p_Label_Name = webMealResult.labelName;
+            const pAlternative_Index = +webMealResult.alternativeIndex;
             const p_Dish_Description = webMealResult.dishDescription;
             const p_Meal_Error = webMealResult.fetchError;
 
             const mealId: number = -1;
 
             const spResult = await getConnection()
-                .query(`CALL CreateAndGetMealId(${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',${p_Price_SEK},'${p_Label_Name}','${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
+                .query(`CALL CreateAndGetMealId(${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',${p_Price_SEK},'${p_Label_Name}','${pAlternative_Index}','${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
 
             return mealId;
 

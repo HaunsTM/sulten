@@ -1,9 +1,11 @@
+import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 
 export class WebMealResult implements IWebMealResult {
 
+    private _alternativeIndex: AlternativeIndex;
     private _menuUrl: string;
     private _dishDescription: string;
     private _priceSEK: string;
@@ -15,21 +17,29 @@ export class WebMealResult implements IWebMealResult {
 
     constructor()
     constructor(menuUrl: string, dishDescription: string, priceSEK: string,
-                labelName: LabelName, weekDay: WeekDayJavascriptDayIndex,  weekNumber: string,
-                weekYear: string, fetchError: Error)
+                alternativeIndex: AlternativeIndex, labelName: LabelName, weekDay: WeekDayJavascriptDayIndex,
+                weekNumber: string,  weekYear: string, fetchError: Error)
     constructor(menuUrl?: string, dishDescription?: string, priceSEK?: string,
-                labelName?: LabelName, weekDay?: WeekDayJavascriptDayIndex,  weekNumber?: string,
-                weekYear?: string, fetchError?: Error) {
+                alternativeIndex?: AlternativeIndex, labelName?: LabelName, weekDay?: WeekDayJavascriptDayIndex, 
+                weekNumber?: string, weekYear?: string, fetchError?: Error) {
 
         this._menuUrl = menuUrl;
         this._dishDescription = dishDescription;
         this._priceSEK = priceSEK;
+        this._alternativeIndex = alternativeIndex;
         this._labelName = labelName;
         this._weekDayJavascriptDayIndex = weekDay;
         this._weekNumber = weekNumber;
         this._weekYear = weekYear;
 
         this._fetchError = fetchError;
+    }
+
+    public get alternativeIndex(): AlternativeIndex {
+        return this._alternativeIndex;
+    }
+    public set alternativeIndex(value: AlternativeIndex) {
+        this._alternativeIndex = value;
     }
 
     public get dishDescription(): string {
