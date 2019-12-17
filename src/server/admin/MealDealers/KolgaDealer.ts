@@ -1,3 +1,4 @@
+import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
 import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
@@ -42,20 +43,40 @@ export class KolgaDealer implements IWebMealDealer {
     private getWebMealResultAForAWeek( htmlDocumentFromWeb: Document ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 1),
-            this.webMealResult( htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 2),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult(
+                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
         ];
 
         return mealsForAWeek;
@@ -63,7 +84,7 @@ export class KolgaDealer implements IWebMealDealer {
 
     private async webMealResult(
         htmlDocumentFromWeb: Document, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
-        label: LabelName, menuAlternativeIndex: number): Promise<IWebMealResult> {
+        label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
@@ -73,7 +94,7 @@ export class KolgaDealer implements IWebMealDealer {
         try {
             dishPriceWeekNumber =
                 await this.getDishPriceWeekNumber(
-                    htmlDocumentFromWeb, swedishWeekDayNameOnKolga, menuAlternativeIndex );
+                    htmlDocumentFromWeb, swedishWeekDayNameOnKolga, alternativeIndex );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -86,12 +107,12 @@ export class KolgaDealer implements IWebMealDealer {
             webMealResult =
                 new WebMealResult(
                     this.initialBaseMenuUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDayJavascriptDayIndex,
                     dishPriceWeekNumber.weekIndexWeekNumber, this._weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.initialBaseMenuUrl, "", "", label,
+                new WebMealResult( this.initialBaseMenuUrl, "", "", alternativeIndex, label,
                     weekDayJavascriptDayIndex, this._weekNumberExpected, this._weekYear, e);
         }
 
@@ -155,11 +176,11 @@ export class KolgaDealer implements IWebMealDealer {
         return dishPriceWeekNumber;
     }
 
-    private xpathProvider(weekDayName: string, menuAlternativeIndex: number): IXPathDishProviderResult {
+    private xpathProvider(weekDayName: string, alternativeIndex: AlternativeIndex): IXPathDishProviderResult {
 
         const result: IXPathDishProviderResult = {
-            descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${menuAlternativeIndex}]`,
-            price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${menuAlternativeIndex}]`,
+            descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${alternativeIndex}]`,
+            price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${alternativeIndex}]`,
             weekNumberXPath: `//a[contains(@class,'btn btn-info dropdown-toggle')]/text()[contains(.,'Vecka ')]`,
         };
 

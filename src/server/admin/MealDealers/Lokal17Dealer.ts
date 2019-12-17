@@ -1,3 +1,4 @@
+import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
 import { IEpochHelper } from "../../interfaces/IEpochHelper";
@@ -92,49 +93,69 @@ export class Lokal17Dealer implements IWebMealDealer {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY,
+                LabelName.VEGETARIAN, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.DESSERT, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY,
+                LabelName.DESSERT, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY, LabelName.DESSERT, 2),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.MONDAY,
+                LabelName.DESSERT, AlternativeIndex.TWO),
 
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY,
+                LabelName.VEGETARIAN, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.DESSERT, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY,
+                LabelName.DESSERT, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY, LabelName.DESSERT, 2),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.TUESDAY,
+                LabelName.DESSERT, AlternativeIndex.TWO),
 
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY,
+                LabelName.VEGETARIAN, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.DESSERT, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY,
+                LabelName.DESSERT, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.DESSERT, 2),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.WEDNESDAY,
+                LabelName.DESSERT, AlternativeIndex.TWO),
 
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY,
+                LabelName.VEGETARIAN, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.DESSERT, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY,
+                LabelName.DESSERT, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY, LabelName.DESSERT, 2),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.THURSDAY,
+                LabelName.DESSERT, AlternativeIndex.TWO),
 
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY,
+                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY,
+                LabelName.VEGETARIAN, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.DESSERT, 1),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY,
+                LabelName.DESSERT, AlternativeIndex.ONE),
             this.webMealResult(
-                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY, LabelName.DESSERT, 2),
+                textContentFromPdfDocument, WeekDayJavascriptDayIndex.FRIDAY,
+                LabelName.DESSERT, AlternativeIndex.TWO),
         ];
 
         return mealsForAWeek;
@@ -142,7 +163,7 @@ export class Lokal17Dealer implements IWebMealDealer {
 
     private async webMealResult(
         textContentFromPdfDocument: string, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
-        label: LabelName, menuAlternativeIndex: number): Promise<IWebMealResult> {
+        label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
@@ -150,7 +171,7 @@ export class Lokal17Dealer implements IWebMealDealer {
         try {
             dishPriceWeekNumber =
                 await this.getDishPriceWeekNumber(
-                    textContentFromPdfDocument, weekDayJavascriptDayIndex, label, menuAlternativeIndex );
+                    textContentFromPdfDocument, weekDayJavascriptDayIndex, label, alternativeIndex );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -164,12 +185,12 @@ export class Lokal17Dealer implements IWebMealDealer {
             webMealResult =
                 new WebMealResult(
                     this.initialBaseMenuUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDayJavascriptDayIndex,
                     dishPriceWeekNumber.weekIndexWeekNumber, this._weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.initialBaseMenuUrl, "", "", label,
+                new WebMealResult( this.initialBaseMenuUrl, "", "", alternativeIndex, label,
                     weekDayJavascriptDayIndex, this._weekNumberExpected, this._weekYear, e);
         }
 
@@ -178,7 +199,7 @@ export class Lokal17Dealer implements IWebMealDealer {
 
     private async getDishPriceWeekNumber(
         textContentFromPdfDocument: string, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex, label: LabelName,
-        menuAlternativeIndex: number): Promise<DishPriceWeekNumber> {
+        alternativeIndex: AlternativeIndex): Promise<DishPriceWeekNumber> {
 
         const dishPriceWeekNumberPromise =
             new Promise<DishPriceWeekNumber>( (res, rej) => {
@@ -189,11 +210,11 @@ export class Lokal17Dealer implements IWebMealDealer {
 
                 let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-                const rP = this.regexProvider(weekDayJavascriptDayIndex, label, menuAlternativeIndex);
+                const rP = this.regexProvider(weekDayJavascriptDayIndex, label, alternativeIndex);
 
                 try {
                     const dishes = rP.descriptionRegex.exec(textContentFromPdfDocument);
-                    dishDescription = dishes[menuAlternativeIndex];
+                    dishDescription = dishes[alternativeIndex];
 
                     priceSEK = rP.price_SEKRegex.exec(textContentFromPdfDocument)[1];
 

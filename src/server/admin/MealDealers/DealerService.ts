@@ -1,7 +1,6 @@
 import { EpochHelper } from "../../helpers/EpochHelper";
 import { HtmlFetcher } from "../../helpers/HtmlFetcher";
 import { PdfFetcher } from "../../helpers/PdfFetcher";
-import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { RestaurantService } from "../../repository/RestaurantService";

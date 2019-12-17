@@ -38,6 +38,7 @@ INSERT INTO `labels` (`name`) VALUES ('supper');
 INSERT INTO `labels` (`name`) VALUES ('thai');
 INSERT INTO `labels` (`name`) VALUES ('vegetarian');
 
+INSERT INTO `alternatives` (`index`) VALUES (-1);
 INSERT INTO `alternatives` (`index`) VALUES (1);
 INSERT INTO `alternatives` (`index`) VALUES (2);
 INSERT INTO `alternatives` (`index`) VALUES (3);

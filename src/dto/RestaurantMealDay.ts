@@ -1,18 +1,18 @@
-import { LabelDishPriceDay } from "./LabelDishPriceDay";
+import { AlternativeLabelDishPriceDay } from "./AlternativeLabelDishPriceDay";
 
 export class RestaurantMealDay {
 
     public restaurantName: string;
     public restaurantMenuUrl: string;
-    public labelDishPrices: LabelDishPriceDay[];
+    public alternativeLabelDishPrices: AlternativeLabelDishPriceDay[];
 
     constructor(
         restaurantName: string,
         restaurantMenuUrl: string,
-        labelDishPrices: LabelDishPriceDay[]) {
+        alternativeLabelDishPrices: AlternativeLabelDishPriceDay[]) {
 
             this.restaurantName = restaurantName;
             this.restaurantMenuUrl = restaurantMenuUrl;
-            this.labelDishPrices = labelDishPrices;
+            this.alternativeLabelDishPrices = alternativeLabelDishPrices;
     }
 }

@@ -19,7 +19,7 @@ CREATE PROCEDURE getAlternativeId (
 	OUT idOut 								INT)
 BEGIN
 
-	SET @pName = pName;
+	SET @pIndex = pIndex;
 
 	INSERT INTO alternatives(`index`) VALUES (@pIndex) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
@@ -29,15 +29,15 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE getLabelAlternativeId (
-	IN fKLabelId					    	INT,
-	IN fKAlternativeId			    		INT,
+	IN pFKLabelId					    	INT,
+	IN pFKAlternativeId			    		INT,
 	OUT idOut 								INT)
 BEGIN
 
 	SET @pFKLabelId = pFKLabelId;
 	SET @pFKAlternativeId = pFKAlternativeId;
 
-	INSERT INTO dishes(`fKLabelId`,`fKAlternativeId`) VALUES (@pFKLabelId, @pFKAlternativeId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO labelsalternatives(`fKLabelId`,`fKAlternativeId`) VALUES (@pFKLabelId, @pFKAlternativeId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 		
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
@@ -152,7 +152,8 @@ CREATE PROCEDURE deletePossibleOldMeal (
 	IN pWeekIndex_WeekYear          	    INT,
 	IN pRestaurant_MenuUrl          	    VARCHAR(255),
 	IN pPrice_SEK                   	    DECIMAL(6, 2),
-	IN pLabel_Name                  	    VARCHAR(255))
+	IN pLabel_Name                  	    VARCHAR(255),    
+	IN pAlternative_Index					INT)
 BEGIN
 
     SET @pWeekDay_JavaScriptDayIndex = pWeekDay_JavaScriptDayIndex;
@@ -161,6 +162,7 @@ BEGIN
     SET @pRestaurant_MenuUrl = pRestaurant_MenuUrl;
     SET @pPrice_SEK = pPrice_SEK;
     SET @pLabel_Name = pLabel_Name;
+    SET @pAlternative_Index = pAlternative_Index;
 
 	DELETE m
 	FROM meals AS m
@@ -168,6 +170,12 @@ BEGIN
 			on dishes.id =  m.fKDishId
 			JOIN labels
 				on labels.id = dishes.fKLabelId
+
+	            JOIN labelsalternatives	
+                    on labelsalternatives.fKLabelId = labels.id
+	            JOIN alternatives
+                    on alternatives.id = labelsalternatives.fKAlternativeId	
+
 		JOIN prices
 			on prices.id =  m.fKPriceId
 		JOIN restaurants
@@ -180,7 +188,8 @@ BEGIN
 				on weekDays.id = occurrences.fKWeekDayId
 	WHERE		
 		restaurants.menuUrl = @pRestaurant_MenuUrl AND 
-		labels.name = @pLabel_Name AND 
+		labels.name = @pLabel_Name AND         
+		alternatives.index = @pAlternative_Index AND 
 		prices.sek = @pPrice_SEK AND 
 		weekDays.javaScriptDayIndex = @pWeekDay_JavaScriptDayIndex AND 
 		weekIndexes.weekNumber = @pWeekIndex_WeekNumber AND 
@@ -221,9 +230,9 @@ BEGIN
 	CALL getPriceId(@pPrice_SEK, @PriceId);    
 	CALL getLabelId(@pLabel_Name, @LabelId);
 	CALL getAlternativeId(@pAlternative_Index, @AlternativeId);	
-	CALL getLabelAlternativeId(@LabelId, @AlternativeId);
+	CALL getLabelAlternativeId(@LabelId, @AlternativeId, @LabelAlternativeId);
 	CALL getDishId(@pDish_Description, @LabelId, @DishId);
-    -- CALL deletePossibleOldMeal(@pWeekDay_JavaScriptDayIndex, @pWeekIndex_WeekNumber, @pWeekIndex_WeekYear, @pRestaurant_MenuUrl, @pPrice_SEK, @pLabel_Name);
+    CALL deletePossibleOldMeal(@pWeekDay_JavaScriptDayIndex, @pWeekIndex_WeekNumber, @pWeekIndex_WeekYear, @pRestaurant_MenuUrl, @pPrice_SEK, @pLabel_Name, @pAlternative_Index);
 
 	INSERT INTO meals(`fKDishId`, `fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `error`) 
         VALUES (@DishId, @PriceId, @OccurenceId, @RestaurantId, @pMeal_Error) 

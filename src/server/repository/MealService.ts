@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { getConnection } from "typeorm";
-import { LabelDishPrice } from "../../dto/LabelDishPrice";
-import { LabelDishPriceDay } from "../../dto/LabelDishPriceDay";
+import { AlternativeLabelDishPrice } from "../../dto/AlternativeLabelDishPrice";
+import { AlternativeLabelDishPriceDay } from "../../dto/AlternativeLabelDishPriceDay";
 import { RestaurantMeal } from "../../dto/RestaurantMeal";
 import { RestaurantMealDay } from "../../dto/RestaurantMealDay";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
@@ -9,7 +9,9 @@ export class MealService {
 
     private readonly MEAL_SQL =
         " SELECT" +
-        "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl, labels.name AS labelsName, " +
+        "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl," +
+        "   alternatives.index AS alternativesIndex," +
+        "   labels.name AS labelsName, " +
         "   dishes.description AS dishesDescription," +
         "	prices.sek AS pricesSEK, weekDays.javaScriptDayIndex AS weekDaysJavaScriptDayIndex," +
         "	weekIndexes.weekNumber AS weekIndexesWeekNumber, weekIndexes.weekYear AS weekIndexesWeekYear" +
@@ -18,6 +20,14 @@ export class MealService {
         "		on dishes.id = meals.fKDishId" +
         "		JOIN labels" +
         "			on labels.id = dishes.fKLabelId" +
+
+        
+        "		    JOIN labelsalternatives" +
+        "			    on labelsalternatives.fKLabelId = labels.id" +
+        "		        JOIN alternatives" +
+        "			        on alternatives.id = labelsalternatives.fKAlternativeId" +
+
+
         "	JOIN prices" +
         "		on prices.id = meals.fKPriceId" +
         "	JOIN restaurants" +
@@ -47,7 +57,9 @@ export class MealService {
             const mealId: number = -1;
 
             const spResult = await getConnection()
-                .query(`CALL CreateAndGetMealId(${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',${p_Price_SEK},'${p_Label_Name}','${pAlternative_Index}','${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
+                .query( `CALL CreateAndGetMealId(` +
+                        `${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',` +
+                        `${p_Price_SEK},'${p_Label_Name}',${pAlternative_Index},'${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
 
             return mealId;
 
@@ -94,7 +106,8 @@ export class MealService {
                 .map( ( rw ) => {
 
                     const labelDishPriceDays = rw.map( (ldp) => {
-                        return new LabelDishPriceDay(
+                        return new AlternativeLabelDishPriceDay(
+                            ldp.alternativesIndex,
                             ldp.labelsName, ldp.dishesDescription, ldp.weekDaysJavaScriptDayIndex, ldp.pricesSEK ); },
                     );
 
@@ -156,7 +169,8 @@ export class MealService {
                     .map( ( rw ) => {
 
                         const labelDishPrice = rw.map( (ldp) => {
-                            return new LabelDishPrice(
+                            return new AlternativeLabelDishPrice(
+                                ldp.alternativesIndex,
                                 ldp.labelsName, ldp.dishesDescription, ldp.pricesSEK ); },
                         );
 
