@@ -1,7 +1,7 @@
 
 export interface IWebMenuUrl {
 
-    actualRestaurantMenuUrl: string;
+    getActualRestaurantMenuUrlAsync: Promise<string>;
 
     initialBaseMenuUrl: string;
 
