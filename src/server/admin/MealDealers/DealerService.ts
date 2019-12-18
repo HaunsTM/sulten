@@ -25,8 +25,9 @@ export class DealerService {
                 new HtmlFetcher("https://lokal17.se/"), weekYear, weekIndex ),
             new MiamariasDealer(
                 new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
-            new RestaurangVariationDealer(
-                new PdfFetcher("https://www.nyavariation.se/files/matsedel/"), weekYear, weekIndex ),
+            await RestaurangVariationDealer.GetRestaurangVariationDealerAsync(
+                new PdfFetcher("https://www.nyavariation.se/matsedel/"),
+                new HtmlFetcher("https://www.nyavariation.se/matsedel/"), weekYear, weekIndex ),
         ];
 
         return allDealers;

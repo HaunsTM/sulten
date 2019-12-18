@@ -34,7 +34,7 @@ export class MiamariasDealer implements IWebMealDealer {
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
 
-        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek( );
+        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
 
         return mealsForAWeek;

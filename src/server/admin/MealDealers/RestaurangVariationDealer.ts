@@ -1,6 +1,7 @@
 import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
+import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
 import { IPdfFetcherHelper } from "../../interfaces/IPdfFetcherHelper";
 import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
@@ -10,11 +11,38 @@ import { WebMealResult } from "./WebMealResult";
 
 export class RestaurangVariationDealer implements IWebMealDealer {
 
+    public static async GetRestaurangVariationDealerAsync(
+        pdfFetcherHelper: IPdfFetcherHelper,
+        menuUrlFetcher: IHtmlFetcherHelper,
+        weekYear: string,
+        weekNumberExpected: string): Promise<RestaurangVariationDealer> {
+
+        pdfFetcherHelper.actualRestaurantMenuUrl =
+            await RestaurangVariationDealer.actualRestaurantMenuUrl(menuUrlFetcher);
+
+        const restaurangVariationDealer =
+            new RestaurangVariationDealer(pdfFetcherHelper, weekYear, weekNumberExpected);
+
+        return restaurangVariationDealer;
+    }
+
+    private static async actualRestaurantMenuUrl(menuUrlFetcher: IHtmlFetcherHelper): Promise<string> {
+        const xPath = "//h2[contains(.,'matsedel')]/a/@href";
+
+        const aNodeXPathResult = await menuUrlFetcher.contentFromHtmlDocument(xPath);
+        const aHref = aNodeXPathResult.iterateNext().nodeValue;
+        const baseUrl = new URL(menuUrlFetcher.initialBaseMenuUrl);
+
+        const actualRestaurantMenuUrl = `${baseUrl.protocol}//${baseUrl.host}${aHref}`;
+
+        return actualRestaurantMenuUrl;
+    }
+
     private _pdfFetcherHelper: IPdfFetcherHelper = null;
     private _weekYear: string = "";
     private _weekNumberExpected: string = "";
 
-    constructor(
+    private constructor(
         pdfFetcherHelper: IPdfFetcherHelper,
         weekYear: string,
         weekNumberExpected: string) {
@@ -22,8 +50,6 @@ export class RestaurangVariationDealer implements IWebMealDealer {
         this._pdfFetcherHelper = pdfFetcherHelper;
         this._weekYear = weekYear;
         this._weekNumberExpected = weekNumberExpected;
-
-        this.initialize();
     }
 
     get initialBaseMenuUrl(): string {
@@ -44,18 +70,6 @@ export class RestaurangVariationDealer implements IWebMealDealer {
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
 
         return mealsForAWeek;
-    }
-
-    private updateCurrentHtmlFetcherHelperUrl() {
-
-        const updatedHtmlFetcherHelperUrl =
-            this._pdfFetcherHelper.initialBaseMenuUrl + `${this._weekYear}/v-${this._weekNumberExpected}.pdf`;
-
-        this._pdfFetcherHelper.actualRestaurantMenuUrl = updatedHtmlFetcherHelperUrl;
-    }
-
-    private initialize(): void {
-        this.updateCurrentHtmlFetcherHelperUrl();
     }
 
     private getSwedishWeekDayNameOnVariation( weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex ): string {
