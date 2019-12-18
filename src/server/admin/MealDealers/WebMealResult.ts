@@ -20,7 +20,7 @@ export class WebMealResult implements IWebMealResult {
                 alternativeIndex: AlternativeIndex, labelName: LabelName, weekDay: WeekDayJavascriptDayIndex,
                 weekNumber: string,  weekYear: string, fetchError: Error)
     constructor(menuUrl?: string, dishDescription?: string, priceSEK?: string,
-                alternativeIndex?: AlternativeIndex, labelName?: LabelName, weekDay?: WeekDayJavascriptDayIndex, 
+                alternativeIndex?: AlternativeIndex, labelName?: LabelName, weekDay?: WeekDayJavascriptDayIndex,
                 weekNumber?: string, weekYear?: string, fetchError?: Error) {
 
         this._menuUrl = menuUrl;

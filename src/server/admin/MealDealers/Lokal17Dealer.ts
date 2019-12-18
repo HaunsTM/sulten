@@ -1,7 +1,8 @@
+import { JSDOM } from "jsdom";
 import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
-import { IEpochHelper } from "../../interfaces/IEpochHelper";
+import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
 import { IPdfFetcherHelper } from "../../interfaces/IPdfFetcherHelper";
 import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
@@ -11,23 +12,42 @@ import { WebMealResult } from "./WebMealResult";
 
 export class Lokal17Dealer implements IWebMealDealer {
 
-    private _epochHelper: IEpochHelper;
+    public static async GetLokal17DealerAsync(
+        pdfFetcherHelper: IPdfFetcherHelper,
+        menuUrlFetcher: IHtmlFetcherHelper,
+        weekYear: string,
+        weekNumberExpected: string): Promise<Lokal17Dealer> {
+
+        const urlWhereToFindMenuUrl = pdfFetcherHelper.initialBaseMenuUrl;
+        pdfFetcherHelper.actualRestaurantMenuUrl =
+            await Lokal17Dealer.actualRestaurantMenuUrl(menuUrlFetcher);
+
+        const lokal17Dealer =
+            new Lokal17Dealer(pdfFetcherHelper, weekYear, weekNumberExpected);
+
+        return lokal17Dealer;
+    }
+
+    private static async actualRestaurantMenuUrl(menuUrlFetcher: IHtmlFetcherHelper): Promise<string> {
+        const xPath = "//article[@id='food']//a[contains(.,'Lunchmeny')]/@href";
+
+        const aNodeXPathResult = await menuUrlFetcher.contentFromHtmlDocument(xPath);
+        const aHref = aNodeXPathResult.iterateNext().nodeValue;
+        return aHref;
+    }
+
     private _pdfFetcherHelper: IPdfFetcherHelper;
     private _weekYear: string;
     private _weekNumberExpected: string;
 
-    constructor(
+    private constructor(
         pdfFetcherHelper: IPdfFetcherHelper,
-        epochHelper: IEpochHelper,
         weekYear: string,
         weekNumberExpected: string) {
 
         this._pdfFetcherHelper = pdfFetcherHelper;
-        this._epochHelper = epochHelper;
         this._weekYear = weekYear;
         this._weekNumberExpected = weekNumberExpected;
-
-        this.initialize();
     }
 
     get initialBaseMenuUrl(): string {
@@ -49,21 +69,6 @@ export class Lokal17Dealer implements IWebMealDealer {
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
 
         return mealsForAWeek;
-    }
-
-    private updateCurrentHtmlFetcherHelperUrl() {
-        const monthThatStartedTheWeek1to12 =
-            this._epochHelper.getMonthThatStartedTheWeek(+this._weekYear, +this._weekNumberExpected);
-
-        const updatedHtmlFetcherHelperUrl =
-            this._pdfFetcherHelper.initialBaseMenuUrl +
-            `app/uploads/${this._weekYear}/${monthThatStartedTheWeek1to12}/` +
-            `Lunch-vecka-${this._weekNumberExpected}-${this._weekYear}.pdf`;
-        this._pdfFetcherHelper.actualRestaurantMenuUrl = updatedHtmlFetcherHelperUrl;
-    }
-
-    private initialize(): void {
-        this.updateCurrentHtmlFetcherHelperUrl();
     }
 
     private getSwedishWeekDayNameOnLokal17( weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex ): string {

@@ -24,8 +24,10 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
      * Returns trimmed Node.textContent.toString of the text content of a node and its descendants.
      * @param xpathExpression - XPath which should be used to parse a HTML-dom
      */
-    public textContentFromHtmlDocument( htmlDocumentFromWeb: Document, xpathExpression: string ): string {
-        const evaluatedHtmlDocument = this.evaluatedHtmlDocument( htmlDocumentFromWeb, xpathExpression);
+    public async textContentFromHtmlDocument( xpathExpression: string ): Promise<string> {
+        const XPATHRESULT_FIRST_ORDERED_NODE_TYPE = 9;
+        const evaluatedHtmlDocument =
+            await this.evaluatedHtmlDocument( xpathExpression, XPATHRESULT_FIRST_ORDERED_NODE_TYPE);
 
         if (!evaluatedHtmlDocument.singleNodeValue) {
             throw Error(`Couldn't find a value for xpath "${xpathExpression}" on "${this.actualRestaurantMenuUrl}".`);
@@ -42,10 +44,26 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
             throw Error("Couldn't get textContent for xpath " +
                         `"${xpathExpression}" on "${this.actualRestaurantMenuUrl}".`);
         }
+    }
+    public async contentFromHtmlDocument( xpathExpression: string ): Promise<XPathResult> {
+
+        try {
+            const XPATHRESULT_ANY_TYPE = 0;
+            const evaluatedHtmlDocument =
+                await this.evaluatedHtmlDocument( xpathExpression, XPATHRESULT_ANY_TYPE);
+
+            return evaluatedHtmlDocument;
+
+        } catch ( e ) {
+
+            throw Error("Couldn't get XPathResult for xpath " +
+                        `"${xpathExpression}" on "${this.actualRestaurantMenuUrl}".`);
+        }
 
     }
 
-    public async htmlDocumentFromWeb(): Promise<Document> {
+
+    private async htmlDocumentFromWeb(): Promise<Document> {
         try {
             const jsDom = await JSDOM.fromURL( this.actualRestaurantMenuUrl );
             const htmlDocumentFromWeb = jsDom.window.document;
@@ -57,12 +75,12 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
         }
     }
 
-    private evaluatedHtmlDocument( htmlDocumentFromWeb: Document, xpathExpression: string ): XPathResult {
+    private async evaluatedHtmlDocument( xpathExpression: string, nodeType: number ): Promise<XPathResult> {
 
-        const FIRST_ORDERED_NODE_TYPE = 9;
+        const htmlDocument = await this.htmlDocumentFromWeb();
 
         const evaluated =
-        htmlDocumentFromWeb.evaluate(xpathExpression, htmlDocumentFromWeb, null, FIRST_ORDERED_NODE_TYPE, null);
+            htmlDocument.evaluate(xpathExpression, htmlDocument, null, nodeType, null);
 
         return evaluated;
     }

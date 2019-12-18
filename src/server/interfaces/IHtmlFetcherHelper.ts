@@ -2,8 +2,7 @@ import { IWebMenuUrl } from "./IWebMenuUrl";
 
 export interface IHtmlFetcherHelper extends IWebMenuUrl {
 
-    textContentFromHtmlDocument(htmlDocumentFromWeb: Document, xpathExpression: string): string;
-
-    htmlDocumentFromWeb(): Promise<Document>;
+    contentFromHtmlDocument( xpathExpression: string): Promise<XPathResult>;
+    textContentFromHtmlDocument( xpathExpression: string): Promise<string>;
 
 }

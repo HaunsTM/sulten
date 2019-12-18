@@ -34,71 +34,55 @@ export class MiamariasDealer implements IWebMealDealer {
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
 
-        const htmlDocumentFromWeb = await this._htmlFetcherHelper.htmlDocumentFromWeb();
-        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek( htmlDocumentFromWeb );
+        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek( );
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
+
         return mealsForAWeek;
     }
 
-    private getWebMealResultAForAWeek( htmlDocumentFromWeb: Document ): Array<Promise<IWebMealResult>> {
+    private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
                 LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
                 LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
                 LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
                 LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
                 LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
                 LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
                 LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
                 LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
                 LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
                 LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
         ];
 
         return mealsForAWeek;
     }
 
-    private async webMealResult(
-        htmlDocumentFromWeb: Document, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
+    private async webMealResult( weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
         label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
@@ -109,8 +93,7 @@ export class MiamariasDealer implements IWebMealDealer {
 
         try {
             dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber(
-                    htmlDocumentFromWeb, swedishWeekDayName, swedishDishLabelOnMiaMarias );
+                await this.getDishPriceWeekNumber( swedishWeekDayName, swedishDishLabelOnMiaMarias );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -178,7 +161,7 @@ export class MiamariasDealer implements IWebMealDealer {
     }
 
     private async getDishPriceWeekNumber(
-        htmlDocumentFromWeb: Document, swedishWeekDayName: string,
+        swedishWeekDayName: string,
         swedishDishLabelOnMiaMarias: string ): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
@@ -192,14 +175,14 @@ export class MiamariasDealer implements IWebMealDealer {
 
         try {
             dishDescription =
-                this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.descriptionXPath);
+                await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.descriptionXPath);
 
             priceSEK =
-                ( this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.price_SEKXPath ))
+                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.price_SEKXPath ))
                 .match(/\d+(?=\s?kr)/)[0];
 
             weekIndexWeekNumber =
-                (this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.weekNumberXPath ))
+                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.weekNumberXPath ))
                 .match(/(?<=\s*Vecka\s*)\d+/)[0];
         } catch ( error ) {
             fetchError = error;

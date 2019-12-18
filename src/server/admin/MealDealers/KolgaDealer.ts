@@ -33,57 +33,44 @@ export class KolgaDealer implements IWebMealDealer {
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
-
-        const htmlDocumentFromWeb = await this._htmlFetcherHelper.htmlDocumentFromWeb();
-        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek( htmlDocumentFromWeb );
+        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
         return mealsForAWeek;
     }
 
-    private getWebMealResultAForAWeek( htmlDocumentFromWeb: Document ): Array<Promise<IWebMealResult>> {
+    private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
         ];
 
         return mealsForAWeek;
     }
 
-    private async webMealResult(
-        htmlDocumentFromWeb: Document, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
+    private async webMealResult( weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
         label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
@@ -93,8 +80,7 @@ export class KolgaDealer implements IWebMealDealer {
 
         try {
             dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber(
-                    htmlDocumentFromWeb, swedishWeekDayNameOnKolga, alternativeIndex );
+                await this.getDishPriceWeekNumber( swedishWeekDayNameOnKolga, alternativeIndex );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -142,8 +128,7 @@ export class KolgaDealer implements IWebMealDealer {
         return swedishWeekDayName;
     }
 
-    private async getDishPriceWeekNumber(
-        htmlDocumentFromWeb: Document, weekDayName: string,
+    private async getDishPriceWeekNumber(  weekDayName: string,
         menuAlternativeIndex: number): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
@@ -157,14 +142,14 @@ export class KolgaDealer implements IWebMealDealer {
 
         try {
             dishDescription =
-                this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.descriptionXPath);
+                await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.descriptionXPath );
 
             priceSEK =
-                ( this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.price_SEKXPath ))
+                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.price_SEKXPath ))
                 .match(/\d+(?=\s?kr)/)[0];
 
             weekIndexWeekNumber =
-                (this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xpath.weekNumberXPath))
+                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.weekNumberXPath ) )
                 .match(/(?<=\s*Vecka\s*)\d+/)[0];
 
         } catch ( error ) {

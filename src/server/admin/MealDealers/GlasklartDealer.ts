@@ -34,48 +34,38 @@ export class GlasklartDealer implements IWebMealDealer {
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
 
-        const htmlDocumentFromWeb = await this._htmlFetcherHelper.htmlDocumentFromWeb();
-        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek( htmlDocumentFromWeb );
+        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
+
         return mealsForAWeek;
     }
 
-    private getWebMealResultAForAWeek( htmlDocumentFromWeb: Document ): Array<Promise<IWebMealResult>> {
+    private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.MONDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.TUESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.WEDNESDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.THURSDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
                 LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult(
-                htmlDocumentFromWeb, WeekDayJavascriptDayIndex.FRIDAY,
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
                 LabelName.VEGETARIAN, AlternativeIndex.ONE),
         ];
 
@@ -83,7 +73,7 @@ export class GlasklartDealer implements IWebMealDealer {
     }
 
     private async webMealResult(
-        htmlDocumentFromWeb: Document, weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
+        weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
         label: LabelName, alternativeIndex: AlternativeIndex ): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
@@ -94,8 +84,7 @@ export class GlasklartDealer implements IWebMealDealer {
 
         try {
             dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber(
-                    htmlDocumentFromWeb, xPath);
+                await this.getDishPriceWeekNumber( xPath );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -144,8 +133,7 @@ export class GlasklartDealer implements IWebMealDealer {
         return swedishWeekDayName;
     }
 
-    private async getDishPriceWeekNumber(
-        htmlDocumentFromWeb: Document, xPath: IXPathDishProviderResult ): Promise<DishPriceWeekNumber> {
+    private async getDishPriceWeekNumber( xPath: IXPathDishProviderResult ): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
         let priceSEK: string;
@@ -156,14 +144,14 @@ export class GlasklartDealer implements IWebMealDealer {
 
         try {
             dishDescription =
-                this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xPath.descriptionXPath);
+                await this._htmlFetcherHelper.textContentFromHtmlDocument(xPath.descriptionXPath);
 
             priceSEK =
-                ( this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xPath.price_SEKXPath ))
+                ( await this._htmlFetcherHelper.textContentFromHtmlDocument(xPath.price_SEKXPath ))
                 .match(/\d+(?=\s?kr)/)[0];
 
             weekIndexWeekNumber =
-                (this._htmlFetcherHelper.textContentFromHtmlDocument( htmlDocumentFromWeb, xPath.weekNumberXPath ))
+                ( await this._htmlFetcherHelper.textContentFromHtmlDocument(xPath.weekNumberXPath ))
                 .match(/(?<=[Vv.]+\s?)\d+/)[0];
         } catch ( error ) {
             fetchError = error;

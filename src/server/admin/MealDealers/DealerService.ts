@@ -13,15 +13,16 @@ import { RestaurangVariationDealer } from "./RestaurangVariationDealer";
 
 export class DealerService {
 
-    public allDealers(weekYear: string, weekIndex: string): IWebMealDealer[] {
+    public async allDealers(weekYear: string, weekIndex: string): Promise<IWebMealDealer[]> {
         const allDealers: IWebMealDealer[] = [
 
             new GlasklartDealer(
                 new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
             new KolgaDealer(
                 new HtmlFetcher("https://kolga.gastrogate.com/lunch/"), weekYear, weekIndex ),
-            new Lokal17Dealer(
-                new PdfFetcher("https://lokal17.se/"), new EpochHelper(), weekYear, weekIndex ),
+            await Lokal17Dealer.GetLokal17DealerAsync(
+                new PdfFetcher("https://lokal17.se/"),
+                new HtmlFetcher("https://lokal17.se/"), weekYear, weekIndex ),
             new MiamariasDealer(
                 new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
             new RestaurangVariationDealer(
@@ -41,7 +42,7 @@ export class DealerService {
                 return r.menuUrl;
             });
 
-        const allDealers = this.allDealers(weekYear, weekIndex);
+        const allDealers = await this.allDealers(weekYear, weekIndex);
 
         const activeDealers = allDealers.filter( (dealer) => {
             return activeRestaurantsUrls.includes(dealer.initialBaseMenuUrl);
