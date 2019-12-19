@@ -1,5 +1,6 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
+import { logger } from "../helpers/default.logger";
 import IController from "../interfaces/IController";
 import { MealService } from "../repository/MealService";
 import { DealerService } from "./MealDealers/DealerService";
@@ -28,6 +29,7 @@ export default class AdminController implements IController {
             const mealService = new MealService();
 
             const allMeals = await dealerService.mealsFromActiveDealers(weekYear, weekIndex);
+            logger.info(`Fetched ${allMeals.length} meal(s)`);
 
             await mealService.bulkInsert(allMeals);
             response.send(allMeals);

@@ -1,4 +1,4 @@
-import { EpochHelper } from "../../helpers/EpochHelper";
+import { logger } from "../../helpers/default.logger";
 import { HtmlFetcher } from "../../helpers/HtmlFetcher";
 import { PdfFetcher } from "../../helpers/PdfFetcher";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
@@ -55,8 +55,11 @@ export class DealerService {
     public async mealsFromActiveDealers(weekYear: string, weekIndex: string): Promise<IWebMealResult[]> {
 
         const activeDealers = await this.activeDealers(weekYear, weekIndex);
-        const activeDealersMenuFetcherJobs = activeDealers.map( (d) => {
-            return d.mealsFromWeb();
+        const activeDealersMenuFetcherJobs = activeDealers.map( async (d) => {
+            const mealsFromWeb = await d.mealsFromWeb();
+            
+            logger.debug(`Meals from active dealer url: ${d.actualRestaurantMenuUrl}. Meals ${mealsFromWeb.map( (r) => { return !r.fetchError ? r.dishDescription : r.fetchError} ).join(", ")}`);
+            return mealsFromWeb;
         });
 
         const mealsFromActiveDealers = (await Promise.all(activeDealersMenuFetcherJobs)).flatMap( (d) => d);

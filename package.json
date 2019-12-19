@@ -24,10 +24,12 @@
   "dependencies": {
     "@types/jsdom": "^12.2.4",
     "@types/lodash": "^4.14.149",
+    "@types/morgan": "^1.7.37",
     "@types/pdfjs-dist": "^2.1.2",
     "express": "^4.17.1",
     "jsdom": "^15.2.0",
     "lodash": "^4.17.15",
+    "log4js": "^6.1.0",
     "moment": "^2.24.0",
     "mysql2": "^2.0.0",
     "pdfjs-dist": "^2.2.228",

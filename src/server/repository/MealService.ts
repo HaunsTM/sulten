@@ -4,6 +4,7 @@ import { AlternativeLabelDishPrice } from "../../dto/AlternativeLabelDishPrice";
 import { AlternativeLabelDishPriceDay } from "../../dto/AlternativeLabelDishPriceDay";
 import { RestaurantMeal } from "../../dto/RestaurantMeal";
 import { RestaurantMealDay } from "../../dto/RestaurantMealDay";
+import { logger } from "../helpers/default.logger";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
 export class MealService {
 
@@ -21,12 +22,10 @@ export class MealService {
         "		JOIN labels" +
         "			on labels.id = dishes.fKLabelId" +
 
-        
         "		    JOIN labelsalternatives" +
         "			    on labelsalternatives.fKLabelId = labels.id" +
         "		        JOIN alternatives" +
         "			        on alternatives.id = labelsalternatives.fKAlternativeId" +
-
 
         "	JOIN prices" +
         "		on prices.id = meals.fKPriceId" +

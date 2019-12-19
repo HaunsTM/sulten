@@ -1,5 +1,6 @@
 #!/usr/bin/env nodejs
 import express from "express";
+import { logger } from "./helpers/default.logger";
 import Controller from "./interfaces/IController";
 // import errorMiddleware from "./middleware/error.middleware";
 
@@ -20,8 +21,7 @@ export default class App {
 
   public listen() {
     this.app.listen(this.PORT, () => {
-      // tslint:disable-next-line:no-console
-      console.log(`App listening on the port ${this.PORT}`);
+      logger.info(`Server started at http://localhost:${this.PORT}`);
     });
   }
 
