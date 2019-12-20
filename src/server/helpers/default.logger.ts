@@ -13,12 +13,12 @@ configure({
   appenders: {
     console: { type: "stdout", layout: { type: "colored" } },
     dateFile: {
-      type: "dateFile",
-      filename: logFilePath,
-      layout: { type: "basic" },
       compress: true,
       daysToKeep: 14,
+      filename: logFilePath,
       keepFileExt: true,
+      layout: { type: "basic" },
+      type: "dateFile",
     },
   },
   categories: {

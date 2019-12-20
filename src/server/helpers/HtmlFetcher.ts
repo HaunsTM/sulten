@@ -62,7 +62,6 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
 
     }
 
-
     private async htmlDocumentFromWeb(): Promise<Document> {
         try {
             const jsDom = await JSDOM.fromURL( this.actualRestaurantMenuUrl );
