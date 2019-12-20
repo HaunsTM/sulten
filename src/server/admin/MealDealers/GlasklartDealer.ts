@@ -10,18 +10,11 @@ import { WebMealResult } from "./WebMealResult";
 
 export class GlasklartDealer implements IWebMealDealer {
 
-    private _htmlFetcherHelper: IHtmlFetcherHelper = null;
-    private _weekYear: string = "";
-    private _weekNumberExpected: string = "";
+    private textContentFromHtmlDocument: string = "";
 
     constructor(
-        htmlFetcherHelper: IHtmlFetcherHelper,
-        weekYear: string,
-        weekNumberExpected: string) {
-
-        this._htmlFetcherHelper = htmlFetcherHelper;
-        this._weekYear = weekYear;
-        this._weekNumberExpected = weekNumberExpected;
+        textContentFromHtmlDocument: string) {
+        this.textContentFromHtmlDocument = textContentFromHtmlDocument;
     }
 
     get initialBaseMenuUrl(): string {

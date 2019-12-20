@@ -10,26 +10,11 @@ import { WebMealResult } from "./WebMealResult";
 
 export class KolgaDealer implements IWebMealDealer {
 
-    private _htmlFetcherHelper: IHtmlFetcherHelper = null;
-    private _weekYear: string = "";
-    private _weekNumberExpected: string = "";
+    private textContentFromHtmlDocument: string = "";
 
     constructor(
-        htmlFetcherHelper: IHtmlFetcherHelper,
-        weekYear: string,
-        weekNumberExpected: string) {
-
-        this._htmlFetcherHelper = htmlFetcherHelper;
-        this._weekYear = weekYear;
-        this._weekNumberExpected = weekNumberExpected;
-    }
-
-    get initialBaseMenuUrl(): string {
-        return this._htmlFetcherHelper.initialBaseMenuUrl;
-    }
-
-    get actualRestaurantMenuUrl(): string {
-        return this._htmlFetcherHelper.actualRestaurantMenuUrl;
+        textContentFromHtmlDocument: string) {
+        this.textContentFromHtmlDocument = textContentFromHtmlDocument;
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {

@@ -38,18 +38,12 @@ export class RestaurangVariationDealer implements IWebMealDealer {
         return actualRestaurantMenuUrl;
     }
 
-    private _pdfFetcherHelper: IPdfFetcherHelper = null;
-    private _weekYear: string = "";
-    private _weekNumberExpected: string = "";
+    
+    private textContentFromPdfDocument: string = "";
 
-    private constructor(
-        pdfFetcherHelper: IPdfFetcherHelper,
-        weekYear: string,
-        weekNumberExpected: string) {
-
-        this._pdfFetcherHelper = pdfFetcherHelper;
-        this._weekYear = weekYear;
-        this._weekNumberExpected = weekNumberExpected;
+    constructor(
+        textContentFromHtmlDocument: string) {
+        this.textContentFromPdfDocument = textContentFromHtmlDocument;
     }
 
     get initialBaseMenuUrl(): string {
