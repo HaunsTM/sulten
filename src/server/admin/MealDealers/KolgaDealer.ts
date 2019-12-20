@@ -71,7 +71,7 @@ export class KolgaDealer implements IWebMealDealer {
     }
 
     private async webMealResult( weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
-        label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
+                                 label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
@@ -129,7 +129,7 @@ export class KolgaDealer implements IWebMealDealer {
     }
 
     private async getDishPriceWeekNumber(  weekDayName: string,
-        menuAlternativeIndex: number): Promise<DishPriceWeekNumber> {
+                                           menuAlternativeIndex: number): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
         let priceSEK: string;

@@ -57,8 +57,8 @@ export class DealerService {
         const activeDealers = await this.activeDealers(weekYear, weekIndex);
         const activeDealersMenuFetcherJobs = activeDealers.map( async (d) => {
             const mealsFromWeb = await d.mealsFromWeb();
-            
-            logger.debug(`Meals from active dealer url: ${d.actualRestaurantMenuUrl}. Meals ${mealsFromWeb.map( (r) => { return !r.fetchError ? r.dishDescription : r.fetchError} ).join(", ")}`);
+
+            logger.debug(`Meals from active dealer url: ${d.actualRestaurantMenuUrl}. Meals ${mealsFromWeb.map( (r) => !r.fetchError ? r.dishDescription : r.fetchError ).join(", ")}`);
             return mealsFromWeb;
         });
 

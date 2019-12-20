@@ -83,7 +83,7 @@ export class MiamariasDealer implements IWebMealDealer {
     }
 
     private async webMealResult( weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
-        label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
+                                 label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
