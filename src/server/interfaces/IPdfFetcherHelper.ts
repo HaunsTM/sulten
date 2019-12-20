@@ -3,8 +3,8 @@ import { IWebMenuUrl } from "./IWebMenuUrl";
 
 export interface IPdfFetcherHelper extends IWebMenuUrl {
 
-    textContentFromPdfDocument( pdfDocumentFromWeb: pdfjs.PDFDocumentProxy, pageNumber: number ): Promise<string>;
+    textContentFromPdfDocument( pageNumber: number ): Promise<string>;
 
-    pdfDocumentFromWeb(): Promise<pdfjs.PDFDocumentProxy>;
+    // pdfDocumentFromWeb(): Promise<pdfjs.PDFDocumentProxy>;
 
 }

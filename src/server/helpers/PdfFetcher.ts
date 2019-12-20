@@ -2,7 +2,17 @@ import pdfjs from "pdfjs-dist";
 import { IPdfFetcherHelper } from "../interfaces/IPdfFetcherHelper";
 
 export class PdfFetcher implements IPdfFetcherHelper {
-    public actualRestaurantMenuUrl: string = "";
+    private _pdfDocumentFromWeb: pdfjs.PDFDocumentProxy = null;
+    private _pdfDocumentFromWebShouldBeUpdated: boolean = true;
+    private _actualRestaurantMenuUrl: string = "";
+
+    get actualRestaurantMenuUrl(): string {
+        return this._actualRestaurantMenuUrl;
+    }
+    set actualRestaurantMenuUrl(value: string) {
+        this._pdfDocumentFromWebShouldBeUpdated = true;
+        this._actualRestaurantMenuUrl = value;
+    }
 
     private _initialBaseMenuUrl: string = "";
 
@@ -19,11 +29,10 @@ export class PdfFetcher implements IPdfFetcherHelper {
         this.actualRestaurantMenuUrl = initialBaseMenuUrl;
     }
 
-    public async textContentFromPdfDocument(
-        pdfDocumentFromWeb: pdfjs.PDFDocumentProxy, pageNumber: number ): Promise<string> {
+    public async textContentFromPdfDocument( pageNumber: number ): Promise<string> {
 
         try {
-
+            const pdfDocumentFromWeb = await this.pdfDocumentFromWeb();
             const page = await pdfDocumentFromWeb.getPage(pageNumber);
             const tokenizedText = await page.getTextContent();
             const pageText =
@@ -39,14 +48,18 @@ export class PdfFetcher implements IPdfFetcherHelper {
 
     }
 
-    public async pdfDocumentFromWeb(): Promise<pdfjs.PDFDocumentProxy> {
+    private async pdfDocumentFromWeb(): Promise<pdfjs.PDFDocumentProxy> {
         try {
-            const pdfDocumentFromWeb: pdfjs.PDFDocumentProxy  =
-                await pdfjs.getDocument( this.actualRestaurantMenuUrl ).promise;
 
-            return pdfDocumentFromWeb;
+            if ( this._pdfDocumentFromWeb === null || this._pdfDocumentFromWebShouldBeUpdated === true) {
+                this._pdfDocumentFromWeb =
+                    await pdfjs.getDocument( this.actualRestaurantMenuUrl ).promise;
+                this._pdfDocumentFromWebShouldBeUpdated = false;
+            }
+
+            return this._pdfDocumentFromWeb;
+
         } catch ( e ) {
-
             throw Error(`Couldn't successfully fetch data from ${this.actualRestaurantMenuUrl}: ${e.message}`);
         }
     }

@@ -3,7 +3,17 @@ import { IHtmlFetcherHelper } from "../interfaces/IHtmlFetcherHelper";
 
 export class HtmlFetcher implements IHtmlFetcherHelper {
 
-    public actualRestaurantMenuUrl: string = "";
+    private _htmlDocumentFromWeb: Document = null;
+    private _htmlDocumentFromWebShouldBeUpdated: boolean = true;
+    private _actualRestaurantMenuUrl: string = "";
+
+    get actualRestaurantMenuUrl(): string {
+        return this._actualRestaurantMenuUrl;
+    }
+    set actualRestaurantMenuUrl(value: string) {
+        this._htmlDocumentFromWebShouldBeUpdated = true;
+        this._actualRestaurantMenuUrl = value;
+    }
 
     private _initialBaseMenuUrl: string = "";
 
@@ -62,18 +72,6 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
 
     }
 
-    private async htmlDocumentFromWeb(): Promise<Document> {
-        try {
-            const jsDom = await JSDOM.fromURL( this.actualRestaurantMenuUrl );
-            const htmlDocumentFromWeb = jsDom.window.document;
-
-            return htmlDocumentFromWeb;
-        } catch ( e ) {
-
-            throw Error(`Couldn't successfully fetch data from ${this.actualRestaurantMenuUrl}: ${e.message}`);
-        }
-    }
-
     private async evaluatedHtmlDocument( xpathExpression: string, nodeType: number ): Promise<XPathResult> {
 
         const htmlDocument = await this.htmlDocumentFromWeb();
@@ -82,6 +80,21 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
             htmlDocument.evaluate(xpathExpression, htmlDocument, null, nodeType, null);
 
         return evaluated;
+    }
+
+    private async htmlDocumentFromWeb(): Promise<Document> {
+        try {
+            if ( this._htmlDocumentFromWeb === null || this._htmlDocumentFromWebShouldBeUpdated === true) {
+                const jsDom = await JSDOM.fromURL( this.actualRestaurantMenuUrl );
+                this._htmlDocumentFromWebShouldBeUpdated = false;
+                this._htmlDocumentFromWeb = jsDom.window.document;
+            }
+
+            return this._htmlDocumentFromWeb;
+        } catch ( e ) {
+
+            throw Error(`Couldn't successfully fetch data from ${this.actualRestaurantMenuUrl}: ${e.message}`);
+        }
     }
 
 }
