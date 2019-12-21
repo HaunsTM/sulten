@@ -20,6 +20,6 @@ export interface IWebMealResult {
 
     weekYear: string;
 
-    fetchError: Error;
+    fetchError: string;
 
 }

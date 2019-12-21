@@ -13,7 +13,7 @@ export class WebMealResult implements IWebMealResult {
     private _weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
     private _weekNumber: string;
     private _weekYear: string;
-    private _fetchError: Error;
+    private _fetchError: string;
 
     constructor()
     constructor(menuUrl: string, dishDescription: string, priceSEK: string,
@@ -32,7 +32,7 @@ export class WebMealResult implements IWebMealResult {
         this._weekNumber = weekNumber;
         this._weekYear = weekYear;
 
-        this._fetchError = fetchError;
+        this._fetchError = fetchError ? fetchError.stack : null;
     }
 
     public get alternativeIndex(): AlternativeIndex {
@@ -91,10 +91,10 @@ export class WebMealResult implements IWebMealResult {
         this._weekYear = value;
     }
 
-    public get fetchError(): Error {
+    public get fetchError(): string {
         return this._fetchError;
     }
-    public set fetchError(value: Error) {
+    public set fetchError(value: string) {
         this._fetchError = value;
     }
 
