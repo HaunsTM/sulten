@@ -1,20 +1,43 @@
 import { AlternativeIndex } from "../../enum/AlternativeIndex";
+import { FetcherType } from "../../enum/FetcherType";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
-import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
-import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
+import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
+import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export class KolgaDealer implements IWebMealDealer {
+export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealer {
 
-    private textContentFromHtmlDocument: string = "";
+    public static get baseUrlStatic(): string {
+        const baseUrl = "https://glasklart.eu/sv/lunch/";
+        return baseUrl;
+    }
+
+    public static get fetcherTypeNeededStatic(): FetcherType {
+        return FetcherType.HTML;
+    }
+    public static async menuUrlStatic(pageWhereToFindMenuUrl: IHtmlDocumentParser): Promise<string> {
+        return pageWhereToFindMenuUrl.htmlDocument.URL;
+    }
+ 
+    private baseUrl: string;
+    private dealerData: IHtmlDocumentParser = null;
+    private weekNumberExpected: string = "";
+    private weekYear: string = "";
 
     constructor(
-        textContentFromHtmlDocument: string) {
-        this.textContentFromHtmlDocument = textContentFromHtmlDocument;
+        dealerData: IHtmlDocumentParser,
+        baseUrl: string,
+        weekYear: string,
+        weekNumberExpected: string) {
+
+        this.baseUrl = baseUrl;
+        this.dealerData = dealerData;
+        this.weekYear = weekYear;
+        this.weekNumberExpected = weekNumberExpected;
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -26,30 +49,20 @@ export class KolgaDealer implements IWebMealDealer {
     private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
-                LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
         ];
 
         return mealsForAWeek;
@@ -71,20 +84,20 @@ export class KolgaDealer implements IWebMealDealer {
                 throw dishPriceWeekNumber.fetchError;
             }
 
-            if ( this._weekNumberExpected !== dishPriceWeekNumber.weekIndexWeekNumber) {
-                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${dishPriceWeekNumber.weekIndexWeekNumber}`);
+            if ( this.weekNumberExpected !== dishPriceWeekNumber.weekIndexWeekNumber) {
+                throw new Error(`Expected to see menu for week ${this.weekNumberExpected}, but found week ${dishPriceWeekNumber.weekIndexWeekNumber}`);
             }
 
             webMealResult =
                 new WebMealResult(
-                    this.initialBaseMenuUrl, dishPriceWeekNumber.dishDescription,
+                    this.baseUrl, dishPriceWeekNumber.dishDescription,
                     dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDayJavascriptDayIndex,
-                    dishPriceWeekNumber.weekIndexWeekNumber, this._weekYear, null);
+                    dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.initialBaseMenuUrl, "", "", alternativeIndex, label,
-                    weekDayJavascriptDayIndex, this._weekNumberExpected, this._weekYear, e);
+                new WebMealResult( this.baseUrl, "", "", alternativeIndex, label,
+                    weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
         }
 
         return webMealResult;
@@ -127,14 +140,14 @@ export class KolgaDealer implements IWebMealDealer {
 
         try {
             dishDescription =
-                await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.descriptionXPath );
+                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath );
 
             priceSEK =
-                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.price_SEKXPath ))
+                ( await this.dealerData.textContentFromHtmlDocument( xpath.price_SEKXPath ))
                 .match(/\d+(?=\s?kr)/)[0];
 
             weekIndexWeekNumber =
-                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.weekNumberXPath ) )
+                ( await this.dealerData.textContentFromHtmlDocument( xpath.weekNumberXPath ) )
                 .match(/(?<=\s*Vecka\s*)\d+/)[0];
 
         } catch ( error ) {
@@ -157,4 +170,4 @@ export class KolgaDealer implements IWebMealDealer {
         return result;
     }
 
-}
+};

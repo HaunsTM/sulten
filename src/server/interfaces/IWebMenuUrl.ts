@@ -1,8 +1,7 @@
+export interface IWebMenuUrls {
 
-export interface IWebMenuUrl {
+    menuUrl: string;
 
-    actualRestaurantMenuUrl: string;
-
-    initialBaseMenuUrl: string;
+    baseUrl: string;
 
 }

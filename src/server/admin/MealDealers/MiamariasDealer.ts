@@ -1,36 +1,44 @@
 import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
-import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
-import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
+import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
+import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
+import { FetcherType } from "../../enum/FetcherType";
 
-export class MiamariasDealer implements IWebMealDealer {
+export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
 
-    private textContentFromHtmlDocument: string = "";
+    public static get baseUrlStatic(): string {
+        const baseUrl = "http://www.miamarias.nu/";
+        return baseUrl;
+    }
+
+    public static get fetcherTypeNeededStatic(): FetcherType {
+        return FetcherType.HTML;
+    }
+
+    public static async menuUrlStatic(pageWhereToFindMenuUrl: IHtmlDocumentParser): Promise<string> {
+        return pageWhereToFindMenuUrl.htmlDocument.URL;
+    }
+
+    private baseUrl: string;
+    private dealerData: IHtmlDocumentParser = null;
+    private weekNumberExpected: string = "";
+    private weekYear: string = "";
 
     constructor(
-        textContentFromHtmlDocument: string) {
-        this.textContentFromHtmlDocument = textContentFromHtmlDocument;  constructor(
-            htmlFetcherHelper: IHtmlFetcherHelper,
-            weekYear: string,
-            weekNumberExpected: string) {
-    
-            this._htmlFetcherHelper = htmlFetcherHelper;
-            this._weekYear = weekYear;
-            this._weekNumberExpected = weekNumberExpected;
-        }
-    }
+        dealerData: IHtmlDocumentParser,
+        baseUrl: string,
+        weekYear: string,
+        weekNumberExpected: string) {
 
-    get initialBaseMenuUrl(): string {
-        return this._htmlFetcherHelper.initialBaseMenuUrl;
-    }
-
-    get actualRestaurantMenuUrl(): string {
-        return this._htmlFetcherHelper.actualRestaurantMenuUrl;
+        this.baseUrl = baseUrl;
+        this.dealerData = dealerData;
+        this.weekYear = weekYear;
+        this.weekNumberExpected = weekNumberExpected;
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -44,40 +52,25 @@ export class MiamariasDealer implements IWebMealDealer {
     private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
-                LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
-                LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY,
-                LabelName.VEGETARIAN, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
-                LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
-                LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY,
-                LabelName.VEGETARIAN, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
-                LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
-                LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY,
-                LabelName.VEGETARIAN, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
-                LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
-                LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY,
-                LabelName.VEGETARIAN, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
-                LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
-                LabelName.MEAT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY,
-                LabelName.VEGETARIAN, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
         ];
 
         return mealsForAWeek;
@@ -100,20 +93,20 @@ export class MiamariasDealer implements IWebMealDealer {
                 throw dishPriceWeekNumber.fetchError;
             }
 
-            if ( this._weekNumberExpected !== dishPriceWeekNumber.weekIndexWeekNumber) {
-                throw new Error(`Expected to see menu for week ${this._weekNumberExpected}, but found week ${ dishPriceWeekNumber.weekIndexWeekNumber}`);
+            if ( this.weekNumberExpected !== dishPriceWeekNumber.weekIndexWeekNumber) {
+                throw new Error(`Expected to see menu for week ${this.weekNumberExpected}, but found week ${ dishPriceWeekNumber.weekIndexWeekNumber}`);
             }
 
             webMealResult =
                 new WebMealResult(
-                    this.initialBaseMenuUrl, dishPriceWeekNumber.dishDescription,
+                    this.baseUrl, dishPriceWeekNumber.dishDescription,
                     dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDayJavascriptDayIndex,
-                    dishPriceWeekNumber.weekIndexWeekNumber, this._weekYear, null);
+                    dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.initialBaseMenuUrl, "", "", alternativeIndex, label,
-                    weekDayJavascriptDayIndex, this._weekNumberExpected, this._weekYear, e);
+                new WebMealResult( this.baseUrl, "", "", alternativeIndex, label,
+                    weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
         }
 
         return webMealResult;
@@ -176,14 +169,14 @@ export class MiamariasDealer implements IWebMealDealer {
 
         try {
             dishDescription =
-                await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.descriptionXPath);
+                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath);
 
             priceSEK =
-                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.price_SEKXPath ))
+                ( await this.dealerData.textContentFromHtmlDocument( xpath.price_SEKXPath ))
                 .match(/\d+(?=\s?kr)/)[0];
 
             weekIndexWeekNumber =
-                ( await this._htmlFetcherHelper.textContentFromHtmlDocument( xpath.weekNumberXPath ))
+                ( await this.dealerData.textContentFromHtmlDocument( xpath.weekNumberXPath ))
                 .match(/(?<=\s*Vecka\s*)\d+/)[0];
         } catch ( error ) {
             fetchError = error;

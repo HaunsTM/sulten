@@ -1,5 +1,3 @@
-import { IWebMenuUrl } from "./IWebMenuUrl";
-
-export interface IHtmlFetcherHelper extends IWebMenuUrl {
+export interface IHtmlFetcherHelper {
     htmlDocumentFromWeb(): Promise<Document>;
 }

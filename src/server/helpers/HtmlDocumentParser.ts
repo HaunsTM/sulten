@@ -1,10 +1,13 @@
 import { IHtmlDocumentParser } from "../interfaces/IHtmlDocumentParser";
 
 export class HtmlDocumentParser implements IHtmlDocumentParser {
-    private htmlDocument: Document = null;
+    private _htmlDocument: Document = null;
+    get htmlDocument(): Document {
+        return this._htmlDocument;
+    }
 
     constructor( htmlDocument: Document ) {
-        this.htmlDocument = htmlDocument;
+        this._htmlDocument = htmlDocument;
     }
 
     /**

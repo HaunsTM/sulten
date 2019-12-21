@@ -4,29 +4,29 @@ import { IPdfFetcherHelper } from "../interfaces/IPdfFetcherHelper";
 export class PdfFetcher implements IPdfFetcherHelper {
     private _pdfDocumentFromWeb: pdfjs.PDFDocumentProxy = null;
     private _pdfDocumentFromWebShouldBeUpdated: boolean = true;
-    private _actualRestaurantMenuUrl: string = "";
+    private _menuUrl: string = "";
 
-    get actualRestaurantMenuUrl(): string {
-        return this._actualRestaurantMenuUrl;
+    get menuUrl(): string {
+        return this._menuUrl;
     }
-    set actualRestaurantMenuUrl(value: string) {
+    set menuUrl(value: string) {
         this._pdfDocumentFromWebShouldBeUpdated = true;
-        this._actualRestaurantMenuUrl = value;
+        this._menuUrl = value;
     }
 
-    private _initialBaseMenuUrl: string = "";
+    private _baseUrl: string = "";
 
-    public get initialBaseMenuUrl(): string {
-        return this._initialBaseMenuUrl;
+    public get baseUrl(): string {
+        return this._baseUrl;
     }
 
     /**
      * A helper class which can be used when parsing an online webpage
      * @param baseUrl - Url of the webpage
      */
-    constructor(initialBaseMenuUrl: string) {
-        this._initialBaseMenuUrl = initialBaseMenuUrl;
-        this.actualRestaurantMenuUrl = initialBaseMenuUrl;
+    constructor(baseUrl: string) {
+        this._baseUrl = baseUrl;
+        this.menuUrl = baseUrl;
     }
 
     public async textContentFromPdfDocument( pageNumber: number ): Promise<string> {
@@ -43,7 +43,7 @@ export class PdfFetcher implements IPdfFetcherHelper {
         } catch ( e ) {
 
             throw Error("Couldn't get getTextContent from PDF-document " +
-                        `"${this.actualRestaurantMenuUrl}" on page ${pageNumber}.`);
+                        `"${this.menuUrl}" on page ${pageNumber}.`);
         }
 
     }
@@ -53,14 +53,14 @@ export class PdfFetcher implements IPdfFetcherHelper {
 
             if ( this._pdfDocumentFromWeb === null || this._pdfDocumentFromWebShouldBeUpdated === true) {
                 this._pdfDocumentFromWeb =
-                    await pdfjs.getDocument( this.actualRestaurantMenuUrl ).promise;
+                    await pdfjs.getDocument( this.menuUrl ).promise;
                 this._pdfDocumentFromWebShouldBeUpdated = false;
             }
 
             return this._pdfDocumentFromWeb;
 
         } catch ( e ) {
-            throw Error(`Couldn't successfully fetch data from ${this.actualRestaurantMenuUrl}: ${e.message}`);
+            throw Error(`Couldn't successfully fetch data from ${this.menuUrl}: ${e.message}`);
         }
     }
 

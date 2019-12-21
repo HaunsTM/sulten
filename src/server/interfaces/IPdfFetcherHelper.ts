@@ -1,10 +1,10 @@
 import pdfjs from "pdfjs-dist";
-import { IWebMenuUrl } from "./IWebMenuUrl";
 
-export interface IPdfFetcherHelper extends IWebMenuUrl {
+export interface IPdfFetcherHelper {
 
     textContentFromPdfDocument( pageNumber: number ): Promise<string>;
 
-    // pdfDocumentFromWeb(): Promise<pdfjs.PDFDocumentProxy>;
+    baseUrl: string;
+    menuUrl: string;
 
 }

@@ -1,10 +1,14 @@
+import { FetcherType } from "../../enum/FetcherType";
 import { logger } from "../../helpers/default.logger";
+import { HtmlDocumentParser } from "../../helpers/HtmlDocumentParser";
 import { HtmlFetcher } from "../../helpers/HtmlFetcher";
 import { PdfFetcher } from "../../helpers/PdfFetcher";
+import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IWebMealDealer } from "../../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { RestaurantService } from "../../repository/RestaurantService";
 
+import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { GlasklartDealer } from "./GlasklartDealer";
 import { KolgaDealer } from "./KolgaDealer";
 import { Lokal17Dealer } from "./Lokal17Dealer";
@@ -13,21 +17,14 @@ import { RestaurangVariationDealer } from "./RestaurangVariationDealer";
 
 export class DealerService {
 
-    public async allDealers(weekYear: string, weekIndex: string): Promise<IWebMealDealer[]> {
-        const allDealers: IWebMealDealer[] = [
+    public allDealers(): IWebMealDealerStatic[] {
 
-            new GlasklartDealer(
-                new HtmlFetcher("https://glasklart.eu/sv/lunch/"), weekYear, weekIndex ),
-            new KolgaDealer(
-                new HtmlFetcher("https://kolga.gastrogate.com/lunch/"), weekYear, weekIndex ),
-            await Lokal17Dealer.GetLokal17DealerAsync(
-                new PdfFetcher("https://lokal17.se/"),
-                new HtmlFetcher("https://lokal17.se/"), weekYear, weekIndex ),
-            new MiamariasDealer(
-                new HtmlFetcher("http://www.miamarias.nu/"), weekYear, weekIndex ),
-            await RestaurangVariationDealer.GetRestaurangVariationDealerAsync(
-                new PdfFetcher("https://www.nyavariation.se/matsedel/"),
-                new HtmlFetcher("https://www.nyavariation.se/matsedel/"), weekYear, weekIndex ),
+        const allDealers: IWebMealDealerStatic[] = [
+            GlasklartDealer,
+            KolgaDealer,
+            Lokal17Dealer,
+            MiamariasDealer,
+            RestaurangVariationDealer,
         ];
 
         return allDealers;
@@ -43,13 +40,16 @@ export class DealerService {
                 return r.menuUrl;
             });
 
-        const allDealers = await this.allDealers(weekYear, weekIndex);
-
-        const activeDealers = allDealers.filter( (dealer) => {
-            return activeRestaurantsUrls.includes(dealer.initialBaseMenuUrl);
+        const activeDealersStatic = this.allDealers().filter( (dealer) => {
+            return activeRestaurantsUrls.includes(dealer.baseUrlStatic);
         });
 
-        return activeDealers;
+        const activeDealers = Promise.all(activeDealersStatic.map( (d) => {
+            const webMealDealer = this.dealerDataFactory(d.baseUrlStatic, d, weekYear, weekIndex );
+            return webMealDealer;
+        }));
+
+        return  activeDealers;
     }
 
     public async mealsFromActiveDealers(weekYear: string, weekIndex: string): Promise<IWebMealResult[]> {
@@ -58,7 +58,6 @@ export class DealerService {
         const activeDealersMenuFetcherJobs = activeDealers.map( (d) => {
             const mealsFromWeb = d.mealsFromWeb();
 
-            //logger.debug(`Meals from active dealer url: ${d.actualRestaurantMenuUrl}. Meals ${mealsFromWeb.map( (r) => !r.fetchError ? r.dishDescription : r.fetchError ).join(", ")}`);
             return mealsFromWeb;
         });
 
@@ -66,5 +65,48 @@ export class DealerService {
 
         return mealsFromActiveDealers;
     }
+    private async dealerDataFactory(
+        initialRestaurantUrl: string, mealDealer: IWebMealDealerStatic,
+        weekYear: string, weekIndex: string): Promise<IWebMealDealer> {
 
+        const htmlFetcher = new HtmlFetcher(initialRestaurantUrl);
+        const htmlDocument = await htmlFetcher.htmlDocumentFromWeb();
+        const htmlDocumentParser = new HtmlDocumentParser(htmlDocument);
+        const menuUrl = await mealDealer.menuUrlStatic(htmlDocumentParser);
+
+        let webMealDealerStatic: IWebMealDealer = null;
+
+        switch ( mealDealer.fetcherTypeNeededStatic ) {
+            case FetcherType.PDF:
+                const dealerDataForPdfDocument = await this.dealerDataForPdfDocument(menuUrl);
+                webMealDealerStatic =
+                    new mealDealer(dealerDataForPdfDocument, initialRestaurantUrl, weekIndex, weekIndex);
+                break;
+            case FetcherType.HTML:
+                const dealerDataForHtmlDocument = await this.dealerDataForHtmlDocument(menuUrl);
+                webMealDealerStatic =
+                    new mealDealer(dealerDataForHtmlDocument, initialRestaurantUrl, weekIndex, weekIndex);
+                break;
+        }
+
+        return webMealDealerStatic;
+    }
+
+    private async dealerDataForPdfDocument(menuUrl: string): Promise<string> {
+
+        const pdfFetcher = new PdfFetcher( menuUrl );
+        const pageNumber = 1;
+        const textContentFromPdfDocument =  await pdfFetcher.textContentFromPdfDocument(pageNumber);
+
+        return textContentFromPdfDocument;
+    }
+
+    private async dealerDataForHtmlDocument( menuUrl: string ): Promise<IHtmlDocumentParser> {
+
+        const htmlFetcher = new HtmlFetcher( menuUrl );
+        const htmlDocument = await htmlFetcher.htmlDocumentFromWeb();
+        const htmlDocumentParser = new HtmlDocumentParser( htmlDocument );
+
+        return htmlDocumentParser;
+    }
 }
