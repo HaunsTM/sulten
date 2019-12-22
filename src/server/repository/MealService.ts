@@ -48,11 +48,10 @@ export class MealService {
         const p_WeekIndex_WeekYear = +webMealResult.weekYear;
         const p_Restaurant_MenuUrl = webMealResult.menuUrl;
         const p_Price_SEK = +webMealResult.price_SEK;
-        const p_Label_Name =
-            webMealResult.labelName ? `'${webMealResult.labelName.replace(this.escapeRegex, "")}'` : null;
+        const p_Label_Name = webMealResult.labelName;
         const pAlternative_Index = +webMealResult.alternativeIndex;
         const p_Dish_Description =
-            webMealResult.dishDescription ? `'${webMealResult.dishDescription.replace(this.escapeRegex, "")}'` : null;
+            webMealResult.dishDescription ? `'${webMealResult.dishDescription.replace(this.escapeRegex, "")}'` : `''`;
         const p_Meal_Error =
             webMealResult.fetchError ? `'${webMealResult.fetchError.replace(this.escapeRegex, "")}'` : null;
 
@@ -62,7 +61,7 @@ export class MealService {
         const sql =
                 ` CALL CreateAndGetMealId(` +
                 `${p_WeekDay_JavaScriptDayIndex}, ${p_WeekIndex_WeekNumber}, ${p_WeekIndex_WeekYear}, '${p_Restaurant_MenuUrl}', ` +
-                `${p_Price_SEK}, ${p_Label_Name}, ${pAlternative_Index}, ${p_Dish_Description}, ${p_Meal_Error}); `;
+                `${p_Price_SEK}, '${p_Label_Name}', ${pAlternative_Index}, ${p_Dish_Description}, ${p_Meal_Error}); `;
 
         try {
 
