@@ -22,10 +22,10 @@ export class MealService {
         "		JOIN labels" +
         "			on labels.id = dishes.fKLabelId" +
 
-        "		    JOIN labelsalternatives" +
-        "			    on labelsalternatives.fKLabelId = labels.id" +
+        "		    JOIN labelsAlternatives" +
+        "			    on labelsAlternatives.fKLabelId = labels.id" +
         "		        JOIN alternatives" +
-        "			        on alternatives.id = labelsalternatives.fKAlternativeId" +
+        "			        on alternatives.id = labelsAlternatives.fKAlternativeId" +
 
         "	JOIN prices" +
         "		on prices.id = meals.fKPriceId" +
