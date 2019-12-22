@@ -2,13 +2,14 @@ USE `dbSulten`;
 
 INSERT INTO `areas` (`name`) VALUES ('Malmö - Centrum');
 INSERT INTO `areas` (`name`) VALUES ('Malmö - Västra Hamnen');
-INSERT INTO `areas` (`name`) VALUES ('Lund - Ideon');
+INSERT INTO `areas` (`name`) VALUES ('Lund - Brunnshög');
 INSERT INTO `areas` (`name`) VALUES ('Lund - Sjukhuset');
 
 INSERT INTO `labels` (`name`) VALUES ('arabic');
 INSERT INTO `labels` (`name`) VALUES ('bread');
 INSERT INTO `labels` (`name`) VALUES ('breakfast');
 INSERT INTO `labels` (`name`) VALUES ('cake');
+INSERT INTO `labels` (`name`) VALUES ('chinese');
 INSERT INTO `labels` (`name`) VALUES ('coffee');
 INSERT INTO `labels` (`name`) VALUES ('dessert');
 INSERT INTO `labels` (`name`) VALUES ('drink');
@@ -18,6 +19,7 @@ INSERT INTO `labels` (`name`) VALUES ('fish_and_seafood');
 INSERT INTO `labels` (`name`) VALUES ('gratin');
 INSERT INTO `labels` (`name`) VALUES ('hotpot');
 INSERT INTO `labels` (`name`) VALUES ('indian');
+INSERT INTO `labels` (`name`) VALUES ('japanese');
 INSERT INTO `labels` (`name`) VALUES ('main');
 INSERT INTO `labels` (`name`) VALUES ('meal_of_the_day');
 INSERT INTO `labels` (`name`) VALUES ('meat');
@@ -69,9 +71,9 @@ INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (5);
 INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (6);
 
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
-	(1, "Bricks Eatery", "https://brickseatery.se/lunch/", "55.716502", "13.226820", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Ideon'));
+	(1, "Bricks Eatery", "https://brickseatery.se/lunch/", "55.716502", "13.226820", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Brunnshög'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
-	(1, "Fazer Restaurang Scotland Yard", "https://www.fazerfoodco.se/restauranger/restauranger/scotland-yard/", "55.718187", "13.226885", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Ideon'));
+	(1, "Fazer Restaurang Scotland Yard", "https://www.fazerfoodco.se/restauranger/restauranger/scotland-yard/", "55.718187", "13.226885", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Brunnshög'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Glasklart", "https://glasklart.eu/sv/lunch/", "55.615981", "12.990736", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
