@@ -14,6 +14,7 @@ import { KolgaDealer } from "./KolgaDealer";
 import { Lokal17Dealer } from "./Lokal17Dealer";
 import { MiamariasDealer } from "./MiamariasDealer";
 import { RestaurangVariationDealer } from "./RestaurangVariationDealer";
+import { ZenthaiDealer } from "./ZenthaiDealer";
 
 export class DealerService {
 
@@ -25,6 +26,7 @@ export class DealerService {
             Lokal17Dealer,
             MiamariasDealer,
             RestaurangVariationDealer,
+            ZenthaiDealer,
         ];
 
         return allDealers;
