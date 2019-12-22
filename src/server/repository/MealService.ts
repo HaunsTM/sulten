@@ -202,10 +202,12 @@ export class MealService {
                     })
                     .value();
 
+            logger.debug(`Performed getMealsPerAreaAndDayAndWeekAndYear(${areaId}, ${javaScriptDayIndex}, ${weekNumber}, ${weekYear}). Returning ${restaurantsMeals.length} restaurantsMeals.`);
             return restaurantsMeals;
 
-        } catch (err) {
+        } catch (error) {
 
+            logger.error(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
             // since we have errors lets rollback changes we made
             await queryRunner.rollbackTransaction();
 
