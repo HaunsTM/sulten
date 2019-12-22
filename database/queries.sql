@@ -37,7 +37,7 @@ BEGIN
 	SET @pFKLabelId = pFKLabelId;
 	SET @pFKAlternativeId = pFKAlternativeId;
 
-	INSERT INTO labelsalternatives(`fKLabelId`,`fKAlternativeId`) VALUES (@pFKLabelId, @pFKAlternativeId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO labelsAlternatives(`fKLabelId`,`fKAlternativeId`) VALUES (@pFKLabelId, @pFKAlternativeId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 		
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
@@ -171,10 +171,10 @@ BEGIN
 			JOIN labels
 				on labels.id = dishes.fKLabelId
 
-	            JOIN labelsalternatives	
-                    on labelsalternatives.fKLabelId = labels.id
+	            JOIN labelsAlternatives	
+                    on labelsAlternatives.fKLabelId = labels.id
 	            JOIN alternatives
-                    on alternatives.id = labelsalternatives.fKAlternativeId	
+                    on alternatives.id = labelsAlternatives.fKAlternativeId	
 
 		JOIN prices
 			on prices.id =  m.fKPriceId
