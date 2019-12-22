@@ -50,7 +50,7 @@ CREATE TABLE `prices` (
 CREATE TABLE `meals` (
 	`id`								INT NOT NULL AUTO_INCREMENT,
 
-	`error`								VARCHAR(255),
+	`error`								TEXT,
 
 	`fKDishId`					        INT,
 	`fKPriceId`					        INT,

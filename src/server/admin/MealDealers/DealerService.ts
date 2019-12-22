@@ -80,12 +80,12 @@ export class DealerService {
             case FetcherType.PDF:
                 const dealerDataForPdfDocument = await this.dealerDataForPdfDocument(menuUrl);
                 webMealDealerStatic =
-                    new mealDealer(dealerDataForPdfDocument, initialRestaurantUrl, weekIndex, weekIndex);
+                    new mealDealer(dealerDataForPdfDocument, initialRestaurantUrl, weekYear, weekIndex);
                 break;
             case FetcherType.HTML:
                 const dealerDataForHtmlDocument = await this.dealerDataForHtmlDocument(menuUrl);
                 webMealDealerStatic =
-                    new mealDealer(dealerDataForHtmlDocument, initialRestaurantUrl, weekIndex, weekIndex);
+                    new mealDealer(dealerDataForHtmlDocument, initialRestaurantUrl, weekYear, weekIndex);
                 break;
         }
 

@@ -40,6 +40,7 @@ export class MealService {
         "		JOIN weekDays" +
         "			on weekDays.id = occurrences.fKWeekDayId";
 
+    private readonly escapeRegex = /["'\n\\]/g;
     public async createAndGetMealId(webMealResult: IWebMealResult): Promise<number> {
 
         const p_WeekDay_JavaScriptDayIndex = +webMealResult.weekDayJavascriptDayIndex;
@@ -47,25 +48,42 @@ export class MealService {
         const p_WeekIndex_WeekYear = +webMealResult.weekYear;
         const p_Restaurant_MenuUrl = webMealResult.menuUrl;
         const p_Price_SEK = +webMealResult.price_SEK;
-        const p_Label_Name = webMealResult.labelName;
+        const p_Label_Name = webMealResult.labelName ? webMealResult.labelName.replace(this.escapeRegex, "") : null;
         const pAlternative_Index = +webMealResult.alternativeIndex;
-        const p_Dish_Description = webMealResult.dishDescription;
-        const p_Meal_Error = webMealResult.fetchError;
+        const p_Dish_Description =
+            webMealResult.dishDescription ? webMealResult.dishDescription.replace(this.escapeRegex, "") : null;
+        const p_Meal_Error =
+            webMealResult.fetchError ? `'${webMealResult.fetchError.replace(this.escapeRegex, "")}'` : null;
+
+        const connection = getConnection();
+        const queryRunner = connection.createQueryRunner();
+
+        const sql =
+                ` CALL CreateAndGetMealId(` +
+                `${p_WeekDay_JavaScriptDayIndex}, ${p_WeekIndex_WeekNumber}, ${p_WeekIndex_WeekYear}, '${p_Restaurant_MenuUrl}', ` +
+                `${p_Price_SEK}, '${p_Label_Name}', ${pAlternative_Index}, '${p_Dish_Description}', ${p_Meal_Error}); `;
 
         try {
-            const mealId: number = -1;
 
-            const spResult = await getConnection()
-                .query( `CALL CreateAndGetMealId(` +
-                        `${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',` +
-                        `${p_Price_SEK},'${p_Label_Name}',${pAlternative_Index},'${p_Dish_Description}','${p_Meal_Error}',@mealId)`);
+            await queryRunner.startTransaction();
 
+            const spResult = await queryRunner.query( sql );
+
+            await queryRunner.commitTransaction();
+
+            const mealId = spResult[0][0]["LAST_INSERT_ID()"];
+
+            logger.debug(`Performed ${sql}. mealID = ${mealId}`);
             return mealId;
 
         } catch ( error ) {
-            logger.error(`Error invoking "CALL CreateAndGetMealId(` +
-            `${p_WeekDay_JavaScriptDayIndex},${p_WeekIndex_WeekNumber},${p_WeekIndex_WeekYear},'${p_Restaurant_MenuUrl}',` +
-            `${p_Price_SEK},'${p_Label_Name}',${pAlternative_Index},'${p_Dish_Description}','${p_Meal_Error}',@mealId)".\n\n ${error.stack}`);
+            logger.error(`Error invoking ${sql}.\n\n ${error.stack}`);
+            await queryRunner.rollbackTransaction();
+
+        } finally {
+
+            // you need to release query runner which is manually created:
+            await queryRunner.release();
         }
     }
 

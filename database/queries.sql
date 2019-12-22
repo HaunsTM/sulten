@@ -209,8 +209,7 @@ CREATE PROCEDURE createAndGetMealId (
 	IN pLabel_Name                  	    VARCHAR(255),
 	IN pAlternative_Index					INT,
     IN pDish_Description          	        VARCHAR(255),
-    IN pMeal_Error	                	    VARCHAR(255),
-	OUT idOut 								INT)
+    IN pMeal_Error	                	    TEXT)
 BEGIN
 
     SET @pWeekDay_JavaScriptDayIndex = pWeekDay_JavaScriptDayIndex;
@@ -238,6 +237,6 @@ BEGIN
         VALUES (@DishId, @PriceId, @OccurenceId, @RestaurantId, @pMeal_Error) 
     ON DUPLICATE KEY UPDATE `Error` = @pMeal_Error, `id` = LAST_INSERT_ID(`id`);
 
-	SELECT LAST_INSERT_ID() INTO idOut;
+	SELECT LAST_INSERT_ID();
 END$$
 DELIMITER ;
