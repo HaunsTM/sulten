@@ -5,14 +5,15 @@ import { AlternativeLabelDishPriceDay } from "../../dto/AlternativeLabelDishPric
 import { RestaurantMeal } from "../../dto/RestaurantMeal";
 import { RestaurantMealDay } from "../../dto/RestaurantMealDay";
 import { logger } from "../helpers/default.logger";
+import { IDbWebMealResult } from "../interfaces/IDbWebMealResult";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
+
 export class MealService {
 
     private readonly MEAL_SQL =
         " SELECT" +
         "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl," +
-        "   alternatives.index AS alternativesIndex," +
-        "   labels.name AS labelsName, " +
+        "   labels.name AS labelsName, labels.alternativeIndex AS labelsAlternativeIndex," +
         "   dishes.description AS dishesDescription," +
         "	prices.sek AS pricesSEK, weekDays.javaScriptDayIndex AS weekDaysJavaScriptDayIndex," +
         "	weekIndexes.weekNumber AS weekIndexesWeekNumber, weekIndexes.weekYear AS weekIndexesWeekYear" +
@@ -21,11 +22,6 @@ export class MealService {
         "		on dishes.id = meals.fKDishId" +
         "		JOIN labels" +
         "			on labels.id = dishes.fKLabelId" +
-
-        "		    JOIN labelsAlternatives" +
-        "			    on labelsAlternatives.fKLabelId = labels.id" +
-        "		        JOIN alternatives" +
-        "			        on alternatives.id = labelsAlternatives.fKAlternativeId" +
 
         "	JOIN prices" +
         "		on prices.id = meals.fKPriceId" +
@@ -41,27 +37,19 @@ export class MealService {
         "			on weekDays.id = occurrences.fKWeekDayId";
 
     private readonly escapeRegex = /["'\n\\]/g;
-    public async createAndGetMealId(webMealResult: IWebMealResult): Promise<number> {
+    private readonly emptySQLString = "''";
+    private readonly invalidSQLPrice = -1;
 
-        const p_WeekDay_JavaScriptDayIndex = +webMealResult.weekDayJavascriptDayIndex;
-        const p_WeekIndex_WeekNumber = +webMealResult.weekNumber;
-        const p_WeekIndex_WeekYear = +webMealResult.weekYear;
-        const p_Restaurant_MenuUrl = webMealResult.menuUrl;
-        const p_Price_SEK = +webMealResult.price_SEK;
-        const p_Label_Name = webMealResult.labelName;
-        const pAlternative_Index = +webMealResult.alternativeIndex;
-        const p_Dish_Description =
-            webMealResult.dishDescription ? `'${webMealResult.dishDescription.replace(this.escapeRegex, "")}'` : `''`;
-        const p_Meal_Error =
-            webMealResult.fetchError ? `'${webMealResult.fetchError.replace(this.escapeRegex, "")}'` : null;
+    public async createAndGetMealId(webMeal: IWebMealResult): Promise<number> {
+        const m = this.dbPreparedWebMeal(webMeal);
 
         const connection = getConnection();
         const queryRunner = connection.createQueryRunner();
 
         const sql =
                 ` CALL CreateAndGetMealId(` +
-                `${p_WeekDay_JavaScriptDayIndex}, ${p_WeekIndex_WeekNumber}, ${p_WeekIndex_WeekYear}, '${p_Restaurant_MenuUrl}', ` +
-                `${p_Price_SEK}, '${p_Label_Name}', ${pAlternative_Index}, ${p_Dish_Description}, ${p_Meal_Error}); `;
+                `${m.weekDayJavascriptDayIndex}, ${m.weekNumber}, ${m.weekYear}, '${m.menuUrl}', ` +
+                `${m.price_SEK}, '${m.labelName}', ${m.alternativeIndex}, ${m.dishDescription}, ${m.fetchError}); `;
 
         try {
 
@@ -73,7 +61,7 @@ export class MealService {
 
             const mealId = spResult[0][0]["LAST_INSERT_ID()"];
 
-            logger.debug(`Performed ${sql}. mealID = ${mealId}`);
+            //logger.debug(`Performed ${sql}. mealID = ${mealId}`);
             return mealId;
 
         } catch ( error ) {
@@ -103,6 +91,8 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `    areas.id = @p_areaId AND` +
+            `    NOT prices.sek = ${this.invalidSQLPrice} AND` +
+            `    NOT dishes.description = ${this.emptySQLString} AND` +
             `    weekIndexes.weekNumber = @p_weekNumber AND` +
             `    weekIndexes.weekYear = @p_weekYear;`;
 
@@ -141,8 +131,9 @@ export class MealService {
 
             return restaurantsMeals;
 
-        } catch (err) {
+        } catch (error) {
 
+            logger.error(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
             // since we have errors lets rollback changes we made
             await queryRunner.rollbackTransaction();
 
@@ -216,6 +207,40 @@ export class MealService {
             // you need to release query runner which is manually created:
             await queryRunner.release();
         }
+    }
+
+    private dbPreparedWebMeal(unfilteredWebMealResult: IWebMealResult): IDbWebMealResult {
+
+        const fWeekDayJavascriptDayIndex = +unfilteredWebMealResult.weekDayJavascriptDayIndex;
+        const fWeekNumber = +unfilteredWebMealResult.weekNumber;
+        const fWeekYear = +unfilteredWebMealResult.weekYear;
+        const fMenuUrl = unfilteredWebMealResult.menuUrl;
+        let fPrice_SEK: number;
+        const fLabelName = unfilteredWebMealResult.labelName;
+        const fAlternativeIndex = +unfilteredWebMealResult.alternativeIndex;
+        let fDishDescription: string;
+        let fFetchError: string;
+
+        if (unfilteredWebMealResult.fetchError) {
+            fDishDescription = this.emptySQLString;
+            fPrice_SEK = this.invalidSQLPrice;
+            fFetchError = `'${unfilteredWebMealResult.fetchError.replace(this.escapeRegex, "")}'`;
+        } else {
+            fDishDescription = unfilteredWebMealResult.dishDescription ? `'${unfilteredWebMealResult.dishDescription.replace(this.escapeRegex, "")}'` : this.emptySQLString;
+            fPrice_SEK = +unfilteredWebMealResult.price_SEK;
+            fFetchError = null;
+        }
+        return {
+            alternativeIndex: fAlternativeIndex,
+            dishDescription: fDishDescription,
+            price_SEK: fPrice_SEK,
+            labelName: fLabelName,
+            menuUrl: fMenuUrl,
+            weekDayJavascriptDayIndex: fWeekDayJavascriptDayIndex,
+            weekNumber: fWeekNumber,
+            weekYear: fWeekYear,
+            fetchError: fFetchError,
+        };
     }
 }
 
