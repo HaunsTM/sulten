@@ -155,6 +155,8 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `    areas.id = @p_areaId AND` +
+            `    NOT prices.sek = ${this.invalidSQLPrice} AND` +
+            `    NOT dishes.description = ${this.emptySQLString} AND` +
             `    weekDays.javaScriptDayIndex = @p_javaScriptDayIndex AND` +
             `    weekIndexes.weekNumber = @p_weekNumber AND` +
             `    weekIndexes.weekYear = @p_weekYear;`;
@@ -180,7 +182,7 @@ export class MealService {
 
                         const labelDishPrice = rw.map( (ldp) => {
                             return new AlternativeLabelDishPrice(
-                                ldp.alternativesIndex,
+                                ldp.labelsAlternativeIndex,
                                 ldp.labelsName, ldp.dishesDescription, ldp.pricesSEK ); },
                         );
 
