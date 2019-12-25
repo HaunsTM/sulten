@@ -116,7 +116,7 @@ export class MealService {
 
                     const labelDishPriceDays = rw.map( (ldp) => {
                         return new AlternativeLabelDishPriceDay(
-                            ldp.alternativesIndex,
+                            ldp.labelsAlternativeIndex,
                             ldp.labelsName, ldp.dishesDescription, ldp.weekDaysJavaScriptDayIndex, ldp.pricesSEK ); },
                     );
 
