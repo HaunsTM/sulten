@@ -19,7 +19,7 @@ BEGIN
 
 	SET @pJavaScriptDayIndex = pJavaScriptDayIndex;
 
-	INSERT INTO weekDays(`javaScriptDayIndex`) VALUES (@pJavaScriptDayIndex) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO weekDays(`dayIndex`) VALUES (@pJavaScriptDayIndex) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$

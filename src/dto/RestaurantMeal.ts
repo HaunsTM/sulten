@@ -4,16 +4,16 @@ export class RestaurantMeal {
 
     public restaurantName: string;
     public restaurantMenuUrl: string;
-    public javaScriptDayIndex: number;
+    public dayIndex: number;
     public alternativeLabelDishPrices: AlternativeLabelDishPrice[];
 
     constructor(
         restaurantName: string,
         restaurantMenuUrl: string,
-        javaScriptDayIndex: number,
+        dayIndex: number,
         alternativeLabelDishPrices: AlternativeLabelDishPrice[]) {
 
-            this.javaScriptDayIndex = javaScriptDayIndex;
+            this.dayIndex = dayIndex;
             this.restaurantName = restaurantName;
             this.restaurantMenuUrl = restaurantMenuUrl;
             this.alternativeLabelDishPrices = alternativeLabelDishPrices;

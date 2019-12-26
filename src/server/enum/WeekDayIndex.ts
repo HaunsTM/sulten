@@ -1,4 +1,4 @@
-export enum WeekDayJavascriptDayIndex {
+export enum WeekDayIndex {
     MONDAY = 1,
     TUESDAY = 2,
     WEDNESDAY = 3,

@@ -30,6 +30,38 @@ By convention, the sulten logic is adapted to full menus. Most likely, the best 
 - /admin/fetchMenusForAllAreas/:weekIndex
 - /admin/fetchMenusForArea/:id
 
+# Set up database on development computer
+
+This is a very short guide on how it is possible to set up the ´dbSulten.db´ (Sulten database) on your computer:
+
+1. Download and install [MariaDB](https://mariadb.org/download/) on your computer
+1. Setup MariaDb by running: `sudo mysql_secure_installation` (set password to root)
+1. Login to MariaDb: `sudo mariadb -u root -p`
+1. Create a database `CREATE DATABASE dbSulten;` _(obsolete: this is included in `create_dbSulten_scripts.sql`)_
+1. Write `use sultenDb;` _(obsolete: this is included in `create_dbSulten_scripts.sql`)_
+1. Run `source /absolute/location/sulten/database/create_dbSulten_scripts.sql`
+1. Run `source /absolute/location/sulten/database/queries.sql`
+1. Run `source /absolute/location/sulten/database/initialData.sql`
+1. See bunch of rows being created.
+1. Exit.
+
+# Dependencies
+
+1. run `yarn` to install dependencies
+1. start development server `yarn dev`
+
+# Start
+The first thing you have to do is to populate the database with actual restaurant data (_i.e_ menus). This is done by hitting the endpoint `/admin/fetchMenusForAllAreas/:weekIndex`, _example:_  http://localhost:8080/admin/fetchMenusForAllAreas/49.
+
+**Please be aware that SOME restaurants removes content successively during a week = the content changes.**
+
+By convention, the sulten logic is adapted to full menus. Most likely, the best time for fetching full menus is at mondays (it seems that most of the current menus are published by then).
+
+# Available endpoints
+
+- /admin/fetchMenusForAllAreas/:weekIndex
+- /admin/fetchMenusForArea/:id
+
 - /menu/allAreas
 - /menu/mealsPerAreaWeekYear/:areaId/:weekNumber/:weekYear
 - /menu/mealsPerAreaDayWeekYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear

@@ -1,14 +1,14 @@
-import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
+import { WeekDayIndex } from "../../enum/WeekDayIndex";
 
 export class WeekDay {
 
     public id: number;
 
-    public javaScriptDayIndex: number;
+    public dayIndex: number;
 
-    constructor(javaScriptDayIndex: WeekDayJavascriptDayIndex) {
+    constructor(dayIndex: WeekDayIndex) {
 
-        this.javaScriptDayIndex = javaScriptDayIndex;
+        this.dayIndex = dayIndex;
 
     }
 

@@ -1,7 +1,7 @@
 import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { FetcherType } from "../../enum/FetcherType";
 import { LabelName } from "../../enum/LabelName";
-import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
+import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
@@ -51,57 +51,57 @@ export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealer {
     private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.THREE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.FOUR),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.FIVE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.SEVEN),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.THREE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.FOUR),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.FIVE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.SEVEN),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.THREE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.FOUR),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.FIVE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.SEVEN),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.THREE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.FOUR),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.FIVE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.SEVEN),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.THREE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.FOUR),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.FIVE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.SEVEN),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
         ];
 
         return mealsForAWeek;
     }
 
     private async webMealResult(
-        weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex,
+        weekDayJavascriptDayIndex: WeekDayIndex,
         label: LabelName, alternativeIndex: AlternativeIndex ): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;

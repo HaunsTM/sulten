@@ -18,7 +18,7 @@ export class RestaurantService {
         const FILTERED_SQL =
             this.RESTAURANT_SQL +
             ` WHERE` +
-            `	restaurants.Active = ${activeBit}`;
+            `	restaurants.active = ${activeBit}`;
 
         const restaurantsByActivenessData = await getConnection().query(FILTERED_SQL);
 

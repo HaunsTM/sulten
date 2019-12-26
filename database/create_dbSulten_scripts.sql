@@ -86,7 +86,7 @@ CREATE TABLE `occurrences` (
 CREATE TABLE `weekDays` (
 	`id`								INT NOT NULL AUTO_INCREMENT,
 
-	`javaScriptDayIndex`				INT NOT NULL,
+	`dayIndex`				            INT NOT NULL,
 	
 	PRIMARY KEY (`id`)
 );
@@ -119,4 +119,4 @@ ALTER TABLE	`weekIndexes` ADD UNIQUE (`weekNumber`, `weekYear`);
 
 ALTER TABLE	`occurrences` ADD UNIQUE (`fKWeekIndexId`, `fKWeekDayId`);
 
-ALTER TABLE	`weekDays` ADD UNIQUE (`javaScriptDayIndex`);
+ALTER TABLE	`weekDays` ADD UNIQUE (`dayIndex`);
