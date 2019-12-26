@@ -9,6 +9,7 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { RestaurantService } from "../../repository/RestaurantService";
 
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
+import { BricksEateryDealer } from "./BricksEateryDealer";
 import { GlasklartDealer } from "./GlasklartDealer";
 import { KolgaDealer } from "./KolgaDealer";
 import { Lokal17Dealer } from "./Lokal17Dealer";
@@ -21,6 +22,7 @@ export class DealerService {
     public allDealers(): IWebMealDealerStatic[] {
 
         const allDealers: IWebMealDealerStatic[] = [
+            BricksEateryDealer,
             GlasklartDealer,
             KolgaDealer,
             Lokal17Dealer,

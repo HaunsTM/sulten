@@ -9,10 +9,10 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
+export const BricksEateryDealer: IWebMealDealerStatic =  class BricksEateryDealer {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "http://www.miamarias.nu/";
+        const baseUrl = "https://brickseatery.se/lunch/";
         return baseUrl;
     }
 
@@ -52,24 +52,24 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
     private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
             this.webMealResult( WeekDayJavascriptDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
             this.webMealResult( WeekDayJavascriptDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
             this.webMealResult( WeekDayJavascriptDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
             this.webMealResult( WeekDayJavascriptDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
 
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.FISH_AND_SEAFOOD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAT, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
+            this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.TWO),
             this.webMealResult( WeekDayJavascriptDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
         ];
 
@@ -82,8 +82,8 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
-        const swedishDishLabelOnMiaMarias = this.getSwedishDishLabelOnMiaMarias( label );
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnMiaMarias( weekDayJavascriptDayIndex );
+        const swedishDishLabelOnMiaMarias = this.getDishLabelOnBricksEatery( label, alternativeIndex );
+        const swedishWeekDayName = this.getSwedishWeekDayNameOnBricksEatery( weekDayJavascriptDayIndex );
 
         try {
             dishPriceWeekNumber =
@@ -113,7 +113,7 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
 
     }
 
-    private getSwedishWeekDayNameOnMiaMarias( weekDay: WeekDayJavascriptDayIndex ): string {
+    private getSwedishWeekDayNameOnBricksEatery( weekDay: WeekDayJavascriptDayIndex ): string {
         let swedishWeekDayName = "";
 
         switch ( weekDay ) {
@@ -136,27 +136,24 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
         return swedishWeekDayName;
     }
 
-    private getSwedishDishLabelOnMiaMarias( label: LabelName ): string {
-        let swedishDishLabel = "";
+    private getDishLabelOnBricksEatery( label: LabelName, alternativeIndex: AlternativeIndex ): string {
+        let dishLabel = "";
 
         switch ( label ) {
-            case LabelName.FISH_AND_SEAFOOD:
-                swedishDishLabel = "Fisk";
-                break;
-            case LabelName.MEAT:
-                swedishDishLabel = "Kött";
+            case LabelName.MEAL_OF_THE_DAY:
+                dishLabel = alternativeIndex === AlternativeIndex.ONE ? "Local" : "Worldwide";
                 break;
             case LabelName.VEGETARIAN:
-                swedishDishLabel = "Vegetarisk";
+                dishLabel = "Green";
                 break;
         }
 
-        return swedishDishLabel;
+        return dishLabel;
     }
 
     private async getDishPriceWeekNumber(
         swedishWeekDayName: string,
-        swedishDishLabelOnMiaMarias: string ): Promise<DishPriceWeekNumber> {
+        dishLabel: string ): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
         let priceSEK: string;
@@ -165,7 +162,7 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-        const xpath = this.xpathProvider( swedishWeekDayName, swedishDishLabelOnMiaMarias );
+        const xpath = this.xpathProvider( swedishWeekDayName, dishLabel );
 
         try {
             dishDescription =
@@ -173,11 +170,11 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
 
             priceSEK =
                 ( await this.dealerData.textContentFromHtmlDocument( xpath.price_SEKXPath ))
-                .match(/\d+(?=\s?kr)/)[0];
+                .match(/\d+(?=\s?:-)/)[0];
 
             weekIndexWeekNumber =
                 ( await this.dealerData.textContentFromHtmlDocument( xpath.weekNumberXPath ))
-                .match(/(?<=\s*Vecka\s*)\d+/)[0];
+                .match(/\d+/)[0];
         } catch ( error ) {
             fetchError = error;
         }
@@ -188,12 +185,12 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
 
     }
 
-    private xpathProvider( swedishWeekDayName: string, swedishDishLabelOnMiaMarias: string): IXPathDishProviderResult {
+    private xpathProvider( swedishWeekDayName: string, dishLabel: string): IXPathDishProviderResult {
 
         const result: IXPathDishProviderResult = {
-            descriptionXPath: `//h5[contains(.,'${swedishWeekDayName}')]/ancestor::div[contains(@class,"et_pb_module")]//tr[td[contains(.,'${swedishDishLabelOnMiaMarias}')][contains(.,"kr")]]/following-sibling::tr`,
-            price_SEKXPath: `//h5[contains(.,'${swedishWeekDayName}')]/ancestor::div[contains(@class,"et_pb_module")]//tr[td[contains(.,'${swedishDishLabelOnMiaMarias}')][contains(.,"kr")]]`,
-            weekNumberXPath: `//strong/span/text()[contains(.,'Vecka ')]`,
+            descriptionXPath: `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[contains(.,'${dishLabel}')]]/td[2]/text()[1]`,
+            price_SEKXPath: `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[contains(.,'${dishLabel}')]]/td[3]/text()`,
+            weekNumberXPath: `//div[contains(@class,'lunch')]/h2[contains(.,'Vecka')]`,
         };
 
         return result;
