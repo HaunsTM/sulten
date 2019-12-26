@@ -30,103 +30,143 @@ By convention, the sulten logic is adapted to full menus. Most likely, the best 
 - /admin/fetchMenusForAllAreas/:weekIndex
 - /admin/fetchMenusForArea/:id
 
-- /menu/getAllAreas
-- /menu/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear
-- /menu/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
+- /menu/allAreas
+- /menu/mealsPerAreaWeekYear/:areaId/:weekNumber/:weekYear
+- /menu/mealsPerAreaDayWeekYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
 
 ## Examples:
 
-http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
+http://localhost:8080/menu/mealsPerAreaWeekYear/2/51/2019
 
 <pre>[
     {
-        "restaurantName": "Kolga",
-        "labelDishPrices": [
+        "restaurantName": "Restaurang Variation",
+        "restaurantMenuUrl": "https://www.nyavariation.se/matsedel/",
+        "alternativeLabelDishPrices": [
             {
+                "alternativeIndex": 1,
                 "labelName": "meal_of_the_day",
-                "dishDescription": "Spagetti Carbonara med riven ost",
-                "javaScriptDayIndex": 1,
-                "priceSEK": "95.00"
+                "dishDescription": "Helstekt fläskytterfilé med glöggkokta sviskon, gräddsås och kokt potatis",
+                "dayIndex": 1,
+                "priceSEK": "99.00"
             },
             {
+                "alternativeIndex": 2,
                 "labelName": "meal_of_the_day",
-                "dishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
-                "javaScriptDayIndex": 4,
-                "priceSEK": "85.00"
+                "dishDescription": "Husets paella serveras med vitlöksyoghurt",
+                "dayIndex": 3,
+                "priceSEK": "99.00"
             },
             {
-                "labelName": "meal_of_the_day",
-                "dishDescription": "Raggmunkar med stekt bacon och lingon",
-                "javaScriptDayIndex": 4,
-                "priceSEK": "95.00"
-            }
+                "alternativeIndex": 1,
+                "labelName": "salad",
+                "dishDescription": "Potatis- och purjolökssoppa",
+                "dayIndex": 3,
+                "priceSEK": "75.00"
+            },
         ]
-    }
+    },
 ]</pre>
 
-http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
+http://localhost:8080/menu/mealsPerAreaDayWeekYear/2/4/47/2019
 
 <pre>[
     {
-        "javaScriptDayIndex": 4,
-        "restaurantName": "Kolga",
-        "labelDishPrices": [
+        "dayIndex": 4,
+        "restaurantName": "Lokal 17",
+        "restaurantMenuUrl": "https://lokal17.se/",
+        "alternativeLabelDishPrices": [
             {
+                "alternativeIndex": 1,
                 "labelName": "meal_of_the_day",
-                "dishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
-                "priceSEK": "85.00"
+                "dishDescription": "Gris-mandel-äpple-silverlök",
+                "priceSEK": "123.00"
             },
             {
-                "labelName": "meal_of_the_day",
-                "dishDescription": "Raggmunkar med stekt bacon och lingon",
-                "priceSEK": "95.00"
+                "alternativeIndex": 1,
+                "labelName": "vegetarian",
+                "dishDescription": "Jordärtsskocka-linser-tryffel-svamp",
+                "priceSEK": "123.00"
+            },
+            {
+                "alternativeIndex": 1,
+                "labelName": "dessert",
+                "dishDescription": "En kula glass med salt kola & crisp",
+                "priceSEK": "25.00"
+            },
+            {
+                "alternativeIndex": 2,
+                "labelName": "dessert",
+                "dishDescription": "Choklad tryffel",
+                "priceSEK": "25.00"
             }
         ]
     },
     {
-        "javaScriptDayIndex": 4,
-        "restaurantName": "Miamarias",
-        "labelDishPrices": [
+        "dayIndex": 4,
+        "restaurantName": "Restaurang Variation",
+        "restaurantMenuUrl": "https://www.nyavariation.se/matsedel/",
+        "alternativeLabelDishPrices": [
             {
-                "labelName": "fish_and_seafood",
-                "dishDescription": "Citrusöverbakad kummel med soja- och ingefärssmör, savojkål.",
-                "priceSEK": "110.00"
+                "alternativeIndex": 1,
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Pannbiff med lök, skysås, lingonsylt och kokt potatis",
+                "priceSEK": "99.00"
             },
             {
-                "labelName": "meat",
-                "dishDescription": "Dillkött. Kokt kalvkött i sötsyrlig dillsås, picklad morot, kokt potatis och pepparrotskräm.",
-                "priceSEK": "95.00"
+                "alternativeIndex": 2,
+                "labelName": "meal_of_the_day",
+                "dishDescription": "Ärtsoppa med fläskkorv och rökt fläsksida",
+                "priceSEK": "99.00"
             },
             {
+                "alternativeIndex": 1,
                 "labelName": "vegetarian",
-                "DishDescription": "Tagliatelle med valnötspesto, mozzarella och rostad tomat.",
-                "priceSEK": "90.00"
+                "dishDescription": "Bönbiffar serveras med vitlöksyoghurt",
+                "priceSEK": "75.00"
+            },
+            {
+                "alternativeIndex": 1,
+                "labelName": "salad",
+                "dishDescription": "Potatis- och purjolökssoppa",
+                "priceSEK": "75.00"
             }
         ]
     },
-    {
-        "javaScriptDayIndex": 4,
-        "restaurantName": "Glasklart",
-        "labelDishPrices": [
-            {
-                "labelName": "meal_of_the_day",
-                "dishDescription": "Raggmunk med fläsk och rårörda lingon alt. Bruna bönor med fläsk",
-                "priceSEK": "100.00"
-            },
-            {
-                "labelName": "vegetarian",
-                "dishDescription": "Rödbetsbiffar med smörstekt savoykål, rostad potatis och fetaostcreme",
-                "priceSEK": "100.00"
-            }
-        ]
-    }
 ]</pre>
 
-http://localhost:8080/menu/getAllAreas
+http://localhost:8080/menu/allAreas
 
 <pre>[
     {
-        "name": "Malmö - Västra Hamnen",
-        "id": 1
+        "id": 3,
+        "name": "Lund - Brunnshög"
+    },
+    {
+        "id": 4,
+        "name": "Lund - Sjukhuset"
+    },
+    {
+        "id": 1,
+        "name": "Malmö - Centrum"
+    },
+    {
+        "id": 2,
+        "name": "Malmö - Västra Hamnen"
     }
 ]</pre>
+
+## LabelName
+Dishes are categorized with different labels. Althought labels is text, some has been predefined in `server/enum/LabelName.ts` as enums for simpler usage.
+
+Here are some examples:
+<pre>export enum LabelName {
+    BARBACUE = "barbacue",
+    DESSERT = "dessert",
+    INDIAN = "indian",
+    MEAL_OF_THE_DAY = "meal_of_the_day",
+    PIZZA = "pizza",
+    SOUP = "soup",
+    THAI = "thai",
+    VEGETARIAN = "vegetarian",
+}</pre>
