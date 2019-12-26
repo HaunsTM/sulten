@@ -3,15 +3,13 @@ import { FetcherType } from "../../enum/FetcherType";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
-import { IHtmlFetcherHelper } from "../../interfaces/IHtmlFetcherHelper";
-import { IPdfFetcherHelper } from "../../interfaces/IPdfFetcherHelper";
 import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export const Lokal17Dealer: IWebMealDealerStatic =  class Lokal17Dealer {
+export const Lokal17Dealer: IWebMealDealerStatic =  class Lokal17DealerLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "https://lokal17.se/";

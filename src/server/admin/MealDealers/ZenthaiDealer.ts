@@ -9,7 +9,7 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealer {
+export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealerLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "http://www.zenthai.se/";

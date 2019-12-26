@@ -9,7 +9,7 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealer {
+export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealerLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "http://www.miamarias.nu/";

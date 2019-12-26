@@ -9,7 +9,7 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export const BricksEateryDealer: IWebMealDealerStatic =  class BricksEateryDealer {
+export const BricksEateryDealer: IWebMealDealerStatic =  class BricksEateryDealerLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "https://brickseatery.se/lunch/";

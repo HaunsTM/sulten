@@ -9,7 +9,7 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealer {
+export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "https://glasklart.eu/sv/lunch/";

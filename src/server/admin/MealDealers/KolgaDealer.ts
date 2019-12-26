@@ -9,7 +9,7 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { WebMealResult } from "./WebMealResult";
 
-export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealer {
+export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealerLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "https://glasklart.eu/sv/lunch/";
