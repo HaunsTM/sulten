@@ -61,7 +61,7 @@ export class MealService {
 
             const mealId = spResult[0][0]["LAST_INSERT_ID()"];
 
-            //logger.debug(`Performed ${sql}. mealID = ${mealId}`);
+            // logger.debug(`Performed ${sql}. mealID = ${mealId}`);
             return mealId;
 
         } catch ( error ) {
@@ -237,13 +237,13 @@ export class MealService {
         return {
             alternativeIndex: fAlternativeIndex,
             dishDescription: fDishDescription,
-            price_SEK: fPrice_SEK,
+            fetchError: fFetchError,
             labelName: fLabelName,
             menuUrl: fMenuUrl,
+            price_SEK: fPrice_SEK,
             weekDayJavascriptDayIndex: fWeekDayJavascriptDayIndex,
             weekNumber: fWeekNumber,
             weekYear: fWeekYear,
-            fetchError: fFetchError,
         };
     }
 }
