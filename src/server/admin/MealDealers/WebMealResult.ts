@@ -1,6 +1,6 @@
 import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { LabelName } from "../../enum/LabelName";
-import { WeekDayJavascriptDayIndex } from "../../enum/WeekDayJavascriptDayIndex";
+import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 
 export class WebMealResult implements IWebMealResult {
@@ -10,17 +10,17 @@ export class WebMealResult implements IWebMealResult {
     private _dishDescription: string;
     private _priceSEK: string;
     private _labelName: LabelName;
-    private _weekDayJavascriptDayIndex: WeekDayJavascriptDayIndex;
+    private _weekDayIndex: WeekDayIndex;
     private _weekNumber: string;
     private _weekYear: string;
     private _fetchError: string;
 
     constructor()
     constructor(menuUrl: string, dishDescription: string, priceSEK: string,
-                alternativeIndex: AlternativeIndex, labelName: LabelName, weekDay: WeekDayJavascriptDayIndex,
+                alternativeIndex: AlternativeIndex, labelName: LabelName, weekDayIndex: WeekDayIndex,
                 weekNumber: string,  weekYear: string, fetchError: Error)
     constructor(menuUrl?: string, dishDescription?: string, priceSEK?: string,
-                alternativeIndex?: AlternativeIndex, labelName?: LabelName, weekDay?: WeekDayJavascriptDayIndex,
+                alternativeIndex?: AlternativeIndex, labelName?: LabelName, weekDayIndex?: WeekDayIndex,
                 weekNumber?: string, weekYear?: string, fetchError?: Error) {
 
         this._menuUrl = menuUrl;
@@ -28,7 +28,7 @@ export class WebMealResult implements IWebMealResult {
         this._priceSEK = priceSEK;
         this._alternativeIndex = alternativeIndex;
         this._labelName = labelName;
-        this._weekDayJavascriptDayIndex = weekDay;
+        this._weekDayIndex = weekDayIndex;
         this._weekNumber = weekNumber;
         this._weekYear = weekYear;
 
@@ -70,11 +70,11 @@ export class WebMealResult implements IWebMealResult {
         this._menuUrl = value;
     }
 
-    public get weekDayJavascriptDayIndex(): WeekDayJavascriptDayIndex {
-        return this._weekDayJavascriptDayIndex;
+    public get weekDayJavascriptDayIndex(): WeekDayIndex {
+        return this._weekDayIndex;
     }
-    public set weekDayJavascriptDayIndex(value: WeekDayJavascriptDayIndex) {
-        this._weekDayJavascriptDayIndex = value;
+    public set weekDayJavascriptDayIndex(value: WeekDayIndex) {
+        this._weekDayIndex = value;
     }
 
     public get weekNumber(): string {

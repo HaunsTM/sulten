@@ -40,20 +40,18 @@ INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('supper', 1);
 INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('thai', 1);
 INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('vegetarian', 1);
 
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (0);
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (1);
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (2);
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (3);
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (4);
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (5);
-INSERT INTO `weekDays` (`javaScriptDayIndex`) VALUES (6);
+INSERT INTO `weekDays` (`dayIndex`) VALUES (0);
+INSERT INTO `weekDays` (`dayIndex`) VALUES (1);
+INSERT INTO `weekDays` (`dayIndex`) VALUES (2);
+INSERT INTO `weekDays` (`dayIndex`) VALUES (3);
+INSERT INTO `weekDays` (`dayIndex`) VALUES (4);
+INSERT INTO `weekDays` (`dayIndex`) VALUES (5);
+INSERT INTO `weekDays` (`dayIndex`) VALUES (6);
 
 INSERT INTO `prices` (`sek`) VALUES (-1);
 
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(0, "Bricks Eatery", "https://brickseatery.se/lunch/", "55.716502", "13.226820", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Brunnshög'));
-INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
-	(0, "Fazer Restaurang Scotland Yard", "https://www.fazerfoodco.se/restauranger/restauranger/scotland-yard/", "55.718187", "13.226885", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Brunnshög'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Glasklart", "https://glasklart.eu/sv/lunch/", "55.615981", "12.990736", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 

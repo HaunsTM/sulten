@@ -15,7 +15,7 @@ export class MealService {
         "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl," +
         "   labels.name AS labelsName, labels.alternativeIndex AS labelsAlternativeIndex," +
         "   dishes.description AS dishesDescription," +
-        "	prices.sek AS pricesSEK, weekDays.javaScriptDayIndex AS weekDaysJavaScriptDayIndex," +
+        "	prices.sek AS pricesSEK, weekDays.dayIndex AS weekDaysJavaScriptDayIndex," +
         "	weekIndexes.weekNumber AS weekIndexesWeekNumber, weekIndexes.weekYear AS weekIndexesWeekYear" +
         " FROM meals" +
         "	JOIN dishes" +
@@ -147,7 +147,7 @@ export class MealService {
     }
 
     public async getMealsPerAreaDayWeekYear(
-        areaId: number, javaScriptDayIndex: number, weekNumber: number, weekYear: number): Promise<RestaurantMeal[]> {
+        areaId: number, dayIndex: number, weekNumber: number, weekYear: number): Promise<RestaurantMeal[]> {
 
         const connection = getConnection();
         const queryRunner = connection.createQueryRunner();
@@ -159,7 +159,7 @@ export class MealService {
             `	 restaurants.active = 1 AND` +
             `    NOT prices.sek = ${this.invalidSQLPrice} AND` +
             `    NOT dishes.description = ${this.emptySQLString} AND` +
-            `    weekDays.javaScriptDayIndex = @p_javaScriptDayIndex AND` +
+            `    weekDays.dayIndex = @p_javaScriptDayIndex AND` +
             `    weekIndexes.weekNumber = @p_weekNumber AND` +
             `    weekIndexes.weekYear = @p_weekYear;`;
 
@@ -168,7 +168,7 @@ export class MealService {
             await queryRunner.startTransaction();
 
             await queryRunner.query(`SET @p_areaId = ${areaId};`);
-            await queryRunner.query(`SET @p_javaScriptDayIndex = ${javaScriptDayIndex};`);
+            await queryRunner.query(`SET @p_javaScriptDayIndex = ${dayIndex};`);
             await queryRunner.query(`SET @p_weekNumber = ${weekNumber};`);
             await queryRunner.query(`SET @p_weekYear = ${weekYear};`);
 
@@ -191,13 +191,13 @@ export class MealService {
                         const restaurantName = rw[0].restaurantsName;
                         const restaurantsMenuUrl = rw[0].restaurantsMenuUrl;
                         const restaurantMeal =
-                            new RestaurantMeal(restaurantName, restaurantsMenuUrl, javaScriptDayIndex, labelDishPrice);
+                            new RestaurantMeal(restaurantName, restaurantsMenuUrl, dayIndex, labelDishPrice);
 
                         return restaurantMeal;
                     })
                     .value();
 
-            logger.debug(`Performed getMealsPerAreaAndDayAndWeekAndYear(${areaId}, ${javaScriptDayIndex}, ${weekNumber}, ${weekYear}). Returning ${restaurantsMeals.length} restaurantsMeals.`);
+            logger.debug(`Performed getMealsPerAreaAndDayAndWeekAndYear(${areaId}, ${dayIndex}, ${weekNumber}, ${weekYear}). Returning ${restaurantsMeals.length} restaurantsMeals.`);
             return restaurantsMeals;
 
         } catch (error) {

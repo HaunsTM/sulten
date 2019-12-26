@@ -6,7 +6,7 @@ const logFileName = process.env.LOG_FILE || "app.log";
 const logFilePath = `${logDir}/${logFileName}`;
 
 // set default log level
-const logLevel = process.env.LOG_LEVEL || "debug";
+const logLevel = process.env.LOG_LEVEL || "error";
 
 // appenders
 configure({

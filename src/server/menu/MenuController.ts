@@ -17,7 +17,7 @@ export default class MenuController implements IController {
         this.router.get(`${this.path}/allAreas`,  this.allAreas);
         this.router.get(`${this.path}/mealsPerAreaWeekYear/:areaId/:weekNumber/:weekYear`,
             this.mealsPerAreaWeekYear);
-        this.router.get(`${this.path}/mealsPerAreaDayWeekYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear`,
+        this.router.get(`${this.path}/mealsPerAreaDayWeekYear/:areaId/:dayIndex/:weekNumber/:weekYear`,
             this.mealsPerAreaDayWeekYear);
     }
     private async allAreas(
@@ -61,13 +61,13 @@ export default class MenuController implements IController {
 
         try {
             const areaId = +request.params.areaId;
-            const javaScriptDayIndex = +request.params.javaScriptDayIndex;
+            const dayIndex = +request.params.dayIndex;
             const weekNumber = +request.params.weekNumber;
             const weekYear =  +request.params.weekYear;
 
             const mealService = new MealService();
             const mealsPerAreaAndWeekAndYear =
-                await mealService.getMealsPerAreaDayWeekYear(areaId, javaScriptDayIndex, weekNumber, weekYear);
+                await mealService.getMealsPerAreaDayWeekYear(areaId, dayIndex, weekNumber, weekYear);
 
             response.send(mealsPerAreaAndWeekAndYear);
 

@@ -32,7 +32,7 @@ By convention, the sulten logic is adapted to full menus. Most likely, the best 
 
 - /menu/getAllAreas
 - /menu/getMealsPerAreaAndWeekAndYear/:areaId/:weekNumber/:weekYear
-- /menu/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
+- /menu/getMealsPerAreaAndDayAndWeekAndYear/:areaId/:dayIndex/:weekNumber/:weekYear
 
 ## Examples:
 
@@ -45,19 +45,19 @@ http://localhost:8080/menu/getMealsPerAreaAndWeekAndYear/1/47/2019
             {
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Spagetti Carbonara med riven ost",
-                "javaScriptDayIndex": 1,
+                "dayIndex": 1,
                 "priceSEK": "95.00"
             },
             {
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Ärtsoppa eller Fisksoppa, pannkakor med sylt och grädde",
-                "javaScriptDayIndex": 4,
+                "dayIndex": 4,
                 "priceSEK": "85.00"
             },
             {
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Raggmunkar med stekt bacon och lingon",
-                "javaScriptDayIndex": 4,
+                "dayIndex": 4,
                 "priceSEK": "95.00"
             }
         ]
@@ -68,7 +68,7 @@ http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
 
 <pre>[
     {
-        "javaScriptDayIndex": 4,
+        "dayIndex": 4,
         "restaurantName": "Kolga",
         "labelDishPrices": [
             {
@@ -84,7 +84,7 @@ http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
         ]
     },
     {
-        "javaScriptDayIndex": 4,
+        "dayIndex": 4,
         "restaurantName": "Miamarias",
         "labelDishPrices": [
             {
@@ -105,7 +105,7 @@ http://localhost:8080/menu/getMealsPerAreaAndDayAndWeekAndYear/1/4/47/2019
         ]
     },
     {
-        "javaScriptDayIndex": 4,
+        "dayIndex": 4,
         "restaurantName": "Glasklart",
         "labelDishPrices": [
             {
