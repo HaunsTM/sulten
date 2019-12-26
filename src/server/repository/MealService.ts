@@ -81,7 +81,7 @@ export class MealService {
         const allInsertsResult = await Promise.all(allInserts);
     }
 
-    public async getMealsPerAreaAndWeekAndYear(
+    public async getMealsPerAreaWeekYear(
         areaId: number, weekNumber: number, weekYear: number): Promise<RestaurantMealDay[]> {
 
         const connection = getConnection();
@@ -91,6 +91,7 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `    areas.id = @p_areaId AND` +
+            `	 restaurants.active = 1 AND` +
             `    NOT prices.sek = ${this.invalidSQLPrice} AND` +
             `    NOT dishes.description = ${this.emptySQLString} AND` +
             `    weekIndexes.weekNumber = @p_weekNumber AND` +
@@ -145,7 +146,7 @@ export class MealService {
 
     }
 
-    public async getMealsPerAreaAndDayAndWeekAndYear(
+    public async getMealsPerAreaDayWeekYear(
         areaId: number, javaScriptDayIndex: number, weekNumber: number, weekYear: number): Promise<RestaurantMeal[]> {
 
         const connection = getConnection();
@@ -155,6 +156,7 @@ export class MealService {
             this.MEAL_SQL +
             ` WHERE` +
             `    areas.id = @p_areaId AND` +
+            `	 restaurants.active = 1 AND` +
             `    NOT prices.sek = ${this.invalidSQLPrice} AND` +
             `    NOT dishes.description = ${this.emptySQLString} AND` +
             `    weekDays.javaScriptDayIndex = @p_javaScriptDayIndex AND` +
