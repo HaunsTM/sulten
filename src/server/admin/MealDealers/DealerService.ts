@@ -13,7 +13,9 @@ import { BricksEateryDealer } from "./BricksEateryDealer";
 import { GlasklartDealer } from "./GlasklartDealer";
 import { KolgaDealer } from "./KolgaDealer";
 import { Lokal17Dealer } from "./Lokal17Dealer";
+import { MHMatsalarDealer } from "./MHMatsalarDealer";
 import { MiamariasDealer } from "./MiamariasDealer";
+import { RestaurangNiagaraDealer } from "./RestaurangNiagaraDealer";
 import { RestaurangVariationDealer } from "./RestaurangVariationDealer";
 import { ZenthaiDealer } from "./ZenthaiDealer";
 
@@ -26,7 +28,9 @@ export class DealerService {
             GlasklartDealer,
             KolgaDealer,
             Lokal17Dealer,
+            MHMatsalarDealer,
             MiamariasDealer,
+            RestaurangNiagaraDealer,
             RestaurangVariationDealer,
             ZenthaiDealer,
         ];

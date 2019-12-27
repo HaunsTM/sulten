@@ -59,12 +59,15 @@ By convention, the sulten logic is adapted to full menus. Most likely, the best 
 
 # Available endpoints
 
+http://localhost:8080/
 - /admin/fetchMenusForAllAreas/:weekIndex
 - /admin/fetchMenusForArea/:id
 
+http://localhost:8080/ or https://api.sulten.se
 - /menu/allAreas
 - /menu/mealsPerAreaWeekYear/:areaId/:weekNumber/:weekYear
 - /menu/mealsPerAreaDayWeekYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
+- /restaurantsPerArea/:areaId
 
 ## Examples:
 
@@ -187,6 +190,25 @@ http://localhost:8080/menu/allAreas
         "name": "Malmö - Västra Hamnen"
     }
 ]</pre>
+
+http://api.sulten.se/restaurantsPerArea/3
+
+<pre>{
+    "area": {
+        "id": 3,
+        "name": "Lund - Brunnshög"
+    },
+    "restaurants": [
+        {
+            "id": 1,
+            "active": true,
+            "name": "Bricks Eatery",
+            "menuUrl": "https://brickseatery.se/lunch/",
+            "longitude": "55.71650200",
+            "latitude": "13.22682000"
+        }
+    ]
+}</pre>
 
 ## LabelName
 Dishes are categorized with different labels. Althought labels is text, some has been predefined in `server/enum/LabelName.ts` as enums for simpler usage.

@@ -12,7 +12,12 @@ export class Restaurant {
 
     public latitude: string;
 
-    constructor( name: string, menuUrl: string, longitude: string, latitude: string ) {
+    constructor( id: number, active: boolean, name: string, menuUrl: string,
+                 longitude: string, latitude: string ) {
+
+        this.id = id;
+
+        this.active = active;
 
         this.name = name;
 

@@ -1,5 +1,6 @@
 export enum LabelName {
     ARABIC = "arabic",
+    ASIAN = "asian",
     BARBACUE = "barbacue",
     BREAD = "bread",
     BREAKFAST = "breakfast",

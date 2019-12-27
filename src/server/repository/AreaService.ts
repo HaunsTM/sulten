@@ -12,9 +12,7 @@ export class AreaService {
 
         const allAreasResult = await getConnection().query(this.AREA_SQL);
         const allAreas = allAreasResult.map( (a: any) => {
-            const tempArea = new Area();
-            tempArea.id = a.areasId;
-            tempArea.name = a.areasName;
+            const tempArea = new Area(a.areasId, a.areasName);
 
             return tempArea;
         });

@@ -6,6 +6,7 @@ INSERT INTO `areas` (`name`) VALUES ('Lund - Brunnshög');
 INSERT INTO `areas` (`name`) VALUES ('Lund - Sjukhuset');
 
 INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('arabic', 1);
+INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('asian', 1);
 INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('bread', 1);
 INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('breakfast', 1);
 INSERT INTO `labels` (`name`, `alternativeIndex`) VALUES ('cake', 1);
@@ -59,7 +60,11 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Lokal 17", "https://lokal17.se/", "55.611998", "12.995554", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "MH Matsalar", "http://www.mhmatsalar.se/", "55.610916", "12.995886", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Miamarias", "http://www.miamarias.nu/", "55.613649", "12.991565", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Restaurang Niagara", "https://restaurangniagara.se/lunch/", "55.609033", "12.994625", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang Variation", "https://www.nyavariation.se/matsedel/", "55.607987", "12.981666", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 

@@ -19,6 +19,8 @@ export default class MenuController implements IController {
             this.mealsPerAreaWeekYear);
         this.router.get(`${this.path}/mealsPerAreaDayWeekYear/:areaId/:dayIndex/:weekNumber/:weekYear`,
             this.mealsPerAreaDayWeekYear);
+        this.router.get(`${this.path}/restaurantsPerArea/:areaId`,
+                this.restaurantsPerArea);
     }
     private async allAreas(
         request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
@@ -26,6 +28,25 @@ export default class MenuController implements IController {
         try {
             const areaService = new AreaService();
             const allAreas = await areaService.getAllAreas();
+
+            response.status(200);
+            response.send(allAreas);
+
+        } catch (e) {
+            next(new HttpException(500, e));
+        }
+
+    }
+
+    private async restaurantsPerArea(
+        request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
+
+        try {
+            const resturantService = new RestaurantService();
+            const areaId = +request.params.areaId;
+            const restaurantShouldBeActive = true;
+
+            const allAreas = await resturantService.getRestaurantsPerArea(areaId, restaurantShouldBeActive);
 
             response.status(200);
             response.send(allAreas);
