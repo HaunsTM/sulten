@@ -168,6 +168,7 @@ export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal
             case LabelName.MEAL_OF_THE_DAY:
                 result = {
                     descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'${weekDay}')]/following-sibling::p[1]`,
+                    labelXPath: null,
                     price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };
@@ -175,6 +176,7 @@ export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal
             case LabelName.VEGETARIAN:
                 result = {
                     descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'Veckans vegetariska')]/following-sibling::p[1]`,
+                    labelXPath: null,
                     price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
                     weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
                 };

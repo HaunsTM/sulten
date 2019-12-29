@@ -43,71 +43,76 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
 
-        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
+        const mealsForAWeekPromise =  await this.getWebMealResultAForAWeek();
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
 
         return mealsForAWeek;
     }
+    private get allLunchDays(): WeekDayIndex[] {
 
-    private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
-
-        const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.ASIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.ASIAN, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.SALAD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.SOUP, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.COFFEE, AlternativeIndex.ONE),
-
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.ASIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.ASIAN, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.SALAD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.SOUP, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.COFFEE, AlternativeIndex.ONE),
-
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.ASIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.ASIAN, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.SALAD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.SOUP, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.COFFEE, AlternativeIndex.ONE),
-
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.ASIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.ASIAN, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.SALAD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.SOUP, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.COFFEE, AlternativeIndex.ONE),
-
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.ASIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.ASIAN, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.SALAD, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.SOUP, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.COFFEE, AlternativeIndex.ONE),
+        const allLunchDays: WeekDayIndex[] = [
+            WeekDayIndex.MONDAY,
+            WeekDayIndex.TUESDAY,
+            WeekDayIndex.WEDNESDAY,
+            WeekDayIndex.THURSDAY,
+            WeekDayIndex.FRIDAY,
         ];
 
-        return mealsForAWeek;
+        return allLunchDays;
     }
 
-    private async webMealResult( weekDayJavascriptDayIndex: WeekDayIndex,
-                                 label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
+    private async getWebMealResultAForAWeek(): Promise<Array<IWebMealResult>> {
 
-        let dishPriceWeekNumber: DishPriceWeekNumber = null;
+        return new Promise(async (resolve, reject) => {
+            const webMealResults: Array<IWebMealResult>= new Array();
+            try {
+                for (let i = 0, len = this.allLunchDays.length; i < len; i++) {
+                  const tempWebMealResults = await this.getWebMealResultForDay(this.allLunchDays[i]);
+                  webMealResults.push(...tempWebMealResults);
+                }
+
+                resolve(webMealResults);
+            } catch ( error ) {
+                reject(error);
+            }
+        });
+    }
+
+    private async getWebMealResultForDay(day: WeekDayIndex): Promise<Array<IWebMealResult>> {
+        
+        return new Promise(async (resolve, reject) => {
+            const webMealResults: Array<IWebMealResult>= new Array();
+            try {
+                const currentSwedishWeekDayName = this.getSwedishWeekDayNameOnRestaurangNiagara(day);
+                const numberOfDishesCurrentDay = await this.mealsPerWeekDay(currentSwedishWeekDayName);
+                const dishLabelsCurrentDay: LabelName[] = new Array();
+
+                for (let i = 0; i < numberOfDishesCurrentDay; i++) {
+                    const dishRowIndex = i + 1;
+                    const dishPriceWeekNumber =
+                        await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex );
+                    const label = await this.getDishLabelName(currentSwedishWeekDayName, dishRowIndex );
+                    dishLabelsCurrentDay.push( label );
+                    const alternativeIndex =
+                        dishLabelsCurrentDay.filter( (x) => { return x === label }).length;
+                    const webMealResult =
+                        await this.webMealResult(dishPriceWeekNumber, alternativeIndex, label, day);
+                    webMealResults.push(webMealResult);
+                }
+                resolve(webMealResults);
+            } catch ( error ) {
+                reject(error);
+            }
+        });
+    }
+
+    private async webMealResult(
+        dishPriceWeekNumber: DishPriceWeekNumber, alternativeIndex: number,
+        label: LabelName, weekDay: WeekDayIndex ): Promise<IWebMealResult> {
+
         let webMealResult: WebMealResult = null;
 
-        const swedishDishLabel = this.getDishLabelOnBricksEatery( label, alternativeIndex );
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnRestaurangNiagara( weekDayJavascriptDayIndex );
-
         try {
-            dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber( swedishWeekDayName, swedishDishLabel );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -120,13 +125,13 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
             webMealResult =
                 new WebMealResult(
                     this.baseUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDay,
                     dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
                 new WebMealResult( this.baseUrl, "", "", alternativeIndex, label,
-                    weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
+                weekDay , this.weekNumberExpected, this.weekYear, e);
         }
 
         return webMealResult;
@@ -156,45 +161,46 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         return swedishWeekDayName;
     }
 
-    private getDishLabelOnBricksEatery( label: LabelName, alternativeIndex: AlternativeIndex ): string {
-        let dishLabel = "";
+    
+    private labelText2LabelNameOnNiagara( labelText: string ): LabelName {
+        let dishLabel: LabelName;
 
-        switch ( label ) {
-            case LabelName.MEAL_OF_THE_DAY:
-                dishLabel = "Local";
+        switch ( true ) {
+            case /asia/gi.test(labelText):
+                dishLabel = LabelName.ASIAN;
                 break;
-            case LabelName.VEGETARIAN:
-                dishLabel = "Green";
+            case /green/gi.test(labelText):
+                dishLabel = LabelName.VEGETARIAN;
                 break;
-            case LabelName.ASIAN:
-
-                switch ( alternativeIndex ) {
-
-                    case AlternativeIndex.ONE:
-                        dishLabel = "Asia Ichi";
-                        break;
-                    case AlternativeIndex.TWO:
-                        dishLabel = "Asia Yee";
-                        break;
-                }
+            case /local/gi.test(labelText):
+                dishLabel = LabelName.MEAL_OF_THE_DAY;
                 break;
-            case LabelName.SALAD:
-                dishLabel = "Salad";
+            case /salad/gi.test(labelText):
+                dishLabel = LabelName.SALAD;
                 break;
-            case LabelName.SOUP:
-                dishLabel = "Soup";
+            case /soup/gi.test(labelText):
+                dishLabel = LabelName.SOUP;
                 break;
-            case LabelName.COFFEE:
-                dishLabel = "Övrigt";
+            case /övrigt/gi.test(labelText):
+                dishLabel = LabelName.COFFEE;
+                break;
+            default:
+                dishLabel = LabelName.MEAL_OF_THE_DAY;
                 break;
         }
 
         return dishLabel;
     }
+    private async getDishLabelName( swedishWeekDayName: string, dishRowIndex: number ): Promise<LabelName> {
+        const xpath = this.xpathProvider( swedishWeekDayName, dishRowIndex );
+        const labelText =
+                await this.dealerData.textContentFromHtmlDocument( xpath.labelXPath );
+        const labelName = this.labelText2LabelNameOnNiagara( labelText );
 
-    private async getDishPriceWeekNumber(
-        swedishWeekDayName: string,
-        dishLabel: string ): Promise<DishPriceWeekNumber> {
+        return labelName;
+    }
+    private async getDishPriceWeekNumber(swedishWeekDayName: string,
+                                         dishRowIndex: number): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
         let priceSEK: string;
@@ -203,11 +209,11 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-        const xpath = this.xpathProvider( swedishWeekDayName, dishLabel );
+        const xpath = this.xpathProvider( swedishWeekDayName, dishRowIndex );
 
         try {
             dishDescription =
-                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath);
+                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath );
 
             priceSEK =
                 ( await this.dealerData.textContentFromHtmlDocument( xpath.price_SEKXPath ))
@@ -223,23 +229,38 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         dishPriceWeekNumber = new DishPriceWeekNumber(dishDescription, priceSEK, weekIndexWeekNumber, fetchError );
 
         return dishPriceWeekNumber;
-
     }
 
-    private caseInsensitiveXpathContains(text: string) {
-        const caseInsensitiveXpathContains = `contains(
-            translate(., 'ABCDEFGHIJKLMNOPQRSTUÜVWXYZÅÄÖ', 'abcdefghijklmnopqrstuüvwxyzåäö'),
-            '${text}'
-          )`;
-        return caseInsensitiveXpathContains;
+    private async mealsPerWeekDay(swedishWeekDayName: string): Promise<number> {
+
+        const xpathNiagaraMenuTableRow = this.xpathNiagaraMenuTableRowsProvider( swedishWeekDayName );
+        const xPathResult =  await this.dealerData.contentFromHtmlDocument( xpathNiagaraMenuTableRow );
+
+        let node = xPathResult.iterateNext();
+        let numberOfMeals = 0;
+
+        while (node) {
+            numberOfMeals ++;
+            node = xPathResult.iterateNext();
+        }
+
+        return numberOfMeals;
     }
-    private xpathProvider( swedishWeekDayName: string, dishLabel: string): IXPathDishProviderResult {
+
+    private xpathNiagaraMenuTableRowsProvider( swedishWeekDayName: string): string {
+        const xpathNiagaraTableRow = `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr`;
+        return xpathNiagaraTableRow;
+    }
+
+    private xpathProvider( swedishWeekDayName: string, dishRowIndex: number ): IXPathDishProviderResult {
 
         const result: IXPathDishProviderResult = {
             descriptionXPath:
-                `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[${this.caseInsensitiveXpathContains(dishLabel.toLowerCase())}]]/td[2]/text()`,
+                `${this.xpathNiagaraMenuTableRowsProvider( swedishWeekDayName )}[${ dishRowIndex }]/td[2]/text()`,
+            labelXPath:
+                `${this.xpathNiagaraMenuTableRowsProvider( swedishWeekDayName )}[${ dishRowIndex }]/td[1]/text()`,
             price_SEKXPath:
-                `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[${this.caseInsensitiveXpathContains(dishLabel.toLowerCase())}]]/td[3]/text()`,
+                `${this.xpathNiagaraMenuTableRowsProvider( swedishWeekDayName )}[${ dishRowIndex }]/td[3]/text()`,
             weekNumberXPath: `//div[contains(@class,'lunch')]/h2[contains(.,'Vecka')]`,
         };
 

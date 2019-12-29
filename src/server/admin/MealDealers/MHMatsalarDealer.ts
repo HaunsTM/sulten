@@ -185,6 +185,7 @@ export const MHMatsalarDealer: IWebMealDealerStatic =  class MHMatsalarDealerLoc
 
         const result: IXPathDishProviderResult = {
             descriptionXPath: `//p[contains(.,'${swedishWeekDayName}')]/following-sibling::p[1]/text()[${labelXPathIndex}]`,
+            labelXPath: null,
             price_SEKXPath: `//p[contains(.,'Dagens rätt pris')]`,
             weekNumberXPath: `//h2[contains(.,'Vecka')]`,
         };

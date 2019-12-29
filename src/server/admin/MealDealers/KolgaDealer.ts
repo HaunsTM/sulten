@@ -163,6 +163,7 @@ export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealerLocal {
 
         const result: IXPathDishProviderResult = {
             descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${alternativeIndex}]`,
+            labelXPath: null,
             price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${alternativeIndex}]`,
             weekNumberXPath: `//a[contains(@class,'btn btn-info dropdown-toggle')]/text()[contains(.,'Vecka ')]`,
         };

@@ -189,6 +189,7 @@ export const BricksEateryDealer: IWebMealDealerStatic =  class BricksEateryDeale
 
         const result: IXPathDishProviderResult = {
             descriptionXPath: `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[contains(.,'${dishLabel}')]]/td[2]/text()[1]`,
+            labelXPath: null,
             price_SEKXPath: `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[contains(.,'${dishLabel}')]]/td[3]/text()`,
             weekNumberXPath: `//div[contains(@class,'lunch')]/h2[contains(.,'Vecka')]`,
         };

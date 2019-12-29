@@ -174,6 +174,7 @@ export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealerLocal {
 
         result = {
             descriptionXPath: `//div[@id='page-zones__main-widgets__content']//p[//strong][${alternativeIndex}]`,
+            labelXPath: null,
             price_SEKXPath: `//td/span[//following-sibling::text()[contains(.,'äta här')]]`,
             weekNumberXPath: `//h1[contains(.,'vecka')]`,
         };

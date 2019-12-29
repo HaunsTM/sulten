@@ -192,6 +192,7 @@ export const MiamariasDealer: IWebMealDealerStatic =  class MiamariasDealerLocal
 
         const result: IXPathDishProviderResult = {
             descriptionXPath: `//h5[contains(.,'${swedishWeekDayName}')]/ancestor::div[contains(@class,"et_pb_module")]//tr[td[contains(.,'${swedishDishLabelOnMiaMarias}')][contains(.,"kr")]]/following-sibling::tr`,
+            labelXPath: null,
             price_SEKXPath: `//h5[contains(.,'${swedishWeekDayName}')]/ancestor::div[contains(@class,"et_pb_module")]//tr[td[contains(.,'${swedishDishLabelOnMiaMarias}')][contains(.,"kr")]]`,
             weekNumberXPath: `//strong/span/text()[contains(.,'Vecka ')]`,
         };
