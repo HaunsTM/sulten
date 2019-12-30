@@ -100,12 +100,12 @@ export const BricksEateryDealer: IWebMealDealerStatic =  class BricksEateryDeale
             webMealResult =
                 new WebMealResult(
                     this.baseUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, IndexNumber, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.priceSEK, indexNumber, label, weekDayJavascriptDayIndex,
                     dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.baseUrl, "", "", IndexNumber, label,
+                new WebMealResult( this.baseUrl, "", "", indexNumber, label,
                     weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
         }
 
