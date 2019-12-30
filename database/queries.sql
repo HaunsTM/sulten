@@ -7,6 +7,11 @@ DROP PROCEDURE IF EXISTS getRestaurantId;
 DROP PROCEDURE IF EXISTS getPriceId;
 DROP PROCEDURE IF EXISTS getLabelId;
 DROP PROCEDURE IF EXISTS getDishId;
+DROP PROCEDURE IF EXISTS getIndexId;
+DROP PROCEDURE IF EXISTS getIndexId;
+DROP PROCEDURE IF EXISTS getLabelId;
+DROP PROCEDURE IF EXISTS getAlternativeId;
+DROP PROCEDURE IF EXISTS getAlternativeMealId;
 DROP PROCEDURE IF EXISTS deletePossibleOldMeal;
 DROP PROCEDURE IF EXISTS createAndGetMealId;
 
@@ -85,35 +90,80 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE getDishId (
+	IN pDescription				    	    VARCHAR(255),
+	OUT idOut 								INT)
+BEGIN
+
+	SET @pDescription = pDescription;
+
+    INSERT INTO dishes(`description`) VALUES (@pDescription) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	
+    SELECT LAST_INSERT_ID() INTO idOut;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE getIndexId (
+	IN pNumber				    	        INT,
+	OUT idOut 								INT)
+BEGIN
+
+	SET @pNumber = pNumber;
+
+    INSERT INTO indexes(`number`) VALUES (@pNumber) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	
+    SELECT LAST_INSERT_ID() INTO idOut;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE PROCEDURE getLabelId (
 	IN pName					    		VARCHAR(255),
-    IN pAlternativeIndex                    INT,
 	OUT idOut 								INT)
 BEGIN
 
 	SET @pName = pName;
-    SET @pAlternativeIndex = pAlternativeIndex;
 
-	INSERT INTO labels(`name`, `alternativeIndex`) VALUES (@pName, @pAlternativeIndex) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO labels(`name`) VALUES (@pName) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE getDishId (
-	IN pDescription				    	    VARCHAR(255),
-	IN pLabelId								INT,
+CREATE PROCEDURE getAlternativeId (
+	IN pDishId				    	        INT,
+	IN pIndexId		    		            INT,
+	IN pLabelId				    	        INT,
 	OUT idOut 								INT)
 BEGIN
 
-	SET @pDescription = pDescription;
+	SET @pDishId = pDishId;
+	SET @pIndexId = pIndexId;
 	SET @pLabelId = pLabelId;
 
-    INSERT INTO dishes(`description`, `fKLabelId`) VALUES (@pDescription, @pLabelId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO alternatives(`fKDishId`, `fKIndexId`, `fKLabelId`) VALUES (@pDishId, @pIndexId, @pLabelId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 	
-    SELECT LAST_INSERT_ID() INTO idOut;
+	SELECT LAST_INSERT_ID() INTO idOut;
+END$$
+DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE getAlternativeMealId (
+    IN pAlternativeId				    	INT,
+	IN pMealId		    		            INT,
+	OUT idOut 								INT)
+BEGIN
+
+	SET @pAlternativeId = pAlternativeId;
+	SET @pMealId = pMealId;
+
+	INSERT INTO alternativesMeals(`fKAlternativeId`, `fKMealId`) VALUES (@pAlternativeId, @pMealId) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+	
+	SELECT LAST_INSERT_ID() INTO idOut;
 END$$
 DELIMITER ;
 
@@ -122,20 +172,21 @@ CREATE PROCEDURE deletePossibleOldMeal (
 	IN pOccurences_Id                       INT,
 	IN pRestaurant_Id                       INT,
 	IN pPrice_Id                  	        INT,
-	IN pDish_Id                 	        INT)
+	IN pDish_Id                 	        INT,
+	IN pIndexId                 	        INT,
+	IN pLabelId                 	        INT)
 BEGIN
 
     SET @pOccurences_Id = pOccurences_Id;
     SET @pRestaurant_Id = pRestaurant_Id;
     SET @pPrice_Id = pPrice_Id;
+
     SET @pDish_Id = pDish_Id;
+    SET @pIndexId = pIndexId;
+    SET @pLabelId = pLabelId;
 
 	DELETE m
 	FROM meals AS m
-		JOIN dishes
-			on dishes.id =  m.fKDishId
-			JOIN labels
-				on labels.id = dishes.fKLabelId
 		JOIN prices
 			on prices.id =  m.fKPriceId
 		JOIN restaurants
@@ -143,11 +194,25 @@ BEGIN
 		JOIN occurrences
 			on occurrences.id =  m.fKOccurrenceId
 	WHERE		
-		restaurants.id = @pRestaurant_Id AND 
-		dishes.id = @pDish_Id AND
+		restaurants.id = @pRestaurant_Id AND
 		prices.id = @pPrice_Id AND 
-		occurrences.id = @pOccurences_Id;
-
+		occurrences.id = @pOccurences_Id AND
+        m.id = (
+            SELECT fKMealId
+            FROM alternativesMeals 
+                JOIN alternatives
+                    on alternatives.id = alternativesMeals.fKAlternativeId
+                    JOIN dishes
+                        on alternatives.fKDishId = dishes.id
+                    JOIN indexes
+                        on alternatives.fKIndexId = indexes.id
+                    JOIN labels
+                        on alternatives.fKLabelId = labels.id
+            WHERE
+                dishes.id = @pDish_Id AND
+                indexes.id = @pIndexId AND
+                labels.id = @pLabelId        
+        );
 END$$
 DELIMITER ;
 
@@ -159,7 +224,7 @@ CREATE PROCEDURE createAndGetMealId (
 	IN pRestaurant_MenuUrl          	    VARCHAR(255),
 	IN pPrice_SEK                   	    DECIMAL(6, 2),
 	IN pLabel_Name                  	    VARCHAR(255),
-	IN pLabel_AlternativeIndex				INT,
+	IN pIndex_Number				        INT,
     IN pDish_Description          	        VARCHAR(255),
     IN pMeal_Error	                	    TEXT)
 BEGIN
@@ -170,29 +235,36 @@ BEGIN
     SET @pRestaurant_MenuUrl = pRestaurant_MenuUrl;
     SET @pPrice_SEK = pPrice_SEK;
     SET @pLabel_Name = pLabel_Name;
-	SET @pLabel_AlternativeIndex = pLabel_AlternativeIndex;
+	SET @pIndex_Number = pIndex_Number;
     SET @pDish_Description = pDish_Description;
     SET @pMeal_Error = pMeal_Error;
 
 	CALL getWeekDayId(@pWeekDay_JavaScriptDayIndex, @WeekDayId);
 	CALL getWeekIndexId(@pWeekIndex_WeekNumber, @pWeekIndex_WeekYear, @WeekIndexId);
 	CALL getOccurenceId(@WeekIndexId, @WeekDayId, @OccurenceId);
-
+	
 	CALL getRestaurantId(@pRestaurant_MenuUrl, @RestaurantId);
-    
-    CALL getPriceId(@pPrice_SEK, @PriceId);
+	
+	CALL getPriceId(@pPrice_SEK, @PriceId);
+	
+	CALL getDishId(@pDish_Description, @DishId);
+	
+	CALL getIndexId(@pIndex_Number, @IndexId);
+	
+	CALL getLabelId(@pLabel_Name, @LabelId);
+	
+	CALL getAlternativeId(@DishId, @IndexId, @LabelId, @AlternativeId);
+	
+	CALL deletePossibleOldMeal (@pOccurences_Id, @pRestaurant_Id, @pPrice_Id, @pDish_Id, @IndexId, @LabelId);    
+	
+	INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `error`) VALUES (@PriceId, @OccurenceId, @RestaurantId, @pMeal_Error)
+		ON DUPLICATE KEY UPDATE `Error` = @pMeal_Error, `id` = LAST_INSERT_ID(`id`);
+	
+	SELECT LAST_INSERT_ID() INTO @MealId;
+	
+	CALL getAlternativeMealId(@AlternativeId, @MealId, @AlternativeMealId);
+	
+	SELECT @MealId;
 
-    CALL getLabelId(@pLabel_Name, @pLabel_AlternativeIndex, @LabelId);
-
-    CALL getDishId(@pDish_Description, @LabelId, @DishId);
-
-    CALL deletePossibleOldMeal (@pOccurences_Id, @pRestaurant_Id, @pPrice_Id, @pDish_Id);
-
-    
-
-	INSERT INTO meals(`fKDishId`, `fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `error`)    VALUES (@DishId, @PriceId, @OccurenceId, @RestaurantId, @pMeal_Error)
-    ON DUPLICATE KEY UPDATE `Error` = @pMeal_Error, `id` = LAST_INSERT_ID(`id`);
-
-	SELECT LAST_INSERT_ID();
 END$$
 DELIMITER ;

@@ -13,7 +13,7 @@ export class MealService {
     private readonly MEAL_SQL =
         " SELECT" +
         "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl," +
-        "   labels.name AS labelsName, labels.alternativeIndex AS labelsAlternativeIndex," +
+        "   labels.name AS labelsName, labels.indexNumber AS labelsAlternativeIndex," +
         "   dishes.description AS dishesDescription," +
         "	prices.sek AS pricesSEK, weekDays.dayIndex AS weekDaysJavaScriptDayIndex," +
         "	weekIndexes.weekNumber AS weekIndexesWeekNumber, weekIndexes.weekYear AS weekIndexesWeekYear" +
@@ -49,7 +49,7 @@ export class MealService {
         const sql =
                 ` CALL CreateAndGetMealId(` +
                 `${m.weekDayJavascriptDayIndex}, ${m.weekNumber}, ${m.weekYear}, '${m.menuUrl}', ` +
-                `${m.price_SEK}, '${m.labelName}', ${m.alternativeIndex}, ${m.dishDescription}, ${m.fetchError}); `;
+                `${m.price_SEK}, '${m.labelName}', ${m.indexNumber}, ${m.dishDescription}, ${m.fetchError}); `;
 
         try {
 
@@ -59,7 +59,7 @@ export class MealService {
 
             await queryRunner.commitTransaction();
 
-            const mealId = spResult[0][0]["LAST_INSERT_ID()"];
+            const mealId = spResult[0][0]["@MealId"];
 
             // logger.debug(`Performed ${sql}. mealID = ${mealId}`);
             return mealId;
@@ -221,7 +221,7 @@ export class MealService {
         const fMenuUrl = unfilteredWebMealResult.menuUrl;
         let fPrice_SEK: number;
         const fLabelName = unfilteredWebMealResult.labelName;
-        const fAlternativeIndex = +unfilteredWebMealResult.alternativeIndex;
+        const fAlternativeIndex = +unfilteredWebMealResult.indexNumber;
         let fDishDescription: string;
         let fFetchError: string;
 
@@ -235,7 +235,7 @@ export class MealService {
             fFetchError = null;
         }
         return {
-            alternativeIndex: fAlternativeIndex,
+            indexNumber: fAlternativeIndex,
             dishDescription: fDishDescription,
             fetchError: fFetchError,
             labelName: fLabelName,

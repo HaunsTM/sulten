@@ -1,19 +1,19 @@
-import { AlternativeIndex } from "../server/enum/AlternativeIndex";
+import { IndexNumber } from "../server/enum/IndexNumber";
 
 export class AlternativeLabelDishPrice {
 
-    public alternativeIndex: AlternativeIndex;
+    public indexNumber: IndexNumber;
     public labelName: string;
     public dishDescription: string;
     public priceSEK: number;
 
     constructor(
-        alternativeIndex: AlternativeIndex,
+        indexNumber: IndexNumber,
         labelName: string,
         dishDescription: string,
         pricesSEK: number) {
 
-            this.alternativeIndex = alternativeIndex;
+            this.indexNumber = indexNumber;
             this.labelName = labelName;
             this.dishDescription = dishDescription;
             this.priceSEK = pricesSEK;

@@ -1,4 +1,4 @@
-import { AlternativeIndex } from "../../enum/AlternativeIndex";
+import { IndexNumber } from "../../enum/IndexNumber";
 import { FetcherType } from "../../enum/FetcherType";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
@@ -93,10 +93,10 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
                         await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex );
                     const label = await this.getDishLabelName(currentSwedishWeekDayName, dishRowIndex );
                     dishLabelsCurrentDay.push( label );
-                    const alternativeIndex =
+                    const indexNumber =
                         dishLabelsCurrentDay.filter( (x) => { return x === label }).length;
                     const webMealResult =
-                        await this.webMealResult(dishPriceWeekNumber, alternativeIndex, label, day);
+                        await this.webMealResult(dishPriceWeekNumber, indexNumber, label, day);
                     webMealResults.push(webMealResult);
                 }
                 resolve(webMealResults);
@@ -107,7 +107,7 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
     }
 
     private async webMealResult(
-        dishPriceWeekNumber: DishPriceWeekNumber, alternativeIndex: number,
+        dishPriceWeekNumber: DishPriceWeekNumber, indexNumber: number,
         label: LabelName, weekDay: WeekDayIndex ): Promise<IWebMealResult> {
 
         let webMealResult: WebMealResult = null;
@@ -125,12 +125,12 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
             webMealResult =
                 new WebMealResult(
                     this.baseUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDay,
+                    dishPriceWeekNumber.priceSEK, indexNumber, label, weekDay,
                     dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.baseUrl, "", "", alternativeIndex, label,
+                new WebMealResult( this.baseUrl, "", "", indexNumber, label,
                 weekDay , this.weekNumberExpected, this.weekYear, e);
         }
 

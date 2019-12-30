@@ -1,5 +1,5 @@
-import { AlternativeIndex } from "../../enum/AlternativeIndex";
 import { FetcherType } from "../../enum/FetcherType";
+import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
@@ -79,44 +79,44 @@ export const Lokal17Dealer: IWebMealDealerStatic =  class Lokal17DealerLocal {
     private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, IndexNumber.TWO),
 
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.DESSERT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.DESSERT, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.DESSERT, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.DESSERT, IndexNumber.TWO),
 
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.DESSERT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.DESSERT, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.DESSERT, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.DESSERT, IndexNumber.TWO),
 
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.DESSERT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.DESSERT, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.DESSERT, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.DESSERT, IndexNumber.TWO),
 
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.DESSERT, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.DESSERT, AlternativeIndex.TWO),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.DESSERT, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.DESSERT, IndexNumber.TWO),
         ];
 
         return mealsForAWeek;
     }
 
     private async webMealResult( weekDayJavascriptDayIndex: WeekDayIndex,
-                                 label: LabelName, alternativeIndex: AlternativeIndex): Promise<IWebMealResult> {
+                                 label: LabelName, indexNumber: IndexNumber): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
         try {
             dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber( weekDayJavascriptDayIndex, label, alternativeIndex );
+                await this.getDishPriceWeekNumber( weekDayJavascriptDayIndex, label, indexNumber );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -130,19 +130,19 @@ export const Lokal17Dealer: IWebMealDealerStatic =  class Lokal17DealerLocal {
             webMealResult =
                 new WebMealResult(
                     this.baseUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.priceSEK, indexNumber, label, weekDayJavascriptDayIndex,
                     dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.baseUrl, "", "", alternativeIndex, label,
+                new WebMealResult( this.baseUrl, "", "", indexNumber, label,
                     weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
         }
 
         return webMealResult;
     }
     private async getDishPriceWeekNumber( weekDayJavascriptDayIndex: WeekDayIndex, label: LabelName,
-                                          alternativeIndex: AlternativeIndex ): Promise<DishPriceWeekNumber> {
+                                          indexNumber: IndexNumber ): Promise<DishPriceWeekNumber> {
 
         const textContentFromPdfDocument = this.dealerData;
 
@@ -155,11 +155,11 @@ export const Lokal17Dealer: IWebMealDealerStatic =  class Lokal17DealerLocal {
 
                 let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-                const rP = this.regexProvider(weekDayJavascriptDayIndex, label, alternativeIndex);
+                const rP = this.regexProvider(weekDayJavascriptDayIndex, label, indexNumber);
 
                 try {
                     const dishes = rP.descriptionRegex.exec(textContentFromPdfDocument);
-                    dishDescription = dishes[alternativeIndex];
+                    dishDescription = dishes[indexNumber];
 
                     priceSEK = rP.price_SEKRegex.exec(textContentFromPdfDocument)[1];
 

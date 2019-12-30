@@ -79,21 +79,21 @@ http://localhost:8080/menu/mealsPerAreaWeekYear/2/51/2019
         "restaurantMenuUrl": "https://www.nyavariation.se/matsedel/",
         "alternativeLabelDishPrices": [
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Helstekt fläskytterfilé med glöggkokta sviskon, gräddsås och kokt potatis",
                 "dayIndex": 1,
                 "priceSEK": "99.00"
             },
             {
-                "alternativeIndex": 2,
+                "indexNumber": 2,
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Husets paella serveras med vitlöksyoghurt",
                 "dayIndex": 3,
                 "priceSEK": "99.00"
             },
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "salad",
                 "dishDescription": "Potatis- och purjolökssoppa",
                 "dayIndex": 3,
@@ -112,25 +112,25 @@ http://localhost:8080/menu/mealsPerAreaDayWeekYear/2/4/47/2019
         "restaurantMenuUrl": "https://lokal17.se/",
         "alternativeLabelDishPrices": [
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Gris-mandel-äpple-silverlök",
                 "priceSEK": "123.00"
             },
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "vegetarian",
                 "dishDescription": "Jordärtsskocka-linser-tryffel-svamp",
                 "priceSEK": "123.00"
             },
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "dessert",
                 "dishDescription": "En kula glass med salt kola & crisp",
                 "priceSEK": "25.00"
             },
             {
-                "alternativeIndex": 2,
+                "indexNumber": 2,
                 "labelName": "dessert",
                 "dishDescription": "Choklad tryffel",
                 "priceSEK": "25.00"
@@ -143,25 +143,25 @@ http://localhost:8080/menu/mealsPerAreaDayWeekYear/2/4/47/2019
         "restaurantMenuUrl": "https://www.nyavariation.se/matsedel/",
         "alternativeLabelDishPrices": [
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Pannbiff med lök, skysås, lingonsylt och kokt potatis",
                 "priceSEK": "99.00"
             },
             {
-                "alternativeIndex": 2,
+                "indexNumber": 2,
                 "labelName": "meal_of_the_day",
                 "dishDescription": "Ärtsoppa med fläskkorv och rökt fläsksida",
                 "priceSEK": "99.00"
             },
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "vegetarian",
                 "dishDescription": "Bönbiffar serveras med vitlöksyoghurt",
                 "priceSEK": "75.00"
             },
             {
-                "alternativeIndex": 1,
+                "indexNumber": 1,
                 "labelName": "salad",
                 "dishDescription": "Potatis- och purjolökssoppa",
                 "priceSEK": "75.00"

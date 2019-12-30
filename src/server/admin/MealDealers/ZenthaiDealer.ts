@@ -1,4 +1,4 @@
-import { AlternativeIndex } from "../../enum/AlternativeIndex";
+import { IndexNumber } from "../../enum/IndexNumber";
 import { FetcherType } from "../../enum/FetcherType";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
@@ -51,50 +51,50 @@ export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealerLocal {
     private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, IndexNumber.THREE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, IndexNumber.FOUR),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, IndexNumber.FIVE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.SIX),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.THAI, IndexNumber.SEVEN),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.EIGHT),
 
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, IndexNumber.THREE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, IndexNumber.FOUR),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, IndexNumber.FIVE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, IndexNumber.SIX),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.THAI, IndexNumber.SEVEN),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, IndexNumber.EIGHT),
 
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, IndexNumber.THREE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, IndexNumber.FOUR),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, IndexNumber.FIVE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, IndexNumber.SIX),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.THAI, IndexNumber.SEVEN),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, IndexNumber.EIGHT),
 
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, IndexNumber.THREE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, IndexNumber.FOUR),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, IndexNumber.FIVE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, IndexNumber.SIX),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.THAI, IndexNumber.SEVEN),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, IndexNumber.EIGHT),
 
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.TWO),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.THREE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.FOUR),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.FIVE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.SIX),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, AlternativeIndex.SEVEN),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, AlternativeIndex.EIGHT),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, IndexNumber.THREE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, IndexNumber.FOUR),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, IndexNumber.FIVE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.SIX),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.THAI, IndexNumber.SEVEN),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.EIGHT),
         ];
 
         return mealsForAWeek;
@@ -102,12 +102,12 @@ export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealerLocal {
 
     private async webMealResult(
         weekDayJavascriptDayIndex: WeekDayIndex,
-        label: LabelName, alternativeIndex: AlternativeIndex ): Promise<IWebMealResult> {
+        label: LabelName, indexNumber: IndexNumber ): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
-        const xPath = this.xpathProvider(alternativeIndex);
+        const xPath = this.xpathProvider(indexNumber);
 
         try {
             dishPriceWeekNumber =
@@ -124,12 +124,12 @@ export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealerLocal {
             webMealResult =
                 new WebMealResult(
                     this.baseUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, alternativeIndex, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.priceSEK, indexNumber, label, weekDayJavascriptDayIndex,
                     dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.baseUrl, "", "", alternativeIndex, label,
+                new WebMealResult( this.baseUrl, "", "", indexNumber, label,
                     weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
         }
 
@@ -168,12 +168,12 @@ export const ZenthaiDealer: IWebMealDealerStatic =  class ZenthaiDealerLocal {
         return dishPriceWeekNumber;
     }
 
-    private xpathProvider(alternativeIndex: AlternativeIndex): IXPathDishProviderResult {
+    private xpathProvider(indexNumber: IndexNumber): IXPathDishProviderResult {
 
         let result: IXPathDishProviderResult;
 
         result = {
-            descriptionXPath: `//div[@id='page-zones__main-widgets__content']//p[//strong][${alternativeIndex}]`,
+            descriptionXPath: `//div[@id='page-zones__main-widgets__content']//p[//strong][${indexNumber}]`,
             labelXPath: null,
             price_SEKXPath: `//td/span[//following-sibling::text()[contains(.,'äta här')]]`,
             weekNumberXPath: `//h1[contains(.,'vecka')]`,

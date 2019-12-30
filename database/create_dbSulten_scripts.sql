@@ -2,31 +2,48 @@ DROP DATABASE IF EXISTS `dbSulten`;
 CREATE DATABASE `dbSulten`;
 USE `dbSulten`;
 
-CREATE TABLE `labels` (
-	`id` 					            INT NOT NULL AUTO_INCREMENT,	
-
-	`name` 					            VARCHAR(255) NOT NULL,
-
-	`alternativeIndex` 					INT NOT NULL,
-	
-	PRIMARY KEY (`id`)
-);
 
 CREATE TABLE `dishes` (
-	`id` 							    INT NOT NULL AUTO_INCREMENT,	
+	`id` 							    INT NOT NULL AUTO_INCREMENT,
 
 	`description` 					    VARCHAR(255) NOT NULL,
 	
-	`fKLabelId`					        INT NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `indexes` (
+	`id` 							    INT NOT NULL AUTO_INCREMENT,
+
+    `number` 				            INT,
 	
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `prices` (
-	`id` 							    INT NOT NULL AUTO_INCREMENT,	
 
-	`sek` 					            DECIMAL(6, 2),
-		
+CREATE TABLE `labels` (
+	`id` 					            INT NOT NULL AUTO_INCREMENT,
+
+	`name` 					            VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `alternatives` (
+	`id` 							    INT NOT NULL AUTO_INCREMENT,
+
+	`fKDishId`					        INT NOT NULL,
+	`fKIndexId`					        INT NOT NULL,
+	`fKLabelId`					        INT NOT NULL,
+
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `alternativesMeals` (
+	`id` 							    INT NOT NULL AUTO_INCREMENT, 
+
+	`fKAlternativeId`					INT NOT NULL,
+	`fKMealId`					        INT NOT NULL,
+
 	PRIMARY KEY (`id`)
 );
 
@@ -35,11 +52,19 @@ CREATE TABLE `meals` (
 
 	`error`								TEXT,
 
-	`fKDishId`					        INT NOT NULL,
 	`fKPriceId`					        INT NOT NULL,
 	`fKOccurrenceId`				    INT NOT NULL, 
 	`fKRestaurantId`				    INT NOT NULL,	
 	
+	PRIMARY KEY (`id`)
+);
+
+
+CREATE TABLE `prices` (
+	`id` 							    INT NOT NULL AUTO_INCREMENT,	
+
+	`sek` 					            DECIMAL(6, 2),
+		
 	PRIMARY KEY (`id`)
 );
 
@@ -91,9 +116,13 @@ CREATE TABLE `weekDays` (
 	PRIMARY KEY (`id`)
 );
 
-ALTER TABLE `dishes` ADD FOREIGN KEY (`fKLabelId`) REFERENCES `labels`(`id`);
+ALTER TABLE `alternatives` ADD FOREIGN KEY (`fKDishId`) REFERENCES `dishes`(`id`);
+ALTER TABLE `alternatives` ADD FOREIGN KEY (`fKDishId`) REFERENCES `dishes`(`id`);
+ALTER TABLE `alternatives` ADD FOREIGN KEY (`fKLabelId`) REFERENCES `labels`(`id`);
 
-ALTER TABLE `meals` ADD FOREIGN KEY (`fKDishId`) REFERENCES `dishes`(`id`);
+ALTER TABLE `alternativesMeals` ADD FOREIGN KEY (`fKAlternativeId`) REFERENCES `alternatives`(`id`);
+ALTER TABLE `alternativesMeals` ADD FOREIGN KEY (`fKMealId`) REFERENCES `meals`(`id`);
+
 ALTER TABLE `meals` ADD FOREIGN KEY (`fKPriceId`) REFERENCES `prices`(`id`);
 ALTER TABLE `meals` ADD FOREIGN KEY (`fKOccurrenceId`) REFERENCES `occurrences`(`id`);
 ALTER TABLE `meals` ADD FOREIGN KEY (`fKRestaurantId`) REFERENCES `restaurants`(`id`);
@@ -103,13 +132,19 @@ ALTER TABLE `restaurants` ADD FOREIGN KEY (`fKAreaId`) REFERENCES `areas`(`id`);
 ALTER TABLE `occurrences` ADD FOREIGN KEY (`fKWeekIndexId`) REFERENCES `weekIndexes`(`id`);
 ALTER TABLE `occurrences` ADD FOREIGN KEY (`fKWeekDayId`) REFERENCES `weekDays`(`id`);
 
-ALTER TABLE	`labels` ADD UNIQUE (`name`, `alternativeIndex`);
+ALTER TABLE	`dishes` ADD UNIQUE (`description`);
 
-ALTER TABLE	`dishes` ADD UNIQUE (`description`, `fKLabelId`);
+ALTER TABLE	`indexes` ADD UNIQUE (`number`);
+
+ALTER TABLE	`labels` ADD UNIQUE (`name`);
+
+ALTER TABLE	`alternatives` ADD UNIQUE (`fKDishId`, `fKIndexId`, `fKLabelId`);
+
+ALTER TABLE	`alternativesMeals` ADD UNIQUE (`fKAlternativeId`, `fKMealId`);
+
+ALTER TABLE	`meals` ADD UNIQUE (`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`);
 
 ALTER TABLE	`prices` ADD UNIQUE (`sek`);
-
-ALTER TABLE	`meals` ADD UNIQUE (`fKDishId`, `fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`);
 
 ALTER TABLE	`restaurants` ADD UNIQUE (`menuUrl`);
 

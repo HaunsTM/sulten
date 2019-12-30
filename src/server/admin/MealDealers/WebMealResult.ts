@@ -1,11 +1,11 @@
-import { AlternativeIndex } from "../../enum/AlternativeIndex";
+import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 
 export class WebMealResult implements IWebMealResult {
 
-    private _alternativeIndex: AlternativeIndex;
+    private _indexNumber: IndexNumber;
     private _menuUrl: string;
     private _dishDescription: string;
     private _priceSEK: string;
@@ -17,16 +17,16 @@ export class WebMealResult implements IWebMealResult {
 
     constructor()
     constructor(menuUrl: string, dishDescription: string, priceSEK: string,
-                alternativeIndex: AlternativeIndex, labelName: LabelName, weekDayIndex: WeekDayIndex,
+                indexNumber: IndexNumber, labelName: LabelName, weekDayIndex: WeekDayIndex,
                 weekNumber: string,  weekYear: string, fetchError: Error)
     constructor(menuUrl?: string, dishDescription?: string, priceSEK?: string,
-                alternativeIndex?: AlternativeIndex, labelName?: LabelName, weekDayIndex?: WeekDayIndex,
+            indexNumber?: IndexNumber, labelName?: LabelName, weekDayIndex?: WeekDayIndex,
                 weekNumber?: string, weekYear?: string, fetchError?: Error) {
 
         this._menuUrl = menuUrl;
         this._dishDescription = dishDescription;
         this._priceSEK = priceSEK;
-        this._alternativeIndex = alternativeIndex;
+        this._indexNumber = indexNumber;
         this._labelName = labelName;
         this._weekDayIndex = weekDayIndex;
         this._weekNumber = weekNumber;
@@ -35,11 +35,11 @@ export class WebMealResult implements IWebMealResult {
         this._fetchError = fetchError ? fetchError.stack : null;
     }
 
-    public get alternativeIndex(): AlternativeIndex {
-        return this._alternativeIndex;
+    public get indexNumber(): IndexNumber {
+        return this._indexNumber;
     }
-    public set alternativeIndex(value: AlternativeIndex) {
-        this._alternativeIndex = value;
+    public set indexNumber(value: IndexNumber) {
+        this._indexNumber = value;
     }
 
     public get dishDescription(): string {
