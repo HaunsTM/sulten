@@ -12,29 +12,35 @@ export class MealService {
 
     private readonly MEAL_SQL =
         " SELECT" +
-        "	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl," +
-        "   labels.name AS labelsName, labels.indexNumber AS labelsAlternativeIndex," +
-        "   dishes.description AS dishesDescription," +
-        "	prices.sek AS pricesSEK, weekDays.dayIndex AS weekDaysJavaScriptDayIndex," +
-        "	weekIndexes.weekNumber AS weekIndexesWeekNumber, weekIndexes.weekYear AS weekIndexesWeekYear" +
-        " FROM meals" +
-        "	JOIN dishes" +
-        "		on dishes.id = meals.fKDishId" +
-        "		JOIN labels" +
-        "			on labels.id = dishes.fKLabelId" +
-
-        "	JOIN prices" +
-        "		on prices.id = meals.fKPriceId" +
-        "	JOIN restaurants" +
-        "		on restaurants.id = meals.fKRestaurantId" +
-        "		JOIN areas" +
-        "			on areas.id = restaurants.fKAreaId" +
-        "	JOIN occurrences" +
-        "		on occurrences.id = meals.fKOccurrenceId" +
-        "		JOIN weekIndexes" +
-        "			on weekIndexes.id = occurrences.fKWeekIndexId" +
-        "		JOIN weekDays" +
-        "			on weekDays.id = occurrences.fKWeekDayId";
+        " 	restaurants.name AS restaurantsName, restaurants.menuUrl AS restaurantsMenuUrl," +
+        " 	  T2.labelsName AS labelsName, T2.indexesNumber AS indexesNumber," +
+        " 	  T2.dishesDescription AS dishesDescription," +
+        " 	prices.sek AS pricesSEK, weekDays.dayIndex AS dayIndex," +
+        " 	weekIndexes.weekNumber AS weekIndexesWeekNumber, weekIndexes.weekYear AS weekIndexesWeekYear" +
+        " FROM meals AS m" +
+        " JOIN prices" +
+        " 	on prices.id = m.fKPriceId" +
+        " JOIN restaurants" +
+        " 	on restaurants.id = m.fKRestaurantId" +
+        " 	JOIN areas" +
+        " 		on areas.id = restaurants.fKAreaId" +
+        " JOIN occurrences" +
+        " 	on occurrences.id = m.fKOccurrenceId" +
+        " 	JOIN weekIndexes" +
+        " 		on weekIndexes.id = occurrences.fKWeekIndexId" +
+        " 	JOIN weekDays" +
+        " 		on weekDays.id = occurrences.fKWeekDayId" +
+        " 	JOIN (SELECT alternativesMeals.fKMealId AS alternativesMealsFKMealId, indexes.number AS indexesNumber, dishes.description AS dishesDescription , labels.name AS labelsName" +
+        " 			   FROM alternativesMeals" +
+        " 			       JOIN alternatives" +
+        " 			           on alternatives.id = alternativesMeals.fKAlternativeId" +
+        " 			           JOIN dishes" +
+        " 			               on alternatives.fKDishId = dishes.id" +
+        " 			           JOIN indexes" +
+        " 			               on alternatives.fKIndexId = indexes.id" +
+        " 			           JOIN labels" +
+        " 			               on alternatives.fKLabelId = labels.id) AS T2" +
+        " 		on m.id = T2.alternativesMealsFKMealId";
 
     private readonly escapeRegex = /["'\n\\]/g;
     private readonly emptySQLString = "''";
@@ -93,7 +99,7 @@ export class MealService {
             `    areas.id = @p_areaId AND` +
             `	 restaurants.active = 1 AND` +
             `    NOT prices.sek = ${this.invalidSQLPrice} AND` +
-            `    NOT dishes.description = ${this.emptySQLString} AND` +
+            `    NOT dishesDescription = ${this.emptySQLString} AND` +
             `    weekIndexes.weekNumber = @p_weekNumber AND` +
             `    weekIndexes.weekYear = @p_weekYear;`;
 
@@ -117,8 +123,8 @@ export class MealService {
 
                     const labelDishPriceDays = rw.map( (ldp) => {
                         return new AlternativeLabelDishPriceDay(
-                            ldp.labelsAlternativeIndex,
-                            ldp.labelsName, ldp.dishesDescription, ldp.weekDaysJavaScriptDayIndex, ldp.pricesSEK ); },
+                            ldp.indexesNumber,
+                            ldp.labelsName, ldp.dishesDescription, ldp.dayIndex, ldp.pricesSEK ); },
                     );
 
                     const restaurantName = rw[0].restaurantsName;
@@ -158,7 +164,7 @@ export class MealService {
             `    areas.id = @p_areaId AND` +
             `	 restaurants.active = 1 AND` +
             `    NOT prices.sek = ${this.invalidSQLPrice} AND` +
-            `    NOT dishes.description = ${this.emptySQLString} AND` +
+            `    NOT dishesDescription = ${this.emptySQLString} AND` +
             `    weekDays.dayIndex = @p_javaScriptDayIndex AND` +
             `    weekIndexes.weekNumber = @p_weekNumber AND` +
             `    weekIndexes.weekYear = @p_weekYear;`;
@@ -183,9 +189,9 @@ export class MealService {
                     .map( ( rw ) => {
 
                         const labelDishPrice = rw.map( (ldp) => {
-                            return new AlternativeLabelDishPrice(
-                                ldp.labelsAlternativeIndex,
-                                ldp.labelsName, ldp.dishesDescription, ldp.pricesSEK ); },
+                            return new AlternativeLabelDishPriceDay(
+                                ldp.indexesNumber,
+                                ldp.labelsName, ldp.dishesDescription, ldp.dayIndex, ldp.pricesSEK ); },
                         );
 
                         const restaurantName = rw[0].restaurantsName;
