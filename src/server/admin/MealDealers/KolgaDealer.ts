@@ -69,7 +69,7 @@ export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealerLocal {
     }
 
     private async webMealResult( weekDayJavascriptDayIndex: WeekDayIndex,
-                                 label: LabelName, IndexNumber: IndexNumber): Promise<IWebMealResult> {
+                                 label: LabelName, indexNumber: IndexNumber): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
@@ -78,7 +78,7 @@ export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealerLocal {
 
         try {
             dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber( swedishWeekDayNameOnKolga, IndexNumber );
+                await this.getDishPriceWeekNumber( swedishWeekDayNameOnKolga, indexNumber );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -91,12 +91,12 @@ export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealerLocal {
             webMealResult =
                 new WebMealResult(
                     this.baseUrl, dishPriceWeekNumber.dishDescription,
-                    dishPriceWeekNumber.priceSEK, IndexNumber, label, weekDayJavascriptDayIndex,
+                    dishPriceWeekNumber.priceSEK, indexNumber, label, weekDayJavascriptDayIndex,
                     dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
         } catch ( e ) {
             webMealResult =
-                new WebMealResult( this.baseUrl, "", "", IndexNumber, label,
+                new WebMealResult( this.baseUrl, "", "", indexNumber, label,
                     weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
         }
 
@@ -159,12 +159,12 @@ export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealerLocal {
         return dishPriceWeekNumber;
     }
 
-    private xpathProvider(weekDayName: string, IndexNumber: IndexNumber): IXPathDishProviderResult {
+    private xpathProvider(weekDayName: string, indexNumber: IndexNumber): IXPathDishProviderResult {
 
         const result: IXPathDishProviderResult = {
-            descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${IndexNumber}]`,
+            descriptionXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_title'])[${indexNumber}]`,
             labelXPath: null,
-            price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${IndexNumber}]`,
+            price_SEKXPath: `(//table/thead[tr/th/h3[contains(.,'${weekDayName}')]]/following-sibling::tbody[1]//td[@class='td_price'])[${indexNumber}]`,
             weekNumberXPath: `//a[contains(@class,'btn btn-info dropdown-toggle')]/text()[contains(.,'Vecka ')]`,
         };
 

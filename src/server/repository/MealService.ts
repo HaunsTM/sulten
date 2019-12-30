@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { getConnection } from "typeorm";
-import { AlternativeLabelDishPrice } from "../../dto/AlternativeLabelDishPrice";
 import { AlternativeLabelDishPriceDay } from "../../dto/AlternativeLabelDishPriceDay";
 import { RestaurantMeal } from "../../dto/RestaurantMeal";
 import { RestaurantMealDay } from "../../dto/RestaurantMealDay";
@@ -84,7 +83,6 @@ export class MealService {
     public async bulkInsert(meals: IWebMealResult[]): Promise<void> {
         const allInserts = meals.map( (m) => this.createAndGetMealId(m) );
 
-        const allInsertsResult = await Promise.all(allInserts);
     }
 
     public async getMealsPerAreaWeekYear(
@@ -241,9 +239,9 @@ export class MealService {
             fFetchError = null;
         }
         return {
-            indexNumber: fAlternativeIndex,
             dishDescription: fDishDescription,
             fetchError: fFetchError,
+            indexNumber: fAlternativeIndex,
             labelName: fLabelName,
             menuUrl: fMenuUrl,
             price_SEK: fPrice_SEK,

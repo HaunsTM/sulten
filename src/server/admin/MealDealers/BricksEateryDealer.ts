@@ -77,12 +77,12 @@ export const BricksEateryDealer: IWebMealDealerStatic =  class BricksEateryDeale
     }
 
     private async webMealResult( weekDayJavascriptDayIndex: WeekDayIndex,
-                                 label: LabelName, IndexNumber: IndexNumber): Promise<IWebMealResult> {
+                                 label: LabelName, indexNumber: IndexNumber): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
-        const swedishDishLabel = this.getDishLabelOnBricksEatery( label, IndexNumber );
+        const swedishDishLabel = this.getDishLabelOnBricksEatery( label, indexNumber );
         const swedishWeekDayName = this.getSwedishWeekDayNameOnBricksEatery( weekDayJavascriptDayIndex );
 
         try {
