@@ -67,7 +67,7 @@ http://localhost:8080/ or https://api.sulten.se
 - /menu/allAreas
 - /menu/mealsPerAreaWeekYear/:areaId/:weekNumber/:weekYear
 - /menu/mealsPerAreaDayWeekYear/:areaId/:javaScriptDayIndex/:weekNumber/:weekYear
-- /restaurantsPerArea/:areaId
+- /menu/restaurantsPerArea/:areaId
 
 ## Examples:
 
@@ -191,7 +191,7 @@ http://localhost:8080/menu/allAreas
     }
 ]</pre>
 
-http://api.sulten.se/restaurantsPerArea/3
+https://api.sulten.se/menu/restaurantsPerArea/3
 
 <pre>{
     "area": {
@@ -224,3 +224,9 @@ Here are some examples:
     THAI = "thai",
     VEGETARIAN = "vegetarian",
 }</pre>
+
+## How to add new restaurant dealers?
+1. Add a new class to `src/server/admin/MealDealers`. The class should implement `IWebMealDealerStatic` (it's suitable to copy another restaurants dealer class to use it as template).
+1. The new restaurant dealer should be registered in `src/server/admin/MealDealers/DealerService.ts` (`public allDealers(): IWebMealDealerStatic[] { ... }`).
+1. The new restaurant has to be registered in `[dbSulten].[restaurants]` as well.
+1. Update `./initialData.sql` with the new restaurant for future.
