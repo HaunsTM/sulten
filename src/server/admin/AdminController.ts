@@ -3,7 +3,7 @@ import HttpException from "../exceptions/HttpException";
 import { logger } from "../helpers/default.logger";
 import IController from "../interfaces/IController";
 import { MealService } from "../repository/MealService";
-import { DealerService } from "./MealDealers/DealerService";
+import { DealerService } from "./DealerService";
 
 export default class AdminController implements IController {
     public path = "/admin";

@@ -51,8 +51,22 @@ INSERT INTO `weekDays` (`dayIndex`) VALUES (6);
 
 INSERT INTO `prices` (`sek`) VALUES (-1);
 
+-- Lund - Brunnshög
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
-	(1, "Bricks Eatery", "https://brickseatery.se/lunch/", "55.716502", "13.226820", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Brunnshög'));
+	(1, "Bricks Eatery", "https://brickseatery.se/lunch/", "55.716502", "13.226820", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Brunnshög'));    
+
+-- Lund - Sjukhuset
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Bistro A Lund - Centralhallen", "https://www.fazer.se/restauranger-cafeer-och-maltidstjanster/menyer/bistro-a-lund?restaurant=centralhallen", "55.711565", "13.198454", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Bistro A Lund - Matakuten", "https://www.fazer.se/restauranger-cafeer-och-maltidstjanster/menyer/bistro-a-lund?restaurant=matakuten", "55.711749", "13.199851", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Patienthotellet Lund", "https://vardgivare.skane.se/siteassets/2.-patientadministration/maltider-och-matsedlar/lund/", "55.712325", "13.197028", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset'));
+
+
+-- Malmö - Centrum
+
+-- Malmö - Västra Hamnen
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Glasklart", "https://glasklart.eu/sv/lunch/", "55.615981", "12.990736", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 

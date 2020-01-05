@@ -1,13 +1,13 @@
-import { IndexNumber } from "../../enum/IndexNumber";
 import { FetcherType } from "../../enum/FetcherType";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
+import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
+import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
-import { WebMealResult } from "./WebMealResult";
 
 export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNiagaraDealerLocal {
 
@@ -20,7 +20,8 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         return FetcherType.HTML;
     }
 
-    public static async menuUrlStatic(pageWhereToFindMenuUrl: IHtmlDocumentParser): Promise<string> {
+    public static async menuUrlStatic(
+        pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
         return pageWhereToFindMenuUrl.htmlDocument.URL;
     }
 
@@ -61,10 +62,10 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         return allLunchDays;
     }
 
-    private async getWebMealResultAForAWeek(): Promise<Array<IWebMealResult>> {
+    private async getWebMealResultAForAWeek(): Promise<IWebMealResult[]> {
 
         return new Promise(async (resolve, reject) => {
-            const webMealResults: Array<IWebMealResult>= new Array();
+            const webMealResults: IWebMealResult[] = new Array();
             try {
                 for (let i = 0, len = this.allLunchDays.length; i < len; i++) {
                   const tempWebMealResults = await this.getWebMealResultForDay(this.allLunchDays[i]);
@@ -78,10 +79,10 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         });
     }
 
-    private async getWebMealResultForDay(day: WeekDayIndex): Promise<Array<IWebMealResult>> {
-        
+    private async getWebMealResultForDay(day: WeekDayIndex): Promise<IWebMealResult[]> {
+
         return new Promise(async (resolve, reject) => {
-            const webMealResults: Array<IWebMealResult>= new Array();
+            const webMealResults: IWebMealResult[] = new Array();
             try {
                 const currentSwedishWeekDayName = this.getSwedishWeekDayNameOnRestaurangNiagara(day);
                 const numberOfDishesCurrentDay = await this.mealsPerWeekDay(currentSwedishWeekDayName);
@@ -94,7 +95,7 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
                     const label = await this.getDishLabelName(currentSwedishWeekDayName, dishRowIndex );
                     dishLabelsCurrentDay.push( label );
                     const indexNumber =
-                        dishLabelsCurrentDay.filter( (x) => { return x === label }).length;
+                        dishLabelsCurrentDay.filter( (x) => x === label).length;
                     const webMealResult =
                         await this.webMealResult(dishPriceWeekNumber, indexNumber, label, day);
                     webMealResults.push(webMealResult);
@@ -161,7 +162,6 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         return swedishWeekDayName;
     }
 
-    
     private labelText2LabelNameOnNiagara( labelText: string ): LabelName {
         let dishLabel: LabelName;
 

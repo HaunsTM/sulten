@@ -3,11 +3,12 @@ import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
+import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
+import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
-import { WebMealResult } from "./WebMealResult";
 
 export const Lokal17Dealer: IWebMealDealerStatic =  class Lokal17DealerLocal {
 
@@ -20,7 +21,8 @@ export const Lokal17Dealer: IWebMealDealerStatic =  class Lokal17DealerLocal {
         return FetcherType.PDF;
     }
 
-    public static async menuUrlStatic(pageWhereToFindMenuUrl: IHtmlDocumentParser): Promise<string> {
+    public static async menuUrlStatic(
+        pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
         const xPath = "//article[@id='food']//a[contains(.,'Lunchmeny')]/@href";
 
         const aNodeXPathResult = await pageWhereToFindMenuUrl.contentFromHtmlDocument(xPath);
