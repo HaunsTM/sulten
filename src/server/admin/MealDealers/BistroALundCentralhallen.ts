@@ -4,6 +4,7 @@ import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
+import { IRSSFetcherHelper } from "../../interfaces/IRSSFetcherHelper";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
@@ -13,12 +14,12 @@ import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 export const BistroALundCentralhallenDealer: IWebMealDealerStatic =  class BistroALundCentralhallenLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://www.fazer.se/restauranger-cafeer-och-maltidstjanster/menyer/bistro-a-lund?restaurant=centralhallen";
+        const baseUrl = "https://www.fazer.se/api/location/menurss/current?pageId=28012&language=sv&restaurant=centralhallen";
         return baseUrl;
     }
 
     public static get fetcherTypeNeededStatic(): FetcherType {
-        return FetcherType.HTML;
+        return FetcherType.RSS;
     }
     public static async menuUrlStatic(
         pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
@@ -166,37 +167,38 @@ const restaurantIndex = 1;
         restaurantIndex: number, weekIndex: string,
         swedishWeekDayName: string, label: LabelName): IXPathDishProviderResult {
 
-        let labelXPath: string = null;
-        let baseXPath: string = `//div[contains(@class, 'lunch-menu')][p[contains(.,'ecka ${weekIndex}')]]`;
+        const labelXPath: string = null;
         let descriptionXPath: string = "";
         let price_SEKXPath: string = "";
         let weekNumberXPath: string = "";
 
         switch ( label ) {
             case LabelName.MEAL_OF_THE_DAY:
-                price_SEKXPath = baseXPath + "//text()[contains(.,'agens varmrätt')][contains(.,' kr')]";
+                price_SEKXPath = "//text()[contains(.,'agens varmrätt')][contains(.,' kr')]";
                 break;
             case LabelName.SALAD:
-                price_SEKXPath = baseXPath + "//text()[contains(.,'eckans sallad')][contains(.,' kr')]";
+                price_SEKXPath = "//text()[contains(.,'eckans sallad')][contains(.,' kr')]";
                 break;
         }
 
         switch ( restaurantIndex ) {
 
             case 1:
-                weekNumberXPath = baseXPath + `/p[contains(.,'ecka ${weekIndex}')][1]/strong/text()`;
+                weekNumberXPath = `//p[contains(.,'ecka ${weekIndex}')][1]/strong/text()`;
                 switch ( label ) {
                     case LabelName.MEAL_OF_THE_DAY:
-                        descriptionXPath = baseXPath + `/p[contains(.,'ecka ${weekIndex}')][1]/following-sibling::p[contains(.,'${swedishWeekDayName}')][1]/following-sibling::p[1]//text()`;
+                        descriptionXPath = `//p[contains(.,'ecka ${weekIndex}')][1]/following-sibling::p[contains(.,'${swedishWeekDayName}')][1]/following-sibling::p[1]//text()`;
                         break;
                     case LabelName.SALAD:
-                        descriptionXPath = baseXPath + "//text()[contains(.,'eckans sallad')][contains(.,' kr')]";
+                        descriptionXPath = 
+                            `//p[contains(.,'ecka ${weekIndex}')][1]/following-sibling::p[contains(.,'Fredag')][1]` +
+                            "/following-sibling::p[contains(.,'eckans sallad')]/following-sibling::p[1]//text()";
                         break;
                 }
                 break;
             case 2:
-                weekNumberXPath = baseXPath + `/p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'ecka ${weekIndex}')]//text()`;
-                descriptionXPath = baseXPath + `/p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'${swedishWeekDayName}')][1]//text()`;
+                weekNumberXPath = `/p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'ecka ${weekIndex}')]//text()`;
+                descriptionXPath = `/p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'${swedishWeekDayName}')][1]//text()`;
                 break;
 
         }

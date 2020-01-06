@@ -33,6 +33,7 @@
     "moment": "^2.24.0",
     "mysql2": "^2.0.0",
     "pdfjs-dist": "^2.2.228",
+    "rss-parser": "^3.7.3",
     "typeorm": "^0.2.20",
     "typescript": "^3.7.3"
   }

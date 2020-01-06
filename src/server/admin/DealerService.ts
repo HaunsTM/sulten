@@ -10,6 +10,8 @@ import { RestaurantService } from "../repository/RestaurantService";
 
 import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
 import { DealerCollection } from "./DealerCollection";
+import Parser from "rss-parser";
+import { RSSFetcher } from "../helpers/RSSFetcher";
 
 export class DealerService {
 
@@ -67,19 +69,33 @@ export class DealerService {
         let webMealDealerStatic: IWebMealDealer = null;
 
         switch ( mealDealer.fetcherTypeNeededStatic ) {
-            case FetcherType.PDF:
-                const dealerDataForPdfDocument = await this.dealerDataForPdfDocument(menuUrl);
-                webMealDealerStatic =
-                    new mealDealer(dealerDataForPdfDocument, initialRestaurantUrl, weekYear, weekIndex);
-                break;
             case FetcherType.HTML:
                 const dealerDataForHtmlDocument = await this.dealerDataForHtmlDocument(menuUrl);
                 webMealDealerStatic =
                     new mealDealer(dealerDataForHtmlDocument, initialRestaurantUrl, weekYear, weekIndex);
                 break;
+            case FetcherType.PDF:
+                const dealerDataForPdfDocument = await this.dealerDataForPdfDocument(menuUrl);
+                webMealDealerStatic =
+                    new mealDealer(dealerDataForPdfDocument, initialRestaurantUrl, weekYear, weekIndex);
+                break;
+            case FetcherType.RSS:
+                const dealerDataForRSSFeed = await this.dealerDataForRSSFeed(menuUrl);
+                webMealDealerStatic =
+                    new mealDealer(dealerDataForRSSFeed, initialRestaurantUrl, weekYear, weekIndex);
+                break;
         }
 
         return webMealDealerStatic;
+    }
+
+    private async dealerDataForHtmlDocument( menuUrl: string ): Promise<IHtmlDocumentParser> {
+
+        const htmlFetcher = new HtmlFetcher( menuUrl );
+        const htmlDocument = await htmlFetcher.htmlDocumentFromWeb();
+        const htmlDocumentParser = new HtmlDocumentParser( htmlDocument );
+
+        return htmlDocumentParser;
     }
 
     private async dealerDataForPdfDocument(menuUrl: string): Promise<string> {
@@ -91,11 +107,15 @@ export class DealerService {
         return textContentFromPdfDocument;
     }
 
-    private async dealerDataForHtmlDocument( menuUrl: string ): Promise<IHtmlDocumentParser> {
+    private async dealerDataForRSSFeed( menuUrl: string ): Promise<IHtmlDocumentParser> {
 
-        const htmlFetcher = new HtmlFetcher( menuUrl );
-        const htmlDocument = await htmlFetcher.htmlDocumentFromWeb();
-        const htmlDocumentParser = new HtmlDocumentParser( htmlDocument );
+        const rSSFetcher = new RSSFetcher( menuUrl );
+        const feed = await rSSFetcher.feedFromWeb();
+        const unsanitizedHtmlString = feed.items[0].content;
+        const sanitizedHtmlString = HtmlDocumentParser.getUtf8HtmlString( unsanitizedHtmlString );
+        const documentContent = HtmlDocumentParser.string2document( sanitizedHtmlString );
+
+        const htmlDocumentParser = new HtmlDocumentParser( documentContent );
 
         return htmlDocumentParser;
     }

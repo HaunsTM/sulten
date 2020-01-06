@@ -1,7 +1,28 @@
+import { JSDOM } from "jsdom";
 import { IHtmlDocumentParser } from "../interfaces/IHtmlDocumentParser";
 
 export class HtmlDocumentParser implements IHtmlDocumentParser {
+
+    public static getUtf8HtmlString(unsanitizedHtmlString: string): string {
+
+        const sanitizedHtmlString = unsanitizedHtmlString
+            .replace(/&nbsp;/g, " ")
+            .replace(/&aring;/g, "å")
+            .replace(/&auml;/g, "ä")
+            .replace(/&ouml;/g, "ö");
+
+        return sanitizedHtmlString;
+    }
+
+    public static string2document(htmlString: string): Document {
+
+        const dom = new JSDOM(htmlString);
+        return dom.window.document;
+
+    }
+
     private _htmlDocument: Document = null;
+
     get htmlDocument(): Document {
         return this._htmlDocument;
     }
