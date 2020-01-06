@@ -10,10 +10,10 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
-export const KolgaDealer: IWebMealDealerStatic =  class KolgaDealerLocal {
+export const RestaurangKolgaDealer: IWebMealDealerStatic =  class RestaurangKolgaDealerLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://glasklart.eu/sv/lunch/";
+        const baseUrl = "https://restaurangkolga.se/lunch/";
         return baseUrl;
     }
 
