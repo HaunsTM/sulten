@@ -9,41 +9,61 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
+import { BistroALundCentralhallenLocal } from "./BistroALundCentralhallen";
 
-export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALundMatakutenLocal {
+export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALundMatakutenLocal extends BistroALundCentralhallenLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://www.fazer.se/restauranger-cafeer-och-maltidstjanster/menyer/bistro-a-lund?restaurant=matakuten";
+        const baseUrl = "https://www.fazer.se/api/location/menurss/current?pageId=28012&language=sv&restaurant=matakuten";
         return baseUrl;
     }
 
     public static get fetcherTypeNeededStatic(): FetcherType {
-        return FetcherType.HTML;
+        return FetcherType.RSS;
     }
     public static async menuUrlStatic(
         pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
         return pageWhereToFindMenuUrl.htmlDocument.URL;
     }
 
-    private baseUrl: string;
-    private dealerData: IHtmlDocumentParser = null;
-    private weekNumberExpected: string = "";
-    private weekYear: string = "";
-
-    constructor(
+    protected get restaurantIndex(): number { return 2; };
+    
+    constructor (
         dealerData: IHtmlDocumentParser,
         baseUrl: string,
         weekYear: string,
         weekNumberExpected: string) {
 
-        this.baseUrl = baseUrl;
-        this.dealerData = dealerData;
-        this.weekYear = weekYear;
-        this.weekNumberExpected = weekNumberExpected;
+        super(
+            dealerData,
+            baseUrl,
+            weekYear,
+            weekNumberExpected)
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
-        return null;
+        const restaurantIndex = this.restaurantIndex;
+        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek(restaurantIndex);
+        const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
+        return mealsForAWeek;
+    }
+
+    protected getWebMealResultAForAWeek(restaurantIndex: number): Array<Promise<IWebMealResult>> {
+
+
+        const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
+            super.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+
+            super.webMealResult( restaurantIndex, WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+
+            super.webMealResult( restaurantIndex, WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+
+            super.webMealResult( restaurantIndex, WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+
+            super.webMealResult( restaurantIndex, WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+        ];
+
+        return mealsForAWeek;
     }
 
 

@@ -11,7 +11,7 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
-export const BistroALundCentralhallenDealer: IWebMealDealerStatic =  class BistroALundCentralhallenLocal {
+export class BistroALundCentralhallenLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "https://www.fazer.se/api/location/menurss/current?pageId=28012&language=sv&restaurant=centralhallen";
@@ -31,6 +31,8 @@ export const BistroALundCentralhallenDealer: IWebMealDealerStatic =  class Bistr
     private weekNumberExpected: string = "";
     private weekYear: string = "";
 
+    protected get restaurantIndex(): number { return 1; };
+
     constructor(
         dealerData: IHtmlDocumentParser,
         baseUrl: string,
@@ -44,41 +46,42 @@ export const BistroALundCentralhallenDealer: IWebMealDealerStatic =  class Bistr
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
-        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
+        const restaurantIndex = this.restaurantIndex;
+        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek(restaurantIndex);
         const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
         return mealsForAWeek;
     }
 
-    private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
+    protected getWebMealResultAForAWeek(restaurantIndex: number): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.SALAD, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.SALAD, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.SALAD, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.TUESDAY, LabelName.SALAD, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.SALAD, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.WEDNESDAY, LabelName.SALAD, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.SALAD, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.THURSDAY, LabelName.SALAD, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.SALAD, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.FRIDAY, LabelName.SALAD, IndexNumber.ONE),
         ];
 
         return mealsForAWeek;
     }
 
-    private async webMealResult( weekDayJavascriptDayIndex: WeekDayIndex,
+    public async webMealResult( restaurantIndex: number, weekDayJavascriptDayIndex: WeekDayIndex,
                                  label: LabelName, indexNumber: IndexNumber): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
         const swedishWeekDayName = this.getSwedishWeekDayName( weekDayJavascriptDayIndex );
-const restaurantIndex = 1;
+
         try {
             dishPriceWeekNumber =
                 await this.getDishPriceWeekNumber( restaurantIndex, this.weekNumberExpected, swedishWeekDayName, label );
@@ -142,12 +145,15 @@ const restaurantIndex = 1;
 
         const xpath = this.xpathProvider(restaurantIndex, weekIndex, swedishWeekDayName, label);
 
+        const dishFilter = new RegExp(`(?:^${swedishWeekDayName})?[ ]*(.+)`, "g");
         try {
-            dishDescription =
-                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath );
+            let dishDescriptionRaw = 
+            ( await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath ) );
+
+            dishDescription = dishFilter.exec( dishDescriptionRaw )[1];
 
             priceSEK =
-                ( await this.dealerData.textContentFromHtmlDocument( xpath.price_SEKXPath ))
+                ( await this.dealerData.textContentFromHtmlDocument( xpath.price_SEKXPath ) )
                 .match(/\d+(?=\s?kr)/)[0];
 
             weekIndexWeekNumber =
@@ -197,8 +203,8 @@ const restaurantIndex = 1;
                 }
                 break;
             case 2:
-                weekNumberXPath = `/p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'ecka ${weekIndex}')]//text()`;
-                descriptionXPath = `/p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'${swedishWeekDayName}')][1]//text()`;
+                weekNumberXPath = `//p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'ecka ${weekIndex}')]//text()`;
+                descriptionXPath = `//p[contains(.,'EB-blocket')]/following-sibling::p[contains(.,'${swedishWeekDayName}')][1]//text()`;
                 break;
 
         }
@@ -214,3 +220,5 @@ const restaurantIndex = 1;
     }
 
 };
+
+export const BistroALundCentralhallenDealer: IWebMealDealerStatic = BistroALundCentralhallenLocal;
