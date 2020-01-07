@@ -61,7 +61,7 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Bistro A Lund - Matakuten", "https://www.fazer.se/api/location/menurss/current?pageId=28012&language=sv&restaurant=matakuten", "55.711749", "13.199851", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
-	(1, "Patienthotellet Lund", "https://vardgivare.skane.se/siteassets/2.-patientadministration/maltider-och-matsedlar/lund/", "55.712325", "13.197028", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset'));
+	(1, "Patienthotellet Lund", "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar/#59426", "55.712325", "13.197028", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset'));
 
 
 -- Malmö - Centrum

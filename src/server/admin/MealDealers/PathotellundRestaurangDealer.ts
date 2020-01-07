@@ -13,7 +13,7 @@ import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class PathotellundRestaurangDealerLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://lokal17.se/";
+        const baseUrl = "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar/#59426";
         return baseUrl;
     }
 
