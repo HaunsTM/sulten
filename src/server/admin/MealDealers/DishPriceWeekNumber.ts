@@ -11,9 +11,9 @@ export class DishPriceWeekNumber implements IDishPriceWeekNumber {
     constructor(dishDescription: string, priceSEK: string, weekIndexWeekNumber: string,
                 fetchError: Error) {
 
-        this._dishDescription = dishDescription
+        this._dishDescription = dishDescription;
         this._priceSEK = priceSEK;
-        this._weekIndexWeekNumber = parseInt(weekIndexWeekNumber).toString();
+        this._weekIndexWeekNumber = weekIndexWeekNumber;
 
         this._fetchError = fetchError;
     }
@@ -27,7 +27,7 @@ export class DishPriceWeekNumber implements IDishPriceWeekNumber {
     }
 
     public get weekIndexWeekNumber(): string {
-        return this._weekIndexWeekNumber;
+        return parseInt(this._weekIndexWeekNumber).toString();
     }
 
     public get fetchError(): Error {

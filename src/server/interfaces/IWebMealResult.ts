@@ -22,6 +22,6 @@ export interface IWebMealResult {
 
     fetchError: string;
 
-    isValid(): boolean;
+    readonly isValid: boolean;
 
 }

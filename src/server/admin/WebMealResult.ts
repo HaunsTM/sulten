@@ -98,7 +98,7 @@ export class WebMealResult implements IWebMealResult {
         this._fetchError = value;
     }
 
-    public isValid(): boolean {
+    public get isValid(): boolean {
 
         let isValid: boolean;
 

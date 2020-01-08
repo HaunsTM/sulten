@@ -13,7 +13,7 @@ import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class PathotellundRestaurangDealerLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar";
+        const baseUrl = "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar/";
 
         return baseUrl;
     }
@@ -52,7 +52,14 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
 
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
+        const mealsForAWeekWithPossibleNullValues = await Promise.all(mealsForAWeekPromise);
+
+        const mealsForAWeek = mealsForAWeekWithPossibleNullValues
+            .filter( (element) => {
+                const validResult = element.isValid;
+
+                return validResult;
+            } );
 
         return mealsForAWeek;
     }
@@ -98,7 +105,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
     private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
 
-        const mealsForAWeekWithPossibleNullValues: Array<Promise<IWebMealResult>>  = [
+        const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, IndexNumber.ONE),
@@ -127,14 +134,6 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
             this.webMealResult( WeekDayIndex.SUNDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.SUNDAY, LabelName.DESSERT, IndexNumber.ONE),
         ];
-
-        const mealsForAWeek = mealsForAWeekWithPossibleNullValues
-            .filter( async (result) => {
-                const element = await result;
-                const validResult = element.isValid();
-
-                return false;
-            } );
 
         return mealsForAWeek;
     }
@@ -193,7 +192,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
                     const allMealsADay = rPAMAD.descriptionRegex.exec(textContentFromPdfDocument)[1];
                     const dishDescriptionExecuted = 
                     rP.descriptionRegex.exec(allMealsADay);
-                    const dishDescription = dishDescriptionExecuted ? dishDescriptionExecuted[1] : "";
+                    dishDescription = dishDescriptionExecuted ? dishDescriptionExecuted[1] : "";
 
                     priceSEK = ""; // rP.price_SEKRegex.exec(textContentFromPdfDocument)[1];
 
