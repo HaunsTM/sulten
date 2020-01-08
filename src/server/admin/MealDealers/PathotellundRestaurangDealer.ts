@@ -13,7 +13,8 @@ import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class PathotellundRestaurangDealerLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar/#59426";
+        const baseUrl = "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar";
+
         return baseUrl;
     }
 
@@ -23,11 +24,12 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
     public static async menuUrlStatic(
         pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
-        const xPath = "//article[@id='food']//a[contains(.,'Lunchmeny')]/@href";
+        const xPath = `//a[@href[contains(.,'lund')]][@href[contains(.,'pdf')]][text()[contains(.,'vecka ${menuUrlDynamicData.weekIndex}')]]/@href`;
 
         const aNodeXPathResult = await pageWhereToFindMenuUrl.contentFromHtmlDocument(xPath);
         const aHref = aNodeXPathResult.iterateNext().nodeValue;
-        return aHref;
+        const menuUrl = pageWhereToFindMenuUrl.htmlDocument.origin + aHref;
+        return menuUrl;
     }
 
     private baseUrl: string;
@@ -55,7 +57,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
         return mealsForAWeek;
     }
 
-    private getSwedishWeekDayNameOnLokal17( weekDayJavascriptDayIndex: WeekDayIndex ): string {
+    private getSwedishWeekDayNameOnPathotellundRestaurang( weekDayJavascriptDayIndex: WeekDayIndex ): string {
         let swedishWeekDayName = "";
 
         switch ( weekDayJavascriptDayIndex ) {
@@ -77,35 +79,62 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
         }
         return swedishWeekDayName;
     }
+    private getSwedishLabelNameOnPathotellundRestaurang( label: LabelName ): string {
+        let swedishWeekDayName = "";
+
+        switch ( label ) {
+            case LabelName.MEAL_OF_THE_DAY :
+                swedishWeekDayName = "Lunch";
+                break;
+            case LabelName.VEGETARIAN :
+                swedishWeekDayName = "Vegetariskt alternativ";
+                break;
+            case LabelName.DESSERT :
+                swedishWeekDayName = "Dessert";
+                break;
+        }
+        return swedishWeekDayName;
+    }
 
     private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
 
-        const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
+        const mealsForAWeekWithPossibleNullValues: Array<Promise<IWebMealResult>>  = [
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, IndexNumber.TWO),
 
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.DESSERT, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.DESSERT, IndexNumber.TWO),
 
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.DESSERT, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.DESSERT, IndexNumber.TWO),
 
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.DESSERT, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.DESSERT, IndexNumber.TWO),
 
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.DESSERT, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.DESSERT, IndexNumber.TWO),
+
+            this.webMealResult( WeekDayIndex.SATURDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SATURDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SATURDAY, LabelName.DESSERT, IndexNumber.ONE),
+
+            this.webMealResult( WeekDayIndex.SUNDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SUNDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SUNDAY, LabelName.DESSERT, IndexNumber.ONE),
         ];
+
+        const mealsForAWeek = mealsForAWeekWithPossibleNullValues
+            .filter( async (result) => {
+                const element = await result;
+                const validResult = element.isValid();
+
+                return false;
+            } );
 
         return mealsForAWeek;
     }
@@ -135,10 +164,10 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
                     dishPriceWeekNumber.priceSEK, indexNumber, label, weekDayJavascriptDayIndex,
                     dishPriceWeekNumber.weekIndexWeekNumber, this.weekYear, null);
 
-        } catch ( e ) {
+        } catch ( error ) {
             webMealResult =
                 new WebMealResult( this.baseUrl, "", "", indexNumber, label,
-                    weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, e);
+                    weekDayJavascriptDayIndex, this.weekNumberExpected, this.weekYear, error.fetchError);
         }
 
         return webMealResult;
@@ -157,13 +186,16 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
                 let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-                const rP = this.regexProvider(weekDayJavascriptDayIndex, label, indexNumber);
+                const rPAMAD = this.regexProviderAllMealsADay(weekDayJavascriptDayIndex);
+                const rP = this.regexProvider(label);
 
                 try {
-                    const dishes = rP.descriptionRegex.exec(textContentFromPdfDocument);
-                    dishDescription = dishes[indexNumber];
+                    const allMealsADay = rPAMAD.descriptionRegex.exec(textContentFromPdfDocument)[1];
+                    const dishDescriptionExecuted = 
+                    rP.descriptionRegex.exec(allMealsADay);
+                    const dishDescription = dishDescriptionExecuted ? dishDescriptionExecuted[1] : "";
 
-                    priceSEK = rP.price_SEKRegex.exec(textContentFromPdfDocument)[1];
+                    priceSEK = ""; // rP.price_SEKRegex.exec(textContentFromPdfDocument)[1];
 
                     weekIndexWeekNumber = rP.weekNumberRegex.exec(textContentFromPdfDocument)[1];
                     dishPriceWeekNumber =
@@ -181,36 +213,34 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
         return dishPriceWeekNumberPromise;
     }
 
-    private regexProvider(
-        weekDayJavascriptDayIndex: WeekDayIndex,
-        label: LabelName, menuAlternativeIndex: number): IRegexDishProviderResult {
+    private regexProviderAllMealsADay( weekDayJavascriptDayIndex: WeekDayIndex ): IRegexDishProviderResult {
 
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnLokal17( weekDayJavascriptDayIndex );
-        let descriptionRegexPattern = "";
+        const swedishWeekDayName = this.getSwedishWeekDayNameOnPathotellundRestaurang( weekDayJavascriptDayIndex );
+
         let price_SEKRegexPattern = "";
 
-        switch (label) {
-            case LabelName.MEAL_OF_THE_DAY:
-                descriptionRegexPattern  = weekDayJavascriptDayIndex < 5 ?
-                    `(?<=${swedishWeekDayName})\\s+(.+?)\\s+(?=(?:tis|ons|tors|fre)dag|Vegetarisk)`
-                    : `(?<=${swedishWeekDayName}ar)\\s+(.+?)(?=\\d+kr)`;
-                price_SEKRegexPattern = weekDayJavascriptDayIndex < 5 ?
-                    `(?<=${swedishWeekDayName}).+?(\\d+)kr`
-                    : `(?<=${swedishWeekDayName}ar).+?(\\d+)kr`;
-                break;
+        const descriptionRegexPattern = `(?<=${swedishWeekDayName})\\s+(.+?)\\s+(?=(?:Tis|Ons|Tors|Fre|Lör|Sön)dag|Boka bord)`;
 
-            case LabelName.VEGETARIAN :
-                    descriptionRegexPattern = `(?<=Vegetarisk)\\s+(.+?)(?=\\d+kr)`;
-                    price_SEKRegexPattern = `(?<=Vegetarisk).+?(\\d+)kr`;
-                    break;
-            case LabelName.DESSERT:
-                descriptionRegexPattern =
-                    `(?<=Något Sött)(?:\\s\\s(.+?))(?:\\s\\s(.+?))?(?=\\d+kr)`;
-                price_SEKRegexPattern = `(?<=Något Sött).+?(\\d+)kr`;
-                break;
-        }
+        const weekNumberRegexPattern = `(?<=PATIENTHOTELLETS MATSEDEL\\s+Vecka)\\s+(\\d+)`;
 
-        const weekNumberRegexPattern = `(?<=LUNCH VECKA)\\s+(\\d+)`;
+        const result: IRegexDishProviderResult = {
+            descriptionRegex: new RegExp(descriptionRegexPattern, "gmi"),
+            price_SEKRegex: new RegExp( price_SEKRegexPattern, "gmi"),
+            weekNumberRegex: RegExp(weekNumberRegexPattern, "gm"),
+        };
+
+        return result;
+    }
+
+    private regexProvider( label: LabelName ): IRegexDishProviderResult {
+
+        const swedishLabelName = this.getSwedishLabelNameOnPathotellundRestaurang( label );
+
+        let price_SEKRegexPattern = "";
+
+        const descriptionRegexPattern = `(?:${swedishLabelName}:)\\s+(.+?)\\s*?(?=Lunch|Dessert|Middag|Vegetariskt alternativ|$)`;
+
+        const weekNumberRegexPattern = `(?<=PATIENTHOTELLETS MATSEDEL\\s+Vecka)\\s+(\\d+)`;
 
         const result: IRegexDishProviderResult = {
             descriptionRegex: new RegExp(descriptionRegexPattern, "gmi"),

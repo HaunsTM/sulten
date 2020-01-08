@@ -98,4 +98,36 @@ export class WebMealResult implements IWebMealResult {
         this._fetchError = value;
     }
 
+    public isValid(): boolean {
+
+        let isValid: boolean;
+
+        const isNotNull =
+            this.menuUrl !== null &&
+            this.dishDescription !== null &&
+            this.price_SEK !== null &&
+            this.indexNumber !== null &&
+            this.labelName !== null &&
+            this.weekDayJavascriptDayIndex !== null &&
+            this.weekNumber !== null &&
+            this.weekYear !== null;
+
+        if (isNotNull) {
+
+            if (this.dishDescription !== "" && (this.fetchError === null || this.fetchError === "") ) {
+                isValid = true;
+            } else if (this.dishDescription === "" && (this.fetchError !== null && this.fetchError !== "")) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
+            
+        } else {
+            isValid = false;
+        }
+
+        
+        return isValid;
+    }
+
 }
