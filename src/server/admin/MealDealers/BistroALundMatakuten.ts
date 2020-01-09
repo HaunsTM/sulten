@@ -8,8 +8,8 @@ import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { WebMealResult } from "../WebMealResult";
-import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 import { BistroALundCentralhallenLocal } from "./BistroALundCentralhallen";
+import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
 export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALundMatakutenLocal extends BistroALundCentralhallenLocal {
 
@@ -26,9 +26,9 @@ export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALu
         return pageWhereToFindMenuUrl.htmlDocument.URL;
     }
 
-    protected get restaurantIndex(): number { return 2; };
-    
-    constructor (
+    protected get restaurantIndex(): number { return 2; }
+
+    constructor(
         dealerData: IHtmlDocumentParser,
         baseUrl: string,
         weekYear: string,
@@ -38,7 +38,7 @@ export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALu
             dealerData,
             baseUrl,
             weekYear,
-            weekNumberExpected)
+            weekNumberExpected);
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -49,7 +49,6 @@ export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALu
     }
 
     protected getWebMealResultAForAWeek(restaurantIndex: number): Array<Promise<IWebMealResult>> {
-
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
             super.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
@@ -65,6 +64,5 @@ export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALu
 
         return mealsForAWeek;
     }
-
 
 };

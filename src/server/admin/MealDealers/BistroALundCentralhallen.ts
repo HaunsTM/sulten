@@ -21,6 +21,8 @@ export class BistroALundCentralhallenLocal {
     public static get fetcherTypeNeededStatic(): FetcherType {
         return FetcherType.RSS;
     }
+
+    protected get restaurantIndex(): number { return 1; };
     public static async menuUrlStatic(
         pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
         return pageWhereToFindMenuUrl.htmlDocument.URL;
@@ -30,8 +32,6 @@ export class BistroALundCentralhallenLocal {
     private dealerData: IHtmlDocumentParser = null;
     private weekNumberExpected: string = "";
     private weekYear: string = "";
-
-    protected get restaurantIndex(): number { return 1; };
 
     constructor(
         dealerData: IHtmlDocumentParser,
@@ -52,30 +52,8 @@ export class BistroALundCentralhallenLocal {
         return mealsForAWeek;
     }
 
-    protected getWebMealResultAForAWeek(restaurantIndex: number): Array<Promise<IWebMealResult>> {
-
-        const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.SALAD, IndexNumber.ONE),
-
-            this.webMealResult( restaurantIndex, WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( restaurantIndex, WeekDayIndex.TUESDAY, LabelName.SALAD, IndexNumber.ONE),
-
-            this.webMealResult( restaurantIndex, WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( restaurantIndex, WeekDayIndex.WEDNESDAY, LabelName.SALAD, IndexNumber.ONE),
-
-            this.webMealResult( restaurantIndex, WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( restaurantIndex, WeekDayIndex.THURSDAY, LabelName.SALAD, IndexNumber.ONE),
-
-            this.webMealResult( restaurantIndex, WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( restaurantIndex, WeekDayIndex.FRIDAY, LabelName.SALAD, IndexNumber.ONE),
-        ];
-
-        return mealsForAWeek;
-    }
-
     public async webMealResult( restaurantIndex: number, weekDayJavascriptDayIndex: WeekDayIndex,
-                                 label: LabelName, indexNumber: IndexNumber): Promise<IWebMealResult> {
+                                label: LabelName, indexNumber: IndexNumber): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
@@ -84,7 +62,8 @@ export class BistroALundCentralhallenLocal {
 
         try {
             dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber( restaurantIndex, this.weekNumberExpected, swedishWeekDayName, label );
+                await this.getDishPriceWeekNumber(
+                    restaurantIndex, this.weekNumberExpected, swedishWeekDayName, label );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -107,6 +86,28 @@ export class BistroALundCentralhallenLocal {
         }
 
         return webMealResult;
+    }
+
+    protected getWebMealResultAForAWeek(restaurantIndex: number): Array<Promise<IWebMealResult>> {
+
+        const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
+            this.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.MONDAY, LabelName.SALAD, IndexNumber.ONE),
+
+            this.webMealResult( restaurantIndex, WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.TUESDAY, LabelName.SALAD, IndexNumber.ONE),
+
+            this.webMealResult( restaurantIndex, WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.WEDNESDAY, LabelName.SALAD, IndexNumber.ONE),
+
+            this.webMealResult( restaurantIndex, WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.THURSDAY, LabelName.SALAD, IndexNumber.ONE),
+
+            this.webMealResult( restaurantIndex, WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( restaurantIndex, WeekDayIndex.FRIDAY, LabelName.SALAD, IndexNumber.ONE),
+        ];
+
+        return mealsForAWeek;
     }
 
     private getSwedishWeekDayName( weekDayJavascriptDayIndex: WeekDayIndex ): string {
@@ -219,6 +220,6 @@ export class BistroALundCentralhallenLocal {
         return result;
     }
 
-};
+}
 
 export const BistroALundCentralhallenDealer: IWebMealDealerStatic = BistroALundCentralhallenLocal;
