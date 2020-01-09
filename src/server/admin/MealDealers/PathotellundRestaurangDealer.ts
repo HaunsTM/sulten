@@ -83,6 +83,15 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
             case WeekDayIndex.FRIDAY :
                 swedishWeekDayName = "Fredag";
                 break;
+            case WeekDayIndex.SATURDAY :
+                swedishWeekDayName = "Lördag";
+                break;
+            case WeekDayIndex.SUNDAY :
+                swedishWeekDayName = "Söndag";
+                break;
+            default:
+                throw Error("Not implemented week day");
+                break;
         }
         return swedishWeekDayName;
     }
@@ -98,6 +107,9 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
                 break;
             case LabelName.DESSERT :
                 swedishWeekDayName = "Dessert";
+                break;
+            default:
+                throw Error("Not implemented dishlabel");
                 break;
         }
         return swedishWeekDayName;
