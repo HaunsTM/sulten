@@ -78,6 +78,8 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang Kolga", "https://restaurangkolga.se/lunch/", "55.612298", "12.998472", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Restaurang KP", "https://restaurangkp.se/lunchbuffe/", "55.609909", "12.998627", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang Niagara", "https://restaurangniagara.se/lunch/", "55.609033", "12.994625", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang Variation", "https://www.nyavariation.se/matsedel/", "55.607987", "12.981666", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));

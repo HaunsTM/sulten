@@ -17,6 +17,7 @@ import { Lokal17Dealer } from "./MealDealers/Lokal17Dealer";
 import { MHMatsalarDealer } from "./MealDealers/MHMatsalarDealer";
 import { MiamariasDealer } from "./MealDealers/MiamariasDealer";
 import { RestaurangKolgaDealer } from "./MealDealers/RestaurangKolgaDealer";
+import { RestaurangKPDealer } from "./MealDealers/RestaurangKPDealer";
 import { RestaurangNiagaraDealer } from "./MealDealers/RestaurangNiagaraDealer";
 import { RestaurangVariationDealer } from "./MealDealers/RestaurangVariationDealer";
 import { ZenthaiDealer } from "./MealDealers/ZenthaiDealer";
@@ -42,6 +43,7 @@ export class DealerCollection {
             MHMatsalarDealer,
             MiamariasDealer,
             RestaurangKolgaDealer,
+            RestaurangKPDealer,
             RestaurangNiagaraDealer,
             RestaurangVariationDealer,
             ZenthaiDealer,

@@ -35,4 +35,9 @@ export class EpochHelper implements IEpochHelper {
         return monthThatStartedTheWeek1to12;
     }
 
+    public getDate(javascriptDayIndex: number, weekIndex: number, weekYear: number): Date {
+        const date = moment().year(weekYear).week(weekIndex).day(javascriptDayIndex).toDate();
+        return date;
+    }
+
 }
