@@ -202,7 +202,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
                 try {
                     const allMealsADay = rPAMAD.descriptionRegex.exec(textContentFromPdfDocument)[1];
-                    const dishDescriptionExecuted = 
+                    const dishDescriptionExecuted =
                     rP.descriptionRegex.exec(allMealsADay);
                     dishDescription = dishDescriptionExecuted ? dishDescriptionExecuted[1] : "";
 
@@ -228,7 +228,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
         const swedishWeekDayName = this.getSwedishWeekDayNameOnPathotellundRestaurang( weekDayJavascriptDayIndex );
 
-        let price_SEKRegexPattern = "";
+        const price_SEKRegexPattern = "";
 
         const descriptionRegexPattern = `(?<=${swedishWeekDayName})\\s+(.+?)\\s+(?=(?:Tis|Ons|Tors|Fre|Lör|Sön)dag|Boka bord)`;
 
@@ -247,7 +247,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
         const swedishLabelName = this.getSwedishLabelNameOnPathotellundRestaurang( label );
 
-        let price_SEKRegexPattern = "";
+        const price_SEKRegexPattern = "";
 
         const descriptionRegexPattern = `(?:${swedishLabelName}:)\\s+(.+?)\\s*?(?=Lunch|Dessert|Middag|Vegetariskt alternativ|$)`;
 

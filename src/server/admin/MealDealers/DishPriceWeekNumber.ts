@@ -27,7 +27,7 @@ export class DishPriceWeekNumber implements IDishPriceWeekNumber {
     }
 
     public get weekIndexWeekNumber(): string {
-        return parseInt(this._weekIndexWeekNumber).toString();
+        return parseInt(this._weekIndexWeekNumber, 10).toString();
     }
 
     public get fetchError(): Error {

@@ -6,7 +6,6 @@ export class HtmlFetcher implements IHtmlFetcherHelper {
     private _htmlDocumentFromWeb: Document = null;
     private _menuUrl: string = "";
 
-
     private _baseUrl: string = "";
 
     public get baseUrl(): string {

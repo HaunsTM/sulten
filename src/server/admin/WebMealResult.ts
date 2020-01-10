@@ -121,12 +121,11 @@ export class WebMealResult implements IWebMealResult {
             } else {
                 isValid = false;
             }
-            
+
         } else {
             isValid = false;
         }
 
-        
         return isValid;
     }
 

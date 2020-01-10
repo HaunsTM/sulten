@@ -8,10 +8,10 @@ import { IWebMealDealer } from "../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
 import { RestaurantService } from "../repository/RestaurantService";
 
-import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
-import { DealerCollection } from "./DealerCollection";
 import Parser from "rss-parser";
 import { RSSFetcher } from "../helpers/RSSFetcher";
+import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
+import { DealerCollection } from "./DealerCollection";
 
 export class DealerService {
 
@@ -63,7 +63,7 @@ export class DealerService {
         const htmlDocument = await htmlFetcher.htmlDocumentFromWeb();
         const htmlDocumentParser = new HtmlDocumentParser(htmlDocument);
         const menuUrl = await mealDealer.menuUrlStatic(htmlDocumentParser,
-            {weekYear: weekYear, weekIndex: weekIndex}
+            {weekYear, weekIndex},
         );
 
         let webMealDealerStatic: IWebMealDealer = null;

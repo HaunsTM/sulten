@@ -24,7 +24,6 @@ export class RestaurantService {
         "   JOIN areas " +
         "		on areas.id = restaurants.fKAreaId";
 
-
     public async getRestaurantsByActiveness(active: boolean): Promise<Restaurant[]> {
 
         const activeBit = active ? 1 : 0;

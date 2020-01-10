@@ -11,7 +11,8 @@ import { WebMealResult } from "../WebMealResult";
 import { BistroALundCentralhallenLocal } from "./BistroALundCentralhallen";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
-export const BistroALundMatakutenDealer: IWebMealDealerStatic =  class BistroALundMatakutenLocal extends BistroALundCentralhallenLocal {
+export const BistroALundMatakutenDealer: IWebMealDealerStatic =
+    class BistroALundMatakutenLocal extends BistroALundCentralhallenLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "https://www.fazer.se/api/location/menurss/current?pageId=28012&language=sv&restaurant=matakuten";

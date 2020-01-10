@@ -22,7 +22,7 @@ export class BistroALundCentralhallenLocal {
         return FetcherType.RSS;
     }
 
-    protected get restaurantIndex(): number { return 1; };
+    protected get restaurantIndex(): number { return 1; }
     public static async menuUrlStatic(
         pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
         return pageWhereToFindMenuUrl.htmlDocument.URL;
@@ -148,7 +148,7 @@ export class BistroALundCentralhallenLocal {
 
         const dishFilter = new RegExp(`(?:^${swedishWeekDayName})?[ ]*(.+)`, "g");
         try {
-            let dishDescriptionRaw = 
+            const dishDescriptionRaw =
             ( await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath ) );
 
             dishDescription = dishFilter.exec( dishDescriptionRaw )[1];
@@ -197,7 +197,7 @@ export class BistroALundCentralhallenLocal {
                         descriptionXPath = `//p[contains(.,'ecka ${weekIndex}')][1]/following-sibling::p[contains(.,'${swedishWeekDayName}')][1]/following-sibling::p[1]//text()`;
                         break;
                     case LabelName.SALAD:
-                        descriptionXPath = 
+                        descriptionXPath =
                             `//p[contains(.,'ecka ${weekIndex}')][1]/following-sibling::p[contains(.,'Fredag')][1]` +
                             "/following-sibling::p[contains(.,'eckans sallad')]/following-sibling::p[1]//text()";
                         break;
@@ -211,10 +211,10 @@ export class BistroALundCentralhallenLocal {
         }
 
         const result: IXPathDishProviderResult = {
-            descriptionXPath: descriptionXPath,
-            labelXPath: labelXPath,
-            price_SEKXPath: price_SEKXPath,
-            weekNumberXPath: weekNumberXPath,
+            descriptionXPath,
+            labelXPath,
+            price_SEKXPath,
+            weekNumberXPath,
         };
 
         return result;
