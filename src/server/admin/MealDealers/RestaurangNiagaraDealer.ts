@@ -90,19 +90,27 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
 
                 for (let i = 0; i < numberOfDishesCurrentDay; i++) {
                     const dishRowIndex = i + 1;
-                    const dishPriceWeekNumber =
+                    let dishPriceWeekNumber =
                         await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex );
-                    const label = await this.getDishLabelName(currentSwedishWeekDayName, dishRowIndex );
-                    dishLabelsCurrentDay.push( label );
-                    const indexNumber =
-                        dishLabelsCurrentDay.filter( (x) => x === label).length;
+                    let label: LabelName = null;
+                    let indexNumber = -1;
+
+                    try {
+                        label = await this.getDishLabelName( currentSwedishWeekDayName, dishRowIndex );
+                        dishLabelsCurrentDay.push( label );
+                        indexNumber =
+                            dishLabelsCurrentDay.filter( (x) => x === label).length;
+                    } catch ( error ) {
+                        dishPriceWeekNumber =
+                            await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex, error );
+                    }
                     const webMealResult =
                         await this.webMealResult(dishPriceWeekNumber, indexNumber, label, day);
                     webMealResults.push(webMealResult);
                 }
                 resolve(webMealResults);
             } catch ( error ) {
-                reject(error);
+                reject( error );
             }
         });
     }
@@ -200,12 +208,11 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         return labelName;
     }
     private async getDishPriceWeekNumber(swedishWeekDayName: string,
-                                         dishRowIndex: number): Promise<DishPriceWeekNumber> {
+                                         dishRowIndex: number, fetchError?: Error): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
         let priceSEK: string;
         let weekIndexWeekNumber: string;
-        let fetchError: Error;
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
