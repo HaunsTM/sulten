@@ -251,7 +251,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
         const descriptionRegexPattern = `(?:${swedishLabelName}:)\\s+(.+?)\\s*?(?=Lunch|Dessert|Middag|Vegetariskt alternativ|$)`;
 
-        const weekNumberRegexPattern = `(?<=PATIENTHOTELLETS MATSEDEL\\s+Vecka)\\s+(\\d+)`;
+        const weekNumberRegexPattern = `(?<=\\s+[Vv]ecka)\\s+(\\d+)`;
 
         const result: IRegexDishProviderResult = {
             descriptionRegex: new RegExp(descriptionRegexPattern, "gmi"),
