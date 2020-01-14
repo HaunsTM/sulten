@@ -232,12 +232,12 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
         const descriptionRegexPattern = `(?<=${swedishWeekDayName})\\s+(.+?)\\s+(?=(?:Tis|Ons|Tors|Fre|Lör|Sön)dag|Boka bord)`;
 
-        const weekNumberRegexPattern = `(?<=PATIENTHOTELLETS MATSEDEL\\s+Vecka)\\s+(\\d+)`;
+        const weekNumberRegexPattern = `(?<=\\s+Vecka)\\s+(\\d+)`;
 
         const result: IRegexDishProviderResult = {
             descriptionRegex: new RegExp(descriptionRegexPattern, "gmi"),
             price_SEKRegex: new RegExp( price_SEKRegexPattern, "gmi"),
-            weekNumberRegex: RegExp(weekNumberRegexPattern, "gm"),
+            weekNumberRegex: RegExp(weekNumberRegexPattern, "gmi"),
         };
 
         return result;
