@@ -9,7 +9,7 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
-
+// //div[@id="2020-02-04"]/div[contains(@class, 'menu-container-menu-content-custom')]/p[1]/text()[1]
 export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDealerLocal {
 
     public static get baseUrlStatic(): string {
