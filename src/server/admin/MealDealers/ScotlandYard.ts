@@ -2,6 +2,8 @@ import { FetcherType } from "../../enum/FetcherType";
 import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
+import { EpochHelper } from "../../helpers/EpochHelper";
+import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
@@ -28,6 +30,7 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
 
     private baseUrl: string;
     private dealerData: IHtmlDocumentParser = null;
+    private epochHelper: IEpochHelper = null;
     private weekNumberExpected: string = "";
     private weekYear: string = "";
 
@@ -41,6 +44,8 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
         this.dealerData = dealerData;
         this.weekYear = weekYear;
         this.weekNumberExpected = weekNumberExpected;
+
+        this.epochHelper = new EpochHelper();
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -54,25 +59,30 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
     private getWebMealResultAForAWeek( ): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.SOUP, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.SOUP, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.SOUP, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.SOUP, IndexNumber.ONE),
 
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.SOUP, IndexNumber.ONE),
         ];
 
         return mealsForAWeek;
@@ -85,7 +95,7 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
         let webMealResult: WebMealResult = null;
 
         const swedishDishLabel = this.getDishLabelOnBricksEatery( label, indexNumber );
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnBricksEatery( weekDayJavascriptDayIndex );
+        const swedishWeekDayName = this.getSwedishWeekDayNameOnScotlandYard( weekDayJavascriptDayIndex );
 
         try {
             dishPriceWeekNumber =
@@ -115,42 +125,31 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
 
     }
 
-    private getSwedishWeekDayNameOnBricksEatery( weekDay: WeekDayIndex ): string {
+    private getSwedishWeekDayNameOnScotlandYard( weekDay: WeekDayIndex ): string {
         let swedishWeekDayName = "";
 
         switch ( weekDay ) {
             case WeekDayIndex.MONDAY :
-                swedishWeekDayName = "Måndag";
+                swedishWeekDayName = "åndag";
                 break;
             case WeekDayIndex.TUESDAY :
-                swedishWeekDayName = "Tisdag";
+                swedishWeekDayName = "isdag";
                 break;
             case WeekDayIndex.WEDNESDAY :
-                swedishWeekDayName = "Onsdag";
+                swedishWeekDayName = "nsdag";
                 break;
             case WeekDayIndex.THURSDAY :
-                swedishWeekDayName = "Torsdag";
+                swedishWeekDayName = "orsdag";
                 break;
             case WeekDayIndex.FRIDAY :
-                swedishWeekDayName = "Fredag";
+                swedishWeekDayName = "redag";
                 break;
         }
         return swedishWeekDayName;
     }
 
-    private getDishLabelOnBricksEatery( label: LabelName, indexNumber: IndexNumber ): string {
-        let dishLabel = "";
-
-        switch ( label ) {
-            case LabelName.MEAL_OF_THE_DAY:
-                dishLabel = indexNumber === IndexNumber.ONE ? "Local" : "Worldwide";
-                break;
-            case LabelName.VEGETARIAN:
-                dishLabel = "Green";
-                break;
-        }
-
-        return dishLabel;
+    private getDateBasedOnExpectedWeek(javascriptDayIndex: number): Date {
+        return this.epochHelper.getDate(javascriptDayIndex, +this.weekNumberExpected, +this.weekYear);
     }
 
     private async getDishPriceWeekNumber(

@@ -1,6 +1,6 @@
 USE `dbSulten`;
 
-INSERT INTO `areas` (`name`) VALUES ('Malmö - Centrum');
+INSERT INTO `areas` (`name`) VALUES ('Malmö - Sjukhuset');
 INSERT INTO `areas` (`name`) VALUES ('Malmö - Västra Hamnen');
 INSERT INTO `areas` (`name`) VALUES ('Lund - Brunnshög');
 INSERT INTO `areas` (`name`) VALUES ('Lund - Sjukhuset');
@@ -66,7 +66,12 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 	(1, "Patienthotellet Lund", "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar/", "55.712325", "13.197028", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset'));
 
 
--- Malmö - Centrum
+-- Malmö - Sjukhuset
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "FreDa 49", "https://www.freda49.se/lunch-malmo", "55.589817", "12.999629", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Sjukhuset'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Mötesplats CRC", "https://motesplatscrc.se/veckans-lunch/", "55.588726", "12.999257", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Sjukhuset'));
+
 
 -- Malmö - Västra Hamnen
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 

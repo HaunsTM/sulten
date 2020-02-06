@@ -3,6 +3,7 @@ import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
 
 // Lund - Brunnshög
 import { BricksEateryDealer } from "./MealDealers/BricksEateryDealer";
+import { ScotlandYardDealer } from "./MealDealers/ScotlandYard";
 
 // Lund - Sjukhuset
 import { BistroALundCentralhallenDealer } from "./MealDealers/BistroALundCentralhallen";
@@ -29,6 +30,7 @@ export class DealerCollection {
         const allDealers: IWebMealDealerStatic[] = [
             // Lund - Brunnshög
             BricksEateryDealer,
+            ScotlandYardDealer,
 
             // Lund - Sjukhuset
             BistroALundCentralhallenDealer,
