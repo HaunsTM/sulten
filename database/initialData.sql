@@ -83,6 +83,8 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Miamarias", "http://www.miamarias.nu/", "55.613649", "12.991565", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "P2", "https://www.restaurangp2.se/lunch", "55.614408", "12.988367", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang Kolga", "https://restaurangkolga.se/lunch/", "55.612298", "12.998472", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang KP", "https://restaurangkp.se/lunchbuffe/", "55.609909", "12.998627", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
@@ -91,4 +93,10 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang Variation", "https://www.nyavariation.se/matsedel/", "55.607987", "12.981666", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Stora Varvsgatan 6", "https://www.storavarvsgatan6.se/projects.html", "55.612268", "12.991715", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "White Shark", "https://whiteshark.gastrogate.com/lunch/", "55.615005", "12.986016", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Zen Thai", "http://www.zenthai.se/", "55.614280", "12.989225", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
+INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
+	(1, "Årstiderna by the sea", "http://arstidernabythesea.se/lunch/", "55.615184", "12.988667", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Västra Hamnen'));
