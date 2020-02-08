@@ -116,19 +116,19 @@ export const RestaurangKPDealer: IWebMealDealerStatic =  class RestaurangKPDeale
 
         switch ( weekDayJavascriptDayIndex ) {
             case WeekDayIndex.MONDAY :
-                swedishWeekDayName = "måndag";
+                swedishWeekDayName = "åndag";
                 break;
             case WeekDayIndex.TUESDAY :
-                swedishWeekDayName = "tisdag";
+                swedishWeekDayName = "isdag";
                 break;
             case WeekDayIndex.WEDNESDAY :
-                swedishWeekDayName = "onsdag";
+                swedishWeekDayName = "nsdag";
                 break;
             case WeekDayIndex.THURSDAY :
-                swedishWeekDayName = "torsdag";
+                swedishWeekDayName = "orsdag";
                 break;
             case WeekDayIndex.FRIDAY :
-                swedishWeekDayName = "fredag";
+                swedishWeekDayName = "redag";
                 break;
         }
         return swedishWeekDayName;
