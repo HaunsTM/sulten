@@ -1,8 +1,10 @@
+import moment from "moment";
 import { FetcherType } from "../../enum/FetcherType";
 import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { EpochHelper } from "../../helpers/EpochHelper";
+import { HtmlDocumentParser } from "../../helpers/HtmlDocumentParser";
 import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
@@ -11,8 +13,8 @@ import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
-// //div[@id="2020-02-04"]/div[contains(@class, 'menu-container-menu-content-custom')]/p[1]/text()[1]
-export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDealerLocal {
+
+export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDealerLocal {
 
     public static get baseUrlStatic(): string {
         const baseUrl = "https://www.fazerfoodco.se/restauranger/restauranger/scotland-yard/";
@@ -20,32 +22,42 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
     }
 
     public static get fetcherTypeNeededStatic(): FetcherType {
-        return FetcherType.HTML;
+        return FetcherType.JSON_API;
     }
 
     public static async menuUrlStatic(
         pageWhereToFindMenuUrl: IHtmlDocumentParser, menuUrlDynamicData: IMenuUrlDynamicData): Promise<string> {
-        return pageWhereToFindMenuUrl.htmlDocument.URL;
+        const apiUrl = "https://www.fazerfoodco.se/api/restaurant/menu/week?language=sv&restaurantPageId=188211&";
+        const epochHelper = new EpochHelper();
+        const dateMondayMenuWeek = epochHelper.getDate(1, +menuUrlDynamicData.weekIndex, +menuUrlDynamicData.weekYear);
+
+        const year = (dateMondayMenuWeek.getFullYear()).toString();
+        const monthIndex = (dateMondayMenuWeek.getMonth() + 1).toString();
+        const date = (dateMondayMenuWeek.getDate()).toString();
+        const menuUrl = `${apiUrl}&weekDate=${year}-${monthIndex}-${date}`;
+
+        return menuUrl;
     }
 
     private baseUrl: string;
-    private dealerData: IHtmlDocumentParser = null;
+    private dealerData: IMenuData = null;
     private epochHelper: IEpochHelper = null;
     private weekNumberExpected: string = "";
     private weekYear: string = "";
 
     constructor(
-        dealerData: IHtmlDocumentParser,
+        dealerData: {},
         baseUrl: string,
         weekYear: string,
         weekNumberExpected: string) {
 
         this.baseUrl = baseUrl;
-        this.dealerData = dealerData;
+        this.dealerData = dealerData as IMenuData;
         this.weekYear = weekYear;
         this.weekNumberExpected = weekNumberExpected;
 
         this.epochHelper = new EpochHelper();
+
     }
 
     public async mealsFromWeb(): Promise<IWebMealResult[]> {
@@ -88,18 +100,20 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
         return mealsForAWeek;
     }
 
+    private getDateBasedOnExpectedWeek(javascriptDayIndex: number): Date {
+        return this.epochHelper.getDate(javascriptDayIndex, +this.weekNumberExpected, +this.weekYear);
+    }
+
     private async webMealResult( weekDayJavascriptDayIndex: WeekDayIndex,
                                  label: LabelName, indexNumber: IndexNumber): Promise<IWebMealResult> {
 
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
-
-        const swedishDishLabel = this.getDishLabelOnBricksEatery( label, indexNumber );
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnScotlandYard( weekDayJavascriptDayIndex );
+        const weekDayDate = moment(this.getDateBasedOnExpectedWeek(weekDayJavascriptDayIndex)).format("YYYY-MM-DD");
 
         try {
             dishPriceWeekNumber =
-                await this.getDishPriceWeekNumber( swedishWeekDayName, swedishDishLabel );
+                await this.getDishPriceWeekNumber( weekDayDate, label, indexNumber );
 
             if ( dishPriceWeekNumber.fetchError ) {
                 throw dishPriceWeekNumber.fetchError;
@@ -125,53 +139,25 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
 
     }
 
-    private getSwedishWeekDayNameOnScotlandYard( weekDay: WeekDayIndex ): string {
-        let swedishWeekDayName = "";
-
-        switch ( weekDay ) {
-            case WeekDayIndex.MONDAY :
-                swedishWeekDayName = "åndag";
-                break;
-            case WeekDayIndex.TUESDAY :
-                swedishWeekDayName = "isdag";
-                break;
-            case WeekDayIndex.WEDNESDAY :
-                swedishWeekDayName = "nsdag";
-                break;
-            case WeekDayIndex.THURSDAY :
-                swedishWeekDayName = "orsdag";
-                break;
-            case WeekDayIndex.FRIDAY :
-                swedishWeekDayName = "redag";
-                break;
-        }
-        return swedishWeekDayName;
-    }
-
-    private getDateBasedOnExpectedWeek(javascriptDayIndex: number): Date {
-        return this.epochHelper.getDate(javascriptDayIndex, +this.weekNumberExpected, +this.weekYear);
-    }
-
     private async getDishPriceWeekNumber(
-        swedishWeekDayName: string,
-        dishLabel: string ): Promise<DishPriceWeekNumber> {
+        weekDayDate: string, label: LabelName, alternativeIndex: IndexNumber ): Promise<DishPriceWeekNumber> {
 
         let dishDescription: string;
         let priceSEK: string;
         let weekIndexWeekNumber: string;
         let fetchError: Error;
 
-        let dishPriceWeekNumber: DishPriceWeekNumber = null;
+        const dishPriceWeekNumber: DishPriceWeekNumber = null;
+        const currentLunchMenuHtml = this.getCurrentLunchMenuHtml(weekDayDate);
+/*
+        const xpath = this.xpathProvider( weekDayDate, label, alternativeIndex );
 
-        const xpath = this.xpathProvider( swedishWeekDayName, dishLabel );
-
+        const htmlDocumentParser = new HtmlDocumentParser(htmlDocument);
         try {
             dishDescription =
-                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath);
+                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath );
 
-            priceSEK =
-                ( await this.dealerData.textContentFromHtmlDocument( xpath.price_SEKXPath ))
-                .match(/\d+(?=\s?:-)/)[0];
+            priceSEK = "";
 
             weekIndexWeekNumber =
                 ( await this.dealerData.textContentFromHtmlDocument( xpath.weekNumberXPath ))
@@ -183,19 +169,80 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class BricksEateryDeale
         dishPriceWeekNumber = new DishPriceWeekNumber(dishDescription, priceSEK, weekIndexWeekNumber, fetchError );
 
         return dishPriceWeekNumber;
+*/
 
+        return null;
     }
+    private xpathProvider(indexNumber: IndexNumber): IXPathDishProviderResult {
 
-    private xpathProvider( swedishWeekDayName: string, dishLabel: string): IXPathDishProviderResult {
+        let result: IXPathDishProviderResult;
 
-        const result: IXPathDishProviderResult = {
-            descriptionXPath: `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[contains(.,'${dishLabel}')]]/td[2]/text()[1]`,
+        result = {
+            descriptionXPath: `//div[@id='page-zones__main-widgets__content']//p[//strong][${indexNumber}]`,
             labelXPath: null,
-            price_SEKXPath: `//h3[contains(.,'${swedishWeekDayName}')]/following-sibling::table[1]//tr[td[contains(.,'${dishLabel}')]]/td[3]/text()`,
-            weekNumberXPath: `//div[contains(@class,'lunch')]/h2[contains(.,'Vecka')]`,
+            price_SEKXPath: null,
+            weekNumberXPath: null,
         };
 
         return result;
     }
 
+    private get currentWeekNumber(): number {
+        return this.dealerData.WeekNumber;
+    }
+
+    private getCurrentLunchMenuDOM(weekDayDate: string): Document {
+        const currentLunchHtml = this.dealerData.LunchMenus.find( (l) => {
+            const found = l.Date === weekDayDate;
+            return found;
+        }).Html;
+        const currentLunchDOM = HtmlDocumentParser.string2document(currentLunchHtml);
+        return currentLunchDOM;
+    }
+
+    private getCurrentDishDescription(weekDayDate: string, dishDescriptionXPath: string ): Document {
+        const currentLunchDOM = this.getCurrentLunchMenuDOM(weekDayDate);
+        const currentLunchDOMParser = new HtmlDocumentParser(currentLunchDOM);
+        const dishDescription = currentLunchDOMParser.textContentFromHtmlDocument(dishDescriptionXPath);
+        return currentLunchDOM;
+    }
 };
+
+// tslint:disable-next-line:interface-name
+interface LunchMenu {
+    DayOfWeek: string;
+    Date: string;
+    SetMenus: any[];
+    Html: string;
+}
+
+// tslint:disable-next-line:interface-name
+interface RequireDietFilter {
+    Name: string;
+    TranslatedName: string;
+    Diet: string;
+    Selected: boolean;
+    Inactive: boolean;
+    AdditionalVisibleDiets: string[];
+}
+
+// tslint:disable-next-line:interface-name
+interface ExcludeDietFilter {
+    Name: string;
+    TranslatedName: string;
+    Diet: string;
+    Selected: boolean;
+    Inactive: boolean;
+    AdditionalVisibleDiets: any[];
+}
+
+interface IMenuData {
+    WeekNumber: number;
+    LunchMenus: LunchMenu[];
+    RequireDietFilters: RequireDietFilter[];
+    ExcludeDietFilters: ExcludeDietFilter[];
+    RestaurantDietFilters: any[];
+    LastWeekMenuStartDate?: any;
+    NextWeekMenuStartDate: string;
+    ProductDataSheets: any[];
+}

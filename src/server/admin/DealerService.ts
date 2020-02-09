@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from "axios";
 import { FetcherType } from "../enum/FetcherType";
 import { logger } from "../helpers/default.logger";
 import { HtmlDocumentParser } from "../helpers/HtmlDocumentParser";
@@ -9,6 +10,7 @@ import { IWebMealResult } from "../interfaces/IWebMealResult";
 import { RestaurantService } from "../repository/RestaurantService";
 
 import Parser from "rss-parser";
+import { JSONAPIFetcher } from "../helpers/JSONAPIFetcher";
 import { RSSFetcher } from "../helpers/RSSFetcher";
 import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
 import { DealerCollection } from "./DealerCollection";
@@ -34,7 +36,7 @@ export class DealerService {
             return activeRestaurantsUrls.includes(dealer.baseUrlStatic);
         });
 
-        const activeDealers = Promise.all(activeDealersStatic.map( (d) => {
+        const activeDealers = await Promise.all(activeDealersStatic.map( (d) => {
             const webMealDealer = this.dealerDataFactory(d.baseUrlStatic, d, weekYear, weekIndex );
             return webMealDealer;
         }));
@@ -74,6 +76,11 @@ export class DealerService {
                 webMealDealerStatic =
                     new mealDealer(dealerDataForHtmlDocument, initialRestaurantUrl, weekYear, weekIndex);
                 break;
+            case FetcherType.JSON_API:
+                const dealerDataForJSONDocument = await this.dealerDataForJSONDocument(menuUrl);
+                webMealDealerStatic =
+                    new mealDealer(dealerDataForJSONDocument, initialRestaurantUrl, weekYear, weekIndex);
+                break;
             case FetcherType.PDF:
                 const dealerDataForPdfDocument = await this.dealerDataForPdfDocument(menuUrl);
                 webMealDealerStatic =
@@ -87,6 +94,14 @@ export class DealerService {
         }
 
         return webMealDealerStatic;
+    }
+
+    private async dealerDataForJSONDocument( menuUrl: string ): Promise<{}> {
+
+        const jSONAPIFetcher = new JSONAPIFetcher( menuUrl );
+        const json = await jSONAPIFetcher.jSONResult();
+
+        return json;
     }
 
     private async dealerDataForHtmlDocument( menuUrl: string ): Promise<IHtmlDocumentParser> {

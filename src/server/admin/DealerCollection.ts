@@ -3,7 +3,7 @@ import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
 
 // Lund - Brunnshög
 import { BricksEateryDealer } from "./MealDealers/BricksEateryDealer";
-import { ScotlandYardDealer } from "./MealDealers/ScotlandYard";
+import { ScotlandYardDealer } from "./MealDealers/ScotlandYardDealer";
 
 // Lund - Sjukhuset
 import { BistroALundCentralhallenDealer } from "./MealDealers/BistroALundCentralhallen";
