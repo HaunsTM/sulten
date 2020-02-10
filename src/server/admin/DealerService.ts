@@ -36,8 +36,8 @@ export class DealerService {
             return activeRestaurantsUrls.includes(dealer.baseUrlStatic);
         });
 
-        const activeDealers = await Promise.all(activeDealersStatic.map( (d) => {
-            const webMealDealer = this.dealerDataFactory(d.baseUrlStatic, d, weekYear, weekIndex );
+        const activeDealers = await Promise.all(activeDealersStatic.map( async (d) => {
+            const webMealDealer = await this.dealerDataFactory(d.baseUrlStatic, d, weekYear, weekIndex );
             return webMealDealer;
         }));
 

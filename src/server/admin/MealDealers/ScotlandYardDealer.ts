@@ -148,7 +148,7 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDeale
         let fetchError: Error;
 
         const dishPriceWeekNumber: DishPriceWeekNumber = null;
-        const currentLunchMenuHtml = this.getCurrentLunchMenuHtml(weekDayDate);
+        const currentDishDescription = this.getCurrentDishDescription(weekDayDate, "");
 /*
         const xpath = this.xpathProvider( weekDayDate, label, alternativeIndex );
 
@@ -200,11 +200,11 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDeale
         return currentLunchDOM;
     }
 
-    private getCurrentDishDescription(weekDayDate: string, dishDescriptionXPath: string ): Document {
+    private async getCurrentDishDescription(weekDayDate: string, dishDescriptionXPath: string ): Promise<string> {
         const currentLunchDOM = this.getCurrentLunchMenuDOM(weekDayDate);
         const currentLunchDOMParser = new HtmlDocumentParser(currentLunchDOM);
-        const dishDescription = currentLunchDOMParser.textContentFromHtmlDocument(dishDescriptionXPath);
-        return currentLunchDOM;
+        const dishDescription = await currentLunchDOMParser.textContentFromHtmlDocument(dishDescriptionXPath);
+        return dishDescription;
     }
 };
 
