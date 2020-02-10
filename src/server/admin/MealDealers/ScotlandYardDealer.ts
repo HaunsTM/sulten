@@ -72,28 +72,28 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDeale
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.SOUP, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.SOUP, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.SOUP, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.SOUP, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.SOUP, IndexNumber.ONE),
         ];
 
@@ -147,21 +147,18 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDeale
         let weekIndexWeekNumber: string;
         let fetchError: Error;
 
-        const dishPriceWeekNumber: DishPriceWeekNumber = null;
-        const currentDishDescription = this.getCurrentDishDescription(weekDayDate, "");
-/*
-        const xpath = this.xpathProvider( weekDayDate, label, alternativeIndex );
+        let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
-        const htmlDocumentParser = new HtmlDocumentParser(htmlDocument);
+        const xpath = this.xpathProvider( label, alternativeIndex );
+
         try {
             dishDescription =
-                await this.dealerData.textContentFromHtmlDocument( xpath.descriptionXPath );
+                await this.getCurrentDishDescription(weekDayDate, xpath.descriptionXPath);
 
             priceSEK = "";
 
             weekIndexWeekNumber =
-                ( await this.dealerData.textContentFromHtmlDocument( xpath.weekNumberXPath ))
-                .match(/\d+/)[0];
+                this.currentWeekNumber.toString();
         } catch ( error ) {
             fetchError = error;
         }
@@ -169,16 +166,61 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDeale
         dishPriceWeekNumber = new DishPriceWeekNumber(dishDescription, priceSEK, weekIndexWeekNumber, fetchError );
 
         return dishPriceWeekNumber;
-*/
 
-        return null;
     }
-    private xpathProvider(indexNumber: IndexNumber): IXPathDishProviderResult {
+
+    private getXpathDishLabelIndex( label: LabelName, indexNumber: IndexNumber ): string {
+
+        let labelIndex = -1;
+
+        switch (label) {
+
+            case LabelName.VEGETARIAN:
+                switch (indexNumber) {
+                    case IndexNumber.ONE:
+                        labelIndex = 0;
+                        break;
+                    default:
+                        throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
+                }
+                break;
+
+            case LabelName.MEAL_OF_THE_DAY:
+                switch (indexNumber) {
+                    case IndexNumber.ONE:
+                        labelIndex = 1;
+                        break;
+                    case IndexNumber.TWO:
+                        labelIndex = 2;
+                        break;
+                    default:
+                        throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
+                }
+                break;
+
+            case LabelName.SOUP:
+                switch (indexNumber) {
+                    case IndexNumber.ONE:
+                        labelIndex = 3;
+                    default:
+                        throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
+                }
+                break;
+
+            default:
+                throw Error(`Bad label ${label}`);
+        }
+
+        return labelIndex.toString();
+    }
+
+    private xpathProvider(label: LabelName, indexNumber: IndexNumber): IXPathDishProviderResult {
 
         let result: IXPathDishProviderResult;
+        const labelIndex = this.getXpathDishLabelIndex(label, indexNumber);
 
         result = {
-            descriptionXPath: `//div[@id='page-zones__main-widgets__content']//p[//strong][${indexNumber}]`,
+            descriptionXPath: `//p/text()[${labelIndex}]`,
             labelXPath: null,
             price_SEKXPath: null,
             weekNumberXPath: null,
