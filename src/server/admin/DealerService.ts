@@ -97,41 +97,70 @@ export class DealerService {
     }
 
     private async dealerDataForJSONDocument( menuUrl: string ): Promise<{}> {
+        try {
 
-        const jSONAPIFetcher = new JSONAPIFetcher( menuUrl );
-        const json = await jSONAPIFetcher.jSONResult();
+            const jSONAPIFetcher = new JSONAPIFetcher( menuUrl );
+            const json = await jSONAPIFetcher.jSONResult();
 
-        return json;
+            return json;
+
+        } catch ( e ) {
+            this.logDealerDataError("dealerDataForJSONDocument()", menuUrl, e);
+            return null;
+        }
     }
 
     private async dealerDataForHtmlDocument( menuUrl: string ): Promise<IHtmlDocumentParser> {
+        try {
+            const htmlFetcher = new HtmlFetcher( menuUrl );
+            const htmlDocument = await htmlFetcher.htmlDocumentFromWeb();
+            const htmlDocumentParser = new HtmlDocumentParser( htmlDocument );
 
-        const htmlFetcher = new HtmlFetcher( menuUrl );
-        const htmlDocument = await htmlFetcher.htmlDocumentFromWeb();
-        const htmlDocumentParser = new HtmlDocumentParser( htmlDocument );
+            return htmlDocumentParser;
 
-        return htmlDocumentParser;
+        } catch ( e ) {
+            this.logDealerDataError("dealerDataForHtmlDocument()", menuUrl, e);
+            return null;
+        }
     }
 
     private async dealerDataForPdfDocument(menuUrl: string): Promise<string> {
+        try {
+            const pdfFetcher = new PdfFetcher( menuUrl );
+            const pageNumber = 1;
+            const textContentFromPdfDocument =  await pdfFetcher.textContentFromPdfDocument(pageNumber);
 
-        const pdfFetcher = new PdfFetcher( menuUrl );
-        const pageNumber = 1;
-        const textContentFromPdfDocument =  await pdfFetcher.textContentFromPdfDocument(pageNumber);
+            return textContentFromPdfDocument;
 
-        return textContentFromPdfDocument;
+        } catch ( e ) {
+            this.logDealerDataError("dealerDataForPdfDocument()", menuUrl, e);
+            return null;
+        }
     }
 
     private async dealerDataForRSSFeed( menuUrl: string ): Promise<IHtmlDocumentParser> {
+        try {
 
-        const rSSFetcher = new RSSFetcher( menuUrl );
-        const feed = await rSSFetcher.feedFromWeb();
-        const unsanitizedHtmlString = feed.items[0].content;
-        const sanitizedHtmlString = HtmlDocumentParser.getUtf8HtmlString( unsanitizedHtmlString );
-        const documentContent = HtmlDocumentParser.string2document( sanitizedHtmlString );
+            const rSSFetcher = new RSSFetcher( menuUrl );
+            const feed = await rSSFetcher.feedFromWeb();
+            if (feed.items.length < 1) { throw new Error(`No content in RSS-feed for: ${menuUrl}`); }
+            const unsanitizedHtmlString = feed.items[0].content;
+            const sanitizedHtmlString = HtmlDocumentParser.getUtf8HtmlString( unsanitizedHtmlString );
+            const documentContent = HtmlDocumentParser.string2document( sanitizedHtmlString );
 
-        const htmlDocumentParser = new HtmlDocumentParser( documentContent );
+            const htmlDocumentParser = new HtmlDocumentParser( documentContent );
 
-        return htmlDocumentParser;
+            return htmlDocumentParser;
+
+        } catch ( e ) {
+            this.logDealerDataError("dealerDataForRSSFeed()", menuUrl, e);
+            return null;
+        }
     }
+
+    private logDealerDataError(methodName: string, menuUrl: string, e: Error): void {
+        logger.error(`Error in ${methodName} ***  menuUrl: ${menuUrl} ***  errorName: ${e.name} ***  stackTrace: ${e.stack} ***  stackTrace: ${e.stack}`);
+    }
+
+
 }

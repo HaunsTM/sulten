@@ -28,7 +28,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
         const aNodeXPathResult = await pageWhereToFindMenuUrl.contentFromHtmlDocument(xPath);
         const aHref = aNodeXPathResult.iterateNext().nodeValue;
-        const menuUrl = pageWhereToFindMenuUrl.htmlDocument.origin + aHref;
+        const menuUrl = pageWhereToFindMenuUrl.htmlDocument.defaultView.location.origin + aHref;
         return menuUrl;
     }
 

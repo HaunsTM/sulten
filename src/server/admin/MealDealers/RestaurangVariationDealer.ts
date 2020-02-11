@@ -92,7 +92,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.MONDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.TUESDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -101,7 +101,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.TUESDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.TUESDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.WEDNESDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -110,7 +110,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.WEDNESDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.WEDNESDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.THURSDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -119,7 +119,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.THURSDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.THURSDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.FRIDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -128,7 +128,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.FRIDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.THURSDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
         ];
 
         return mealsForAWeek;
