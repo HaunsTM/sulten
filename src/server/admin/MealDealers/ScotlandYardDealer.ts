@@ -178,7 +178,7 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDeale
             case LabelName.VEGETARIAN:
                 switch (indexNumber) {
                     case IndexNumber.ONE:
-                        labelIndex = 0;
+                        labelIndex = 1;
                         break;
                     default:
                         throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
@@ -201,7 +201,8 @@ export const ScotlandYardDealer: IWebMealDealerStatic =  class ScotlandYardDeale
             case LabelName.SOUP:
                 switch (indexNumber) {
                     case IndexNumber.ONE:
-                        labelIndex = 3;
+                        labelIndex = 4;
+                        break;
                     default:
                         throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
                 }
