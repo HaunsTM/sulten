@@ -50,6 +50,7 @@ CREATE TABLE `alternativesMeals` (
 CREATE TABLE `meals` (
 	`id`								INT NOT NULL AUTO_INCREMENT,
 
+    `lastUpdatedUTC`                    TIMESTAMP,
 	`error`								TEXT,
 
 	`fKPriceId`					        INT NOT NULL,

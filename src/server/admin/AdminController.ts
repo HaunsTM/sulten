@@ -1,6 +1,7 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
 import { logger } from "../helpers/default.logger";
+import { EpochHelper } from "../helpers/EpochHelper";
 import IController from "../interfaces/IController";
 import { MealService } from "../repository/MealService";
 import { DealerService } from "./DealerService";
@@ -27,11 +28,14 @@ export default class AdminController implements IController {
 
             const dealerService = new DealerService();
             const mealService = new MealService();
+            const epochHelper = new EpochHelper();
+
+            const lastUpdatedUTCTimestamp = epochHelper.getCurrentUTCTimestamp();
 
             const allMeals = await dealerService.mealsFromActiveDealers(weekYear, weekIndex);
             logger.info(`Fetched ${allMeals.length} meal(s)`);
 
-            await mealService.bulkInsert(allMeals);
+            await mealService.bulkInsert(allMeals, lastUpdatedUTCTimestamp);
             response.send(allMeals);
 
         } catch (e) {

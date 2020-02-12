@@ -40,4 +40,11 @@ export class EpochHelper implements IEpochHelper {
         return date;
     }
 
+    public getCurrentUTCTimestamp(): string {
+
+        const utcTime = moment().utc().format("YYYY-MM-DD HH:mm:ss");
+
+        return utcTime;
+    }
+
 }
