@@ -10,7 +10,8 @@ import { BistroALundCentralhallenDealer } from "./MealDealers/BistroALundCentral
 import { BistroALundMatakutenDealer } from "./MealDealers/BistroALundMatakuten";
 import { PathotellundRestaurangDealer } from "./MealDealers/PathotellundRestaurangDealer";
 
-// Malmö - Centrum
+// Malmö - Sjukhuset
+import { Freda49Dealer } from "./MealDealers/Freda49Dealer";
 
 // Malmö - Västra Hamnen
 import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
@@ -38,7 +39,8 @@ export class DealerCollection {
             BistroALundMatakutenDealer,
             PathotellundRestaurangDealer,
 
-            // Malmö - Centrum
+            // Malmö - Sjukhuset
+            Freda49Dealer,
 
             // Malmö - Västra Hamnen
             GlasklartDealer,

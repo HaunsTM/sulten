@@ -5,6 +5,7 @@ INSERT INTO `areas` (`name`) VALUES ('Malmö - Västra Hamnen');
 INSERT INTO `areas` (`name`) VALUES ('Lund - Brunnshög');
 INSERT INTO `areas` (`name`) VALUES ('Lund - Sjukhuset');
 
+INSERT INTO `labels` (`name`) VALUES ('a_la_carte');
 INSERT INTO `labels` (`name`) VALUES ('arabic');
 INSERT INTO `labels` (`name`) VALUES ('asian');
 INSERT INTO `labels` (`name`) VALUES ('bread');
