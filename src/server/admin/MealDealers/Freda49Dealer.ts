@@ -173,21 +173,14 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
         try {
+            const regDishDescription = /(?:.*(?:[:]|(?:\d[.]))\s*)?(.+$)/;
+            const unsanitizedDishDescription =
+                await this.dealerData.textContentFromHtmlDocument(xPath.descriptionXPath);
+            const dishDescriptionMatches = unsanitizedDishDescription.match(regDishDescription);
+
             dishDescription =
-                (await this.dealerData.textContentFromHtmlDocument(xPath.descriptionXPath))
-                .match(/(?:(?:[^:]+:\s*)(.*$))|(?:(?:^\d+[.]\s*)(.*$))|(?:^(?!(?:.*[:])|(?:.*\d+[.]))(.+$))/)
-                .find( (mat, i) => {
-                    const validRegexMatchGroupIndexes = [1, 2, 3];
-                    if (validRegexMatchGroupIndexes.includes(i)) {
-                        return true;
-                    }
-                    return false;
-                })
-                .replace(/^\w/, (c) => {
-                    if(!c) {
-                        const u = 8;
-                    }
-                    return c.toUpperCase(); } );
+                dishDescriptionMatches[1] ?
+                dishDescriptionMatches[1].replace(/^\w/, (c) => c.toUpperCase() ) : "";
 
             priceSEK =
                 ( await this.dealerData.textContentFromHtmlDocument(xPath.price_SEKXPath ))
