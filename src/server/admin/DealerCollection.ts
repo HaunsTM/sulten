@@ -12,6 +12,7 @@ import { PathotellundRestaurangDealer } from "./MealDealers/PathotellundRestaura
 
 // Malmö - Sjukhuset
 import { Freda49Dealer } from "./MealDealers/Freda49Dealer";
+import { MotesplatsCRCDealer } from "./MealDealers/MotesplatsCRCDealer";
 
 // Malmö - Västra Hamnen
 import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
@@ -41,6 +42,7 @@ export class DealerCollection {
 
             // Malmö - Sjukhuset
             Freda49Dealer,
+            MotesplatsCRCDealer,
 
             // Malmö - Västra Hamnen
             GlasklartDealer,
