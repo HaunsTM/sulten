@@ -15,6 +15,7 @@ import { Freda49Dealer } from "./MealDealers/Freda49Dealer";
 import { MotesplatsCRCDealer } from "./MealDealers/MotesplatsCRCDealer";
 
 // Malmö - Västra Hamnen
+import { ArstidernaByTheSeaDealer } from "./MealDealers/ArstidernaByTheSeaDealer";
 import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
 import { Lokal17Dealer } from "./MealDealers/Lokal17Dealer";
 import { MHMatsalarDealer } from "./MealDealers/MHMatsalarDealer";
@@ -45,6 +46,7 @@ export class DealerCollection {
             MotesplatsCRCDealer,
 
             // Malmö - Västra Hamnen
+            ArstidernaByTheSeaDealer,
             GlasklartDealer,
             Lokal17Dealer,
             MHMatsalarDealer,
