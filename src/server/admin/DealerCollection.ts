@@ -26,6 +26,7 @@ import { RestaurangNiagaraDealer } from "./MealDealers/RestaurangNiagaraDealer";
 import { RestaurangP2Dealer } from "./MealDealers/RestaurangP2Dealer";
 import { RestaurangVariationDealer } from "./MealDealers/RestaurangVariationDealer";
 import { StoraVarvsgatan6Dealer } from "./MealDealers/StoraVarvsgatan6Dealer";
+import { WhiteSharkDealerDealer } from "./MealDealers/WhiteSharkDealer";
 import { ZenthaiDealer } from "./MealDealers/ZenthaiDealer";
 
 export class DealerCollection {
@@ -58,6 +59,7 @@ export class DealerCollection {
             RestaurangP2Dealer,
             RestaurangVariationDealer,
             StoraVarvsgatan6Dealer,
+            WhiteSharkDealerDealer,
             ZenthaiDealer,
 
         ];

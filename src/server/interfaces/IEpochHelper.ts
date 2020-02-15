@@ -1,3 +1,4 @@
+import { WeekDayIndex } from "../enum/WeekDayIndex";
 
 export interface IEpochHelper {
 
@@ -6,4 +7,5 @@ export interface IEpochHelper {
     getMonthThatStartedTheWeek(): number;
     getMonthThatStartedTheWeek(weekYear: number, weekNumber: number): number;
     getDate(javascriptDayIndex: number, weekIndex: number, weekYear: number): Date;
+    getDayNameDateMonthName(javascriptDayIndex: WeekDayIndex,  weekYear: string, weekIndex: string ): string;
 }

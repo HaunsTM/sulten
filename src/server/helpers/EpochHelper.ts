@@ -1,4 +1,5 @@
 import moment from "moment";
+import { WeekDayIndex } from "../enum/WeekDayIndex";
 import { IEpochHelper } from "../interfaces/IEpochHelper";
 
 export class EpochHelper implements IEpochHelper {
@@ -45,6 +46,88 @@ export class EpochHelper implements IEpochHelper {
         const utcTime = moment().utc().format("YYYY-MM-DD HH:mm:ss");
 
         return utcTime;
+    }
+    public getDayNameDateMonthName(
+        javascriptDayIndex: WeekDayIndex,  weekYear: string, weekIndex: string ): string {
+
+        const epochHelper = new EpochHelper();
+        const swedishWeekDayName = this.getSwedishWeekDayName( javascriptDayIndex );
+        const date = epochHelper.getDate( javascriptDayIndex, parseInt( weekIndex, 10 ), parseInt( weekYear, 10 ) );
+        const monthName = this.getSwedishMonthName( date.getMonth() );
+
+        const dayNameDateMonthName = `${swedishWeekDayName} ${date.getDate().toString()} ${monthName}`;
+
+        return dayNameDateMonthName;
+    }
+
+    private getSwedishWeekDayName( weekDayJavascriptDayIndex: WeekDayIndex ): string {
+        let swedishWeekDayName = "";
+
+        switch ( weekDayJavascriptDayIndex ) {
+            case WeekDayIndex.MONDAY :
+                swedishWeekDayName = "måndag";
+                break;
+            case WeekDayIndex.TUESDAY :
+                swedishWeekDayName = "tisdag";
+                break;
+            case WeekDayIndex.WEDNESDAY :
+                swedishWeekDayName = "onsdag";
+                break;
+            case WeekDayIndex.THURSDAY :
+                swedishWeekDayName = "torsdag";
+                break;
+            case WeekDayIndex.FRIDAY :
+                swedishWeekDayName = "fredag";
+                break;
+        }
+        return swedishWeekDayName;
+    }
+
+    private getSwedishMonthName( monthIndex: number ): string {
+        let month = "";
+
+        switch ( monthIndex ) {
+            case 0:
+                month = "januari";
+                break;
+            case 1:
+                month = "februari";
+                break;
+            case 2:
+                month = "mars";
+                break;
+            case 3:
+                month = "april";
+                break;
+            case 4:
+                month = "maj";
+                break;
+            case 5:
+                month = "juni";
+                break;
+            case 6:
+                month = "juli";
+                break;
+            case 7:
+                month = "augusti";
+                break;
+            case 8:
+                month = "september";
+                break;
+            case 9:
+                month = "oktober";
+                break;
+            case 10:
+                month = "november";
+                break;
+            case 11:
+                month = "december";
+                break;
+            default :
+                throw new Error(`monthIndex = ${monthIndex} is not a valid index for a month!`);
+                break;
+        }
+        return month;
     }
 
 }
