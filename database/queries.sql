@@ -210,7 +210,8 @@ BEGIN
                 dishes.id = @pDish_Id AND
                 indexes.id = @pIndexId AND
                 labels.id = @pLabelId        
-        );
+        ) AND
+        m.error <> '';
 END$$
 DELIMITER ;
 
@@ -224,6 +225,7 @@ CREATE PROCEDURE createAndGetMealId (
 	IN pLabel_Name                  	    VARCHAR(255),
 	IN pIndex_Number				        INT,
     IN pDish_Description          	        VARCHAR(255),
+    IN pDish_LastUpdatedUTC         	    TIMESTAMP,
     IN pMeal_Error	                	    TEXT)
 BEGIN
 
@@ -235,6 +237,7 @@ BEGIN
     SET @pLabel_Name = pLabel_Name;
 	SET @pIndex_Number = pIndex_Number;
     SET @pDish_Description = pDish_Description;
+    SET @pDish_LastUpdatedUTC = pDish_LastUpdatedUTC;    
     SET @pMeal_Error = pMeal_Error;
 
 	CALL getWeekDayId(@pWeekDay_JavaScriptDayIndex, @WeekDayId);
@@ -255,8 +258,8 @@ BEGIN
 	
 	CALL deletePossibleOldMeal (@pOccurences_Id, @pRestaurant_Id, @pPrice_Id, @pDish_Id, @IndexId, @LabelId);    
 	
-	INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `error`) VALUES (@PriceId, @OccurenceId, @RestaurantId, @pMeal_Error)
-		ON DUPLICATE KEY UPDATE `Error` = @pMeal_Error, `id` = LAST_INSERT_ID(`id`);
+	INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `lastUpdatedUTC`, `error`) VALUES (@PriceId, @OccurenceId, @RestaurantId, @pDish_LastUpdatedUTC, @pMeal_Error)
+		ON DUPLICATE KEY UPDATE `lastUpdatedUTC` = @pDish_LastUpdatedUTC, `id` = LAST_INSERT_ID(`id`);
 	
 	SELECT LAST_INSERT_ID() INTO @MealId;
 	

@@ -2,11 +2,13 @@ import { FetcherType } from "../../enum/FetcherType";
 import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
+import { IDealerResult } from "../../interfaces/IDealerResult";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
+import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
@@ -28,7 +30,7 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
 
         const aNodeXPathResult = await pageWhereToFindMenuUrl.contentFromHtmlDocument(xPath);
         const aHref = aNodeXPathResult.iterateNext().nodeValue;
-        const menuUrl = pageWhereToFindMenuUrl.htmlDocument.origin + aHref;
+        const menuUrl = pageWhereToFindMenuUrl.htmlDocument.defaultView.location.origin + aHref;
         return menuUrl;
     }
 
@@ -49,19 +51,15 @@ export const PathotellundRestaurangDealer: IWebMealDealerStatic =  class Pathote
         this.weekNumberExpected = weekNumberExpected;
     }
 
-    public async mealsFromWeb(): Promise<IWebMealResult[]> {
+    public async mealsFromWeb(): Promise<IDealerResult> {
 
-        const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const mealsForAWeekWithPossibleNullValues = await Promise.all(mealsForAWeekPromise);
+        const mealsForAWeekPromise =
+            this.getWebMealResultAForAWeek();
 
-        const mealsForAWeek = mealsForAWeekWithPossibleNullValues
-            .filter( (element) => {
-                const validResult = element.isValid;
+        const dealerResult =
+            new DealerResult( PathotellundRestaurangDealer.baseUrlStatic, mealsForAWeekPromise );
 
-                return validResult;
-            } );
-
-        return mealsForAWeek;
+        return dealerResult;
     }
 
     private getSwedishWeekDayNameOnPathotellundRestaurang( weekDayJavascriptDayIndex: WeekDayIndex ): string {

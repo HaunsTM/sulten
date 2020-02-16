@@ -2,14 +2,13 @@ import { FetcherType } from "../../enum/FetcherType";
 import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
+import { IDealerResult } from "../../interfaces/IDealerResult";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
-import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
-import { WebMealResult } from "../WebMealResult";
+import { DealerResult } from "../DealerResult";
 import { BistroALundCentralhallenLocal } from "./BistroALundCentralhallen";
-import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
 export const BistroALundMatakutenDealer: IWebMealDealerStatic =
     class BistroALundMatakutenLocal extends BistroALundCentralhallenLocal {
@@ -42,11 +41,12 @@ export const BistroALundMatakutenDealer: IWebMealDealerStatic =
             weekNumberExpected);
     }
 
-    public async mealsFromWeb(): Promise<IWebMealResult[]> {
+    public async mealsFromWeb(): Promise<IDealerResult> {
         const restaurantIndex = this.restaurantIndex;
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek(restaurantIndex);
-        const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
-        return mealsForAWeek;
+        const dealerResult = new DealerResult( BistroALundMatakutenDealer.baseUrlStatic, mealsForAWeekPromise );
+
+        return dealerResult;
     }
 
     protected getWebMealResultAForAWeek(restaurantIndex: number): Array<Promise<IWebMealResult>> {

@@ -2,11 +2,13 @@ import { FetcherType } from "../../enum/FetcherType";
 import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
+import { IDealerResult } from "../../interfaces/IDealerResult";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IRegexDishProviderResult } from "../../interfaces/IRegexDishProviderResult";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
+import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
@@ -51,12 +53,11 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
         this.weekNumberExpected = weekNumberExpected;
     }
 
-    public async mealsFromWeb(): Promise<IWebMealResult[]> {
-
+    public async mealsFromWeb(): Promise<IDealerResult> {
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
+        const dealerResult = new DealerResult( RestaurangVariationDealer.baseUrlStatic, mealsForAWeekPromise );
 
-        return mealsForAWeek;
+        return dealerResult;
     }
 
     private getSwedishWeekDayNameOnVariation( weekDayJavascriptDayIndex: WeekDayIndex ): string {
@@ -92,7 +93,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.MONDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.TUESDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -101,7 +102,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.TUESDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.TUESDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.WEDNESDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -110,7 +111,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.WEDNESDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.WEDNESDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.THURSDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -119,7 +120,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.THURSDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.THURSDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.FRIDAY,
                                 LabelName.MEAL_OF_THE_DAY, 1, IndexNumber.ONE),
@@ -128,7 +129,7 @@ export const RestaurangVariationDealer: IWebMealDealerStatic =  class Restaurang
             this.webMealResult( WeekDayIndex.FRIDAY,
                                 LabelName.VEGETARIAN, 3, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.THURSDAY,
-                                LabelName.SALAD, 4, IndexNumber.ONE),
+                                LabelName.SOUP, 4, IndexNumber.ONE),
         ];
 
         return mealsForAWeek;

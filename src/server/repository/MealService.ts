@@ -45,7 +45,7 @@ export class MealService {
     private readonly emptySQLString = "''";
     private readonly invalidSQLPrice = -1;
 
-    public async createAndGetMealId(webMeal: IWebMealResult): Promise<number> {
+    public async createAndGetMealId(webMeal: IWebMealResult, lastUpdatedTimestamp: string): Promise<number> {
         const m = this.dbPreparedWebMeal(webMeal);
 
         const connection = getConnection();
@@ -54,7 +54,7 @@ export class MealService {
         const sql =
                 ` CALL CreateAndGetMealId(` +
                 `${m.weekDayJavascriptDayIndex}, ${m.weekNumber}, ${m.weekYear}, '${m.menuUrl}', ` +
-                `${m.price_SEK}, '${m.labelName}', ${m.indexNumber}, ${m.dishDescription}, ${m.fetchError}); `;
+                `${m.price_SEK}, '${m.labelName}', ${m.indexNumber}, ${m.dishDescription}, '${lastUpdatedTimestamp}', ${m.fetchError}); `;
 
         try {
 
@@ -80,8 +80,8 @@ export class MealService {
         }
     }
 
-    public async bulkInsert(meals: IWebMealResult[]): Promise<void> {
-        const allInserts = meals.map( (m) => this.createAndGetMealId(m) );
+    public async bulkInsert(meals: IWebMealResult[], lastUpdatedTimestamp: string): Promise<void> {
+        const allInserts = meals.map( (m) => this.createAndGetMealId(m, lastUpdatedTimestamp) );
 
     }
 

@@ -11,11 +11,12 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
+import { PathotellundRestaurangDealer } from "./PathotellundRestaurangDealer";
 
-export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal {
+export const StoraVarvsgatan6Dealer: IWebMealDealerStatic =  class StoraVarvsgatan6Local {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://glasklart.eu/sv/lunch/";
+        const baseUrl = "https://www.storavarvsgatan6.se/projects.html";
         return baseUrl;
     }
 
@@ -46,7 +47,7 @@ export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal
 
     public async mealsFromWeb(): Promise<IDealerResult> {
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const dealerResult = new DealerResult( GlasklartDealer.baseUrlStatic, mealsForAWeekPromise );
+        const dealerResult = new DealerResult( PathotellundRestaurangDealer.baseUrlStatic, mealsForAWeekPromise );
 
         return dealerResult;
     }
@@ -80,8 +81,10 @@ export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
         let webMealResult: WebMealResult = null;
 
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnGlasklart( weekDayJavascriptDayIndex );
-        const xPath = this.xpathProvider(swedishWeekDayName, label);
+        const weekDayName = this.getSwedishWeekDayName( weekDayJavascriptDayIndex );
+        const labelIndex = this.getXpathDishLabelIndex( label, indexNumber );
+
+        const xPath = this.xpathProvider( weekDayName, labelIndex );
 
         try {
             dishPriceWeekNumber =
@@ -111,24 +114,24 @@ export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal
 
     }
 
-    private getSwedishWeekDayNameOnGlasklart( weekDay: WeekDayIndex ): string {
+    private getSwedishWeekDayName( weekDayJavascriptDayIndex: WeekDayIndex ): string {
         let swedishWeekDayName = "";
 
-        switch ( weekDay ) {
+        switch ( weekDayJavascriptDayIndex ) {
             case WeekDayIndex.MONDAY :
-                swedishWeekDayName = "Måndag";
+                swedishWeekDayName = "åndag";
                 break;
             case WeekDayIndex.TUESDAY :
-                swedishWeekDayName = "Tisdag";
+                swedishWeekDayName = "isdag";
                 break;
             case WeekDayIndex.WEDNESDAY :
-                swedishWeekDayName = "Onsdag";
+                swedishWeekDayName = "nsdag";
                 break;
             case WeekDayIndex.THURSDAY :
-                swedishWeekDayName = "Torsdag";
+                swedishWeekDayName = "orsdag";
                 break;
             case WeekDayIndex.FRIDAY :
-                swedishWeekDayName = "Fredag";
+                swedishWeekDayName = "redag";
                 break;
         }
         return swedishWeekDayName;
@@ -145,15 +148,16 @@ export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal
 
         try {
             dishDescription =
-                await this.dealerData.textContentFromHtmlDocument(xPath.descriptionXPath);
+                (await this.dealerData.textContentFromHtmlDocument(xPath.descriptionXPath))
+                .match(/^[^:]+:\s+(.+)/)[1];
 
             priceSEK =
                 ( await this.dealerData.textContentFromHtmlDocument(xPath.price_SEKXPath ))
-                .match(/\d+(?=\s?kr)/)[0];
+                .match(/(\d+)\s*kr/)[1];
 
             weekIndexWeekNumber =
                 ( await this.dealerData.textContentFromHtmlDocument(xPath.weekNumberXPath ))
-                .match(/(?<=[Vv.]+\s?)\d+/)[0];
+                .match(/\d+/)[0];
         } catch ( error ) {
             fetchError = error;
         }
@@ -163,30 +167,47 @@ export const GlasklartDealer: IWebMealDealerStatic =  class GlasklartDealerLocal
         return dishPriceWeekNumber;
     }
 
-    private xpathProvider(weekDay: string, label: LabelName): IXPathDishProviderResult {
+    private getXpathDishLabelIndex( label: LabelName, indexNumber: IndexNumber ): string {
 
-        let result: IXPathDishProviderResult;
+        let labelIndex = -1;
 
         switch (label) {
+
             case LabelName.MEAL_OF_THE_DAY:
-                result = {
-                    descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'${weekDay}')]/following-sibling::p[1]`,
-                    labelXPath: null,
-                    price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
-                    weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
-                };
+                switch (indexNumber) {
+                    case IndexNumber.ONE:
+                        labelIndex = 1;
+                        break;
+                    default:
+                        throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
+                }
                 break;
+
             case LabelName.VEGETARIAN:
-                result = {
-                    descriptionXPath: `//li[@id='glasklartlunchwidget-2']/h4[contains(.,'Veckans vegetariska')]/following-sibling::p[1]`,
-                    labelXPath: null,
-                    price_SEKXPath: `//p/span[contains(.,'11.45 - 12.45')]/following-sibling::text()[1]`,
-                    weekNumberXPath: `//h2/text()[contains(.,'Lunch v.')]`,
-                };
+                switch (indexNumber) {
+                    case IndexNumber.ONE:
+                        labelIndex = 2;
+                        break;
+                    default:
+                        throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
+                }
                 break;
+
             default:
-                throw new Error(`No xpath-implementation for label: ${label}`);
+                throw Error(`Bad label ${label}`);
         }
+
+        return labelIndex.toString();
+    }
+
+    private xpathProvider(weekDayName: string, labelIndex: string): IXPathDishProviderResult {
+
+        const result: IXPathDishProviderResult = {
+            descriptionXPath: `//p[contains(.,'${weekDayName}')]/following-sibling::p[${labelIndex}]`,
+            labelXPath: null,
+            price_SEKXPath: `//p[contains(.,'iser')]/following-sibling::p[contains(.,'kr')]`,
+            weekNumberXPath: `//text()[contains(.,'eckans meny')]`,
+        };
 
         return result;
     }
