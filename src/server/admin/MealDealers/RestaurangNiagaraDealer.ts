@@ -1,11 +1,13 @@
 import { FetcherType } from "../../enum/FetcherType";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
+import { IDealerResult } from "../../interfaces/IDealerResult";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
+import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
@@ -42,12 +44,12 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         this.weekNumberExpected = weekNumberExpected;
     }
 
-    public async mealsFromWeb(): Promise<IWebMealResult[]> {
+    public async mealsFromWeb(): Promise<IDealerResult> {
 
         const mealsForAWeekPromise =  await this.getWebMealResultAForAWeek();
-        const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
+        const dealerResult = new DealerResult( RestaurangNiagaraDealer.baseUrlStatic, mealsForAWeekPromise );
 
-        return mealsForAWeek;
+        return dealerResult;
     }
     private get allLunchDays(): WeekDayIndex[] {
 
@@ -62,57 +64,48 @@ export const RestaurangNiagaraDealer: IWebMealDealerStatic =  class RestaurangNi
         return allLunchDays;
     }
 
-    private async getWebMealResultAForAWeek(): Promise<IWebMealResult[]> {
+    private async getWebMealResultAForAWeek(): Promise<Array<Promise<IWebMealResult>>> {
 
-        return new Promise(async (resolve, reject) => {
-            const webMealResults: IWebMealResult[] = new Array();
-            try {
-                for (let i = 0, len = this.allLunchDays.length; i < len; i++) {
-                  const tempWebMealResults = await this.getWebMealResultForDay(this.allLunchDays[i]);
-                  webMealResults.push(...tempWebMealResults);
-                }
+        const webMealResults: Array<Promise<IWebMealResult>> = new Array();
 
-                resolve(webMealResults);
-            } catch ( error ) {
-                reject(error);
-            }
-        });
+        for (let i = 0, len = this.allLunchDays.length; i < len; i++) {
+            const currentDaysMealResults = await this.getWebMealResultForDay(this.allLunchDays[i]);
+            webMealResults.concat(currentDaysMealResults);
+        }
+        return webMealResults;
+
     }
 
-    private async getWebMealResultForDay(day: WeekDayIndex): Promise<IWebMealResult[]> {
+    private async getWebMealResultForDay(day: WeekDayIndex): Promise<Array<Promise<IWebMealResult>>> {
 
-        return new Promise(async (resolve, reject) => {
-            const webMealResults: IWebMealResult[] = new Array();
+        const webMealResults: Array<Promise<IWebMealResult>> = new Array();
+
+        const currentSwedishWeekDayName = this.getSwedishWeekDayNameOnRestaurangNiagara(day);
+        const numberOfDishesCurrentDay = await this.mealsPerWeekDay(currentSwedishWeekDayName);
+        const dishLabelsCurrentDay: LabelName[] = new Array();
+
+        for (let i = 0; i < numberOfDishesCurrentDay; i++) {
+            const dishRowIndex = i + 1;
+            let dishPriceWeekNumber =
+                await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex );
+            let label: LabelName = null;
+            let indexNumber = -1;
+
             try {
-                const currentSwedishWeekDayName = this.getSwedishWeekDayNameOnRestaurangNiagara(day);
-                const numberOfDishesCurrentDay = await this.mealsPerWeekDay(currentSwedishWeekDayName);
-                const dishLabelsCurrentDay: LabelName[] = new Array();
-
-                for (let i = 0; i < numberOfDishesCurrentDay; i++) {
-                    const dishRowIndex = i + 1;
-                    let dishPriceWeekNumber =
-                        await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex );
-                    let label: LabelName = null;
-                    let indexNumber = -1;
-
-                    try {
-                        label = await this.getDishLabelName( currentSwedishWeekDayName, dishRowIndex );
-                        dishLabelsCurrentDay.push( label );
-                        indexNumber =
-                            dishLabelsCurrentDay.filter( (x) => x === label).length;
-                    } catch ( error ) {
-                        dishPriceWeekNumber =
-                            await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex, error );
-                    }
-                    const webMealResult =
-                        await this.webMealResult(dishPriceWeekNumber, indexNumber, label, day);
-                    webMealResults.push(webMealResult);
-                }
-                resolve(webMealResults);
+                label = await this.getDishLabelName( currentSwedishWeekDayName, dishRowIndex );
+                dishLabelsCurrentDay.push( label );
+                indexNumber =
+                    dishLabelsCurrentDay.filter( (x) => x === label).length;
             } catch ( error ) {
-                reject( error );
+                dishPriceWeekNumber =
+                    await this.getDishPriceWeekNumber( currentSwedishWeekDayName, dishRowIndex, error );
             }
-        });
+            const webMealResult =
+                this.webMealResult(dishPriceWeekNumber, indexNumber, label, day);
+            webMealResults.push(webMealResult);
+        }
+
+        return webMealResults;
     }
 
     private async webMealResult(

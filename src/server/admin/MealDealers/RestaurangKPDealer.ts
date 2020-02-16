@@ -3,11 +3,14 @@ import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { EpochHelper } from "../../helpers/EpochHelper";
+import { IDealerResult } from "../../interfaces/IDealerResult";
+import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
+import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
@@ -28,6 +31,7 @@ export const RestaurangKPDealer: IWebMealDealerStatic =  class RestaurangKPDeale
 
     private baseUrl: string;
     private dealerData: IHtmlDocumentParser = null;
+    private epochHelper: IEpochHelper;
     private weekNumberExpected: string = "";
     private weekYear: string = "";
 
@@ -41,12 +45,15 @@ export const RestaurangKPDealer: IWebMealDealerStatic =  class RestaurangKPDeale
         this.dealerData = dealerData;
         this.weekYear = weekYear;
         this.weekNumberExpected = weekNumberExpected;
+
+        this.epochHelper = new EpochHelper();
     }
 
-    public async mealsFromWeb(): Promise<IWebMealResult[]> {
+    public async mealsFromWeb(): Promise<IDealerResult> {
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
-        return mealsForAWeek;
+        const dealerResult = new DealerResult( RestaurangKPDealer.baseUrlStatic, mealsForAWeekPromise );
+
+        return dealerResult;
     }
 
     private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
@@ -84,8 +91,12 @@ export const RestaurangKPDealer: IWebMealDealerStatic =  class RestaurangKPDeale
         let webMealResult: WebMealResult = null;
 
         const dayDateMonth =
-            this.getDayNameDateMonthNameOnRestaurangKP(
-                weekDayJavascriptDayIndex, this.weekYear, this.weekNumberExpected );
+            this.epochHelper
+                .getDayNameDateMonthName(
+                    weekDayJavascriptDayIndex, this.weekYear, this.weekNumberExpected )
+                    .replace(/^\w/, (c) => {
+                        return c.toUpperCase();
+                    });
         const xpathDishLabelIndex = this.getXpathDishLabelIndex( label, indexNumber );
 
         try {
@@ -109,89 +120,6 @@ export const RestaurangKPDealer: IWebMealDealerStatic =  class RestaurangKPDeale
         }
 
         return webMealResult;
-    }
-
-    private getSwedishWeekDayNameOnRestaurangKP( weekDayJavascriptDayIndex: WeekDayIndex ): string {
-        let swedishWeekDayName = "";
-
-        switch ( weekDayJavascriptDayIndex ) {
-            case WeekDayIndex.MONDAY :
-                swedishWeekDayName = "åndag";
-                break;
-            case WeekDayIndex.TUESDAY :
-                swedishWeekDayName = "isdag";
-                break;
-            case WeekDayIndex.WEDNESDAY :
-                swedishWeekDayName = "nsdag";
-                break;
-            case WeekDayIndex.THURSDAY :
-                swedishWeekDayName = "orsdag";
-                break;
-            case WeekDayIndex.FRIDAY :
-                swedishWeekDayName = "redag";
-                break;
-        }
-        return swedishWeekDayName;
-    }
-
-    private getSwedishMonthNameOnRestaurangKP( monthIndex: number ): string {
-        let month = "";
-
-        switch ( monthIndex ) {
-            case 0:
-                month = "januari";
-                break;
-            case 1:
-                month = "februari";
-                break;
-            case 2:
-                month = "mars";
-                break;
-            case 3:
-                month = "april";
-                break;
-            case 4:
-                month = "maj";
-                break;
-            case 5:
-                month = "juni";
-                break;
-            case 6:
-                month = "juli";
-                break;
-            case 7:
-                month = "augusti";
-                break;
-            case 8:
-                month = "september";
-                break;
-            case 9:
-                month = "oktober";
-                break;
-            case 10:
-                month = "november";
-                break;
-            case 11:
-                month = "december";
-                break;
-            default :
-                throw new Error(`monthIndex = ${monthIndex} is not a valid index for a month!`);
-                break;
-        }
-        return month;
-    }
-
-    private getDayNameDateMonthNameOnRestaurangKP(
-        javascriptDayIndex: WeekDayIndex,  weekYear: string, weekIndex: string ): string {
-
-        const epochHelper = new EpochHelper();
-        const swedishWeekDayName = this.getSwedishWeekDayNameOnRestaurangKP( javascriptDayIndex );
-        const date = epochHelper.getDate( javascriptDayIndex, parseInt( weekIndex, 10 ), parseInt( weekYear, 10 ) );
-        const monthName = this.getSwedishMonthNameOnRestaurangKP( date.getMonth() );
-
-        const dayNameDateMonthName = `${swedishWeekDayName} ${date.getDate().toString()} ${monthName}`;
-
-        return dayNameDateMonthName;
     }
 
     private getXpathDishLabelIndex( label: LabelName, indexNumber: IndexNumber ): string {

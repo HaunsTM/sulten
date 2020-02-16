@@ -32,11 +32,15 @@ export default class AdminController implements IController {
 
             const lastUpdatedUTCTimestamp = epochHelper.getCurrentUTCTimestamp();
 
-            const allMeals = await dealerService.mealsFromActiveDealers(weekYear, weekIndex);
-            logger.info(`Fetched ${allMeals.length} meal(s)`);
+            const resultsFromActiveDealers = await dealerService.resultsFromActiveDealers(weekYear, weekIndex);
+            const mealsFromActiveDealers = DealerService.mealsFromActiveDealers(resultsFromActiveDealers);
+            const dealerFetchAndDbInsertReport = DealerService.dealerFetchAndDbInsertReport(resultsFromActiveDealers);
 
-            await mealService.bulkInsert(allMeals, lastUpdatedUTCTimestamp);
-            response.send(allMeals);
+            logger.info(dealerFetchAndDbInsertReport);
+
+            await mealService.bulkInsert(mealsFromActiveDealers, lastUpdatedUTCTimestamp);
+            response.set('Content-Type', 'text/html');
+            response.send(dealerFetchAndDbInsertReport);
 
         } catch (e) {
             next(new HttpException(500, e));

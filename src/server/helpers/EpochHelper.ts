@@ -50,9 +50,8 @@ export class EpochHelper implements IEpochHelper {
     public getDayNameDateMonthName(
         javascriptDayIndex: WeekDayIndex,  weekYear: string, weekIndex: string ): string {
 
-        const epochHelper = new EpochHelper();
         const swedishWeekDayName = this.getSwedishWeekDayName( javascriptDayIndex );
-        const date = epochHelper.getDate( javascriptDayIndex, parseInt( weekIndex, 10 ), parseInt( weekYear, 10 ) );
+        const date = this.getDate( javascriptDayIndex, parseInt( weekIndex, 10 ), parseInt( weekYear, 10 ) );
         const monthName = this.getSwedishMonthName( date.getMonth() );
 
         const dayNameDateMonthName = `${swedishWeekDayName} ${date.getDate().toString()} ${monthName}`;

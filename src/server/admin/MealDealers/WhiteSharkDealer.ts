@@ -3,19 +3,21 @@ import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
 import { EpochHelper } from "../../helpers/EpochHelper";
+import { IDealerResult } from "../../interfaces/IDealerResult";
 import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
 import { IWebMealResult } from "../../interfaces/IWebMealResult";
 import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderResult";
+import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 
 export const WhiteSharkDealerDealer: IWebMealDealerStatic =  class WhiteSharkDealerDealerLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://whiteshark.gastrogate.com/lunch/1/";
+        const baseUrl = "https://whiteshark.gastrogate.com/lunch/";
         return baseUrl;
     }
 
@@ -47,10 +49,11 @@ export const WhiteSharkDealerDealer: IWebMealDealerStatic =  class WhiteSharkDea
         this.epochHelper = new EpochHelper();
     }
 
-    public async mealsFromWeb(): Promise<IWebMealResult[]> {
+    public async mealsFromWeb(): Promise<IDealerResult> {
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const mealsForAWeek = await Promise.all(mealsForAWeekPromise);
-        return mealsForAWeek;
+        const dealerResult = new DealerResult( WhiteSharkDealerDealer.baseUrlStatic, mealsForAWeekPromise );
+
+        return dealerResult;
     }
 
     private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
