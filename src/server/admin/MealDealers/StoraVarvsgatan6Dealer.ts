@@ -2,7 +2,9 @@ import { FetcherType } from "../../enum/FetcherType";
 import { IndexNumber } from "../../enum/IndexNumber";
 import { LabelName } from "../../enum/LabelName";
 import { WeekDayIndex } from "../../enum/WeekDayIndex";
+import { EpochHelper } from "../../helpers/EpochHelper";
 import { IDealerResult } from "../../interfaces/IDealerResult";
+import { IEpochHelper } from "../../interfaces/IEpochHelper";
 import { IHtmlDocumentParser } from "../../interfaces/IHtmlDocumentParser";
 import { IMenuUrlDynamicData } from "../../interfaces/IMenuUrlDynamicData";
 import { IWebMealDealerStatic } from "../../interfaces/IWebMealDealerStatic";
@@ -30,6 +32,7 @@ export const StoraVarvsgatan6Dealer: IWebMealDealerStatic =  class StoraVarvsgat
     }
     private baseUrl: string;
     private dealerData: IHtmlDocumentParser = null;
+    private epochHelper: IEpochHelper;
     private weekNumberExpected: string = "";
     private weekYear: string = "";
 
@@ -43,6 +46,8 @@ export const StoraVarvsgatan6Dealer: IWebMealDealerStatic =  class StoraVarvsgat
         this.dealerData = dealerData;
         this.weekYear = weekYear;
         this.weekNumberExpected = weekNumberExpected;
+
+        this.epochHelper = new EpochHelper();
     }
 
     public async mealsFromWeb(): Promise<IDealerResult> {
@@ -205,7 +210,7 @@ export const StoraVarvsgatan6Dealer: IWebMealDealerStatic =  class StoraVarvsgat
         const result: IXPathDishProviderResult = {
             descriptionXPath: `//p[contains(.,'${weekDayName}')]/following-sibling::p[${labelIndex}]`,
             labelXPath: null,
-            price_SEKXPath: `//p[contains(.,'iser')]/following-sibling::p[contains(.,'kr')]`,
+            price_SEKXPath: `//p[contains(.,'iser')]/following-sibling::p[contains(.,'ird')][contains(.,'kr')]`,
             weekNumberXPath: `//text()[contains(.,'eckans meny')]`,
         };
 

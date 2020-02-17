@@ -8,15 +8,13 @@ import { IWebMealDealer } from "../interfaces/IWebMealDealer";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
 import { RestaurantService } from "../repository/RestaurantService";
 
-import Parser from "rss-parser";
 import { JSONAPIFetcher } from "../helpers/JSONAPIFetcher";
 import { RSSFetcher } from "../helpers/RSSFetcher";
+import { IDealerResult } from "../interfaces/IDealerResult";
 import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
 import { DealerCollection } from "./DealerCollection";
-import { IDealerResult } from "../interfaces/IDealerResult";
 
 export class DealerService {
-
 
     public static errorsFromActiveDealers(resultsFromActiveDealers: IDealerResult[]): Error[] {
 
@@ -220,6 +218,5 @@ export class DealerService {
     private logDealerDataError(methodName: string, menuUrl: string, e: Error): void {
         logger.error(`Error in ${methodName} ***  menuUrl: ${menuUrl} ***  errorName: ${e.name} ***  stackTrace: ${e.stack} ***  stackTrace: ${e.stack}`);
     }
-
 
 }
