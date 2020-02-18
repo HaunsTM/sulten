@@ -14,6 +14,10 @@ import { PathotellundRestaurangDealer } from "./MealDealers/PathotellundRestaura
 import { Freda49Dealer } from "./MealDealers/Freda49Dealer";
 import { MotesplatsCRCDealer } from "./MealDealers/MotesplatsCRCDealer";
 
+// Malmö - Stora Bernstorp
+import { MorMarnasMatsalDealer } from "./MealDealers/MorMarnasMatsalDealer";
+import { RestaurangOresundsterminalenDealer } from "./MealDealers/RestaurangOresundsterminalenDealer";
+
 // Malmö - Västra Hamnen
 import { ArstidernaByTheSeaDealer } from "./MealDealers/ArstidernaByTheSeaDealer";
 import { GlasklartDealer } from "./MealDealers/GlasklartDealer";
@@ -46,6 +50,10 @@ export class DealerCollection {
             // Malmö - Sjukhuset
             Freda49Dealer,
             MotesplatsCRCDealer,
+
+            // Malmö - Stora Bernstorp
+            MorMarnasMatsalDealer,
+            RestaurangOresundsterminalenDealer,
 
             // Malmö - Västra Hamnen
             ArstidernaByTheSeaDealer,
