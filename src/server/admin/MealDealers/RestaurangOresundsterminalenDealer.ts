@@ -121,19 +121,19 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
 
         switch ( weekDayJavascriptDayIndex ) {
             case WeekDayIndex.MONDAY :
-                swedishWeekDayName = "monday";
+                swedishWeekDayName = "åndag";
                 break;
             case WeekDayIndex.TUESDAY :
-                swedishWeekDayName = "tuesday";
+                swedishWeekDayName = "isdag";
                 break;
             case WeekDayIndex.WEDNESDAY :
-                swedishWeekDayName = "wednesday";
+                swedishWeekDayName = "nsdag";
                 break;
             case WeekDayIndex.THURSDAY :
-                swedishWeekDayName = "thursday";
+                swedishWeekDayName = "orsdag";
                 break;
             case WeekDayIndex.FRIDAY :
-                swedishWeekDayName = "friday";
+                swedishWeekDayName = "redag";
                 break;
         }
         return swedishWeekDayName;
@@ -154,7 +154,7 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
 
             priceSEK =
                 ( await this.dealerData.textContentFromHtmlDocument(xPath.price_SEKXPath ))
-                .match(/\d+(?=\s?kr)/)[0];
+                .match(/\d+(?=\s?:-)/)[0];
 
             weekIndexWeekNumber =
                 ( await this.dealerData.textContentFromHtmlDocument(xPath.weekNumberXPath ))
@@ -168,29 +168,32 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
         return dishPriceWeekNumber;
     }
 
-    private getXpathDishLabelNameOnP2( label: LabelName, indexNumber: IndexNumber ): string {
+    private getXpathDishLabelNameOnOresundsTerminalen( label: LabelName, indexNumber: IndexNumber ): string {
 
-        let xpathDishLabelNameOnP2 = "";
+        let xpathDishLabelNameOnOresundsTerminalen = "";
 
         switch (label) {
 
             case LabelName.MEAL_OF_THE_DAY:
                 switch (indexNumber) {
                     case IndexNumber.ONE:
-                        xpathDishLabelNameOnP2 = "ocal";
+                        xpathDishLabelNameOnOresundsTerminalen = "lternativ 1";
                         break;
                     case IndexNumber.TWO:
-                        xpathDishLabelNameOnP2 = "orld wide";
+                        xpathDishLabelNameOnOresundsTerminalen = "lternativ 2";
+                        break;
+                    case IndexNumber.THREE:
+                        xpathDishLabelNameOnOresundsTerminalen = "lternativ 3";
                         break;
                     default:
                         throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
                 }
                 break;
 
-            case LabelName.VEGETARIAN:
+            case LabelName.DESSERT:
                 switch (indexNumber) {
                     case IndexNumber.ONE:
-                        xpathDishLabelNameOnP2 = "reen";
+                        xpathDishLabelNameOnOresundsTerminalen = "fterrätt";
                         break;
                     default:
                         throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
@@ -201,22 +204,22 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
                 throw Error(`Bad label ${label}`);
         }
 
-        return xpathDishLabelNameOnP2;
+        return xpathDishLabelNameOnOresundsTerminalen;
     }
 
     private xpathProvider( weekDayId: string, label: LabelName, indexNumber: IndexNumber ): IXPathDishProviderResult {
 
         let result: IXPathDishProviderResult;
 
-        const xpathDishLabelNameOnP2 = this.getXpathDishLabelNameOnP2( label, indexNumber );
+        const xpathDishLabelNameOnP2 = this.getXpathDishLabelNameOnOresundsTerminalen( label, indexNumber );
         const commonXpathDishLabelRow = `//div[@id='${weekDayId}']//tr[td[contains(@class,'course_type')][contains(.,'${xpathDishLabelNameOnP2}')]]`;
 
 
         result = {
             descriptionXPath: `${commonXpathDishLabelRow}/td[contains(@class,'course_description')]`,
             labelXPath: null,
-            price_SEKXPath: `${commonXpathDishLabelRow}/td[contains(@class,'course_price')]`,
-            weekNumberXPath: `//h2[contains(@class,'week_number')]`,
+            price_SEKXPath: `//text()[contains(.,':-')]`,
+            weekNumberXPath: `//span/text()[contains(.,'eny')][contains(.,'vecka')]`,
         }
         return result;
     }
