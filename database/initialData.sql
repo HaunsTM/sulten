@@ -83,9 +83,11 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`,
 
 -- Malmö - Stora Bernstorp
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
-	(1, "Mor Marnas Matsal", "https://www.mormarnas.se/veckomeny.html", "55.616771", "13.120566", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Stora Bernstorp')) 
+	(1, "Mor Marnas Matsal", "https://www.mormarnas.se/veckomeny.html", "55.616771", "13.120566", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Stora Bernstorp'))
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `longitude`, `latitude`, `fKAreaId`) VALUES 
 	(1, "Restaurang Öresundsterminalen", "https://www.oresundsterminalen.se/sv/veckomeny", "55.608108", "13.095928", (SELECT `id` FROM `areas` WHERE `name`= 'Malmö - Stora Bernstorp')) 
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 
 
 
