@@ -56,7 +56,6 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
     private getWebMealResultAForAWeek(): Array<Promise<IWebMealResult>> {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
 
@@ -216,7 +215,7 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
 
 
         result = {
-            descriptionXPath: `${commonXpathDishLabelRow}/td[contains(@class,'course_description')]`,
+            descriptionXPath: `p[ [som är måndag | ligger mellan måndag och tisdag]]/text()[contains(.,'Alternativ 1')]`,
             labelXPath: null,
             price_SEKXPath: `//text()[contains(.,':-')]`,
             weekNumberXPath: `//span/text()[contains(.,'eny')][contains(.,'vecka')]`,
