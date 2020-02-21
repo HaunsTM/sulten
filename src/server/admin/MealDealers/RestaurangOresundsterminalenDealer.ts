@@ -213,8 +213,18 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
         const xpathDishLabelNameOnP2 = this.getXpathDishLabelNameOnOresundsTerminalen( label, indexNumber );
         const commonXpathDishLabelRow = `//div[@id='${weekDayId}']//tr[td[contains(@class,'course_type')][contains(.,'${xpathDishLabelNameOnP2}')]]`;
 
+        p[ [som är måndag | ligger mellan måndag och tisdag]]/text()[contains(.,'Alternativ 1')]
 
+
+
+        som är måndag
+        
+        
+        
+        ligger mellan måndag och tisdag
+        //p[preceding-sibling::*[contains(.,'åndag')] and following-sibling::*[contains(.,'isdag')]]
         result = {
+            
             descriptionXPath: `p[ [som är måndag | ligger mellan måndag och tisdag]]/text()[contains(.,'Alternativ 1')]`,
             labelXPath: null,
             price_SEKXPath: `//text()[contains(.,':-')]`,
