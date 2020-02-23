@@ -56,27 +56,19 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.THREE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.DESSERT, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.THREE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.DESSERT, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.THREE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.DESSERT, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.THREE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.DESSERT, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.THREE),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.DESSERT, IndexNumber.ONE),
 
         ];
@@ -172,7 +164,7 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
 
         dishPriceWeekNumber = new DishPriceWeekNumber(dishDescription, priceSEK, weekIndexWeekNumber, fetchError );
 
-        return dishPriceWeekNumber;
+         return dishPriceWeekNumber;
     }
 
     private getXpathDishLabelNameOnOresundsTerminalen( label: LabelName, indexNumber: IndexNumber ): string {
@@ -227,10 +219,11 @@ export const RestaurangOresundsterminalenDealer: IWebMealDealerStatic =  class R
         const commonXpathDishLabelRow =
             `(` +
             `	//p[contains(.,'${currentWeekDayName}')]` + // example: monday
+            `       //text()[contains(.,'${xpathDishLabelNameOnOresundsTerminalen}')]` + // look for the menu alternative
             `	|` + // or
             `	//p[preceding-sibling::*[contains(.,'${currentWeekDayName}')] and following-sibling::*[contains(.,'${searchLimiter}')]]` + // example: "between monday and tuesday" or "between friday and salladsbuffé"
-            `)[1]` + // select the first (the only interesting) or the only one node
-            `//text()[contains(.,'${xpathDishLabelNameOnOresundsTerminalen}')]`; // look for the menu alternative
+            `       //text()[contains(.,'${xpathDishLabelNameOnOresundsTerminalen}')]` + // look for the menu alternative
+            `)[1]`; // select the first (the only interesting) or the only one node
 
         result = {
             descriptionXPath: commonXpathDishLabelRow,
