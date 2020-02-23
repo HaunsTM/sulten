@@ -171,12 +171,12 @@ export const MorMarnasMatsalDealer: IWebMealDealerStatic =  class MorMarnasMatsa
 
         const currentWeekDayName = this.getWeekDayName(dayIndex);
 
-        const baseDescriptionXPath = ( searchStart: string, searchLimiter: string ) => {
+        const baseDescriptionXPath = ( searchStart: string, searchLimiterInternal: string ) => {
             const xPath =
 
             `//p[` +
             `	preceding-sibling::*[contains(.,'${searchStart}')] and ` +
-            `	following-sibling::*[contains(.,'${searchLimiter}')]` +
+            `	following-sibling::*[contains(.,'${searchLimiterInternal}')]` +
             `]` +
             `[contains(.,' ')]`; // it has to contain a space
             return xPath;
