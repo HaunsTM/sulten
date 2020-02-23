@@ -11,7 +11,6 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
-import { ScotlandYardDealer } from "./ScotlandYardDealer";
 
 export const RestaurangP2Dealer: IWebMealDealerStatic =  class RestaurangP2DealerLocal {
 
@@ -48,7 +47,7 @@ export const RestaurangP2Dealer: IWebMealDealerStatic =  class RestaurangP2Deale
 
     public async mealsFromWeb(): Promise<IDealerResult> {
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const dealerResult = new DealerResult( ScotlandYardDealer.baseUrlStatic, mealsForAWeekPromise );
+        const dealerResult = new DealerResult( RestaurangP2Dealer.baseUrlStatic, mealsForAWeekPromise );
 
         return dealerResult;
     }

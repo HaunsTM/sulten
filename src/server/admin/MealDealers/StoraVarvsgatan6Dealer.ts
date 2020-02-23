@@ -13,7 +13,6 @@ import { IXPathDishProviderResult } from "../../interfaces/IXpathDishProviderRes
 import { DealerResult } from "../DealerResult";
 import { WebMealResult } from "../WebMealResult";
 import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
-import { PathotellundRestaurangDealer } from "./PathotellundRestaurangDealer";
 
 export const StoraVarvsgatan6Dealer: IWebMealDealerStatic =  class StoraVarvsgatan6Local {
 
@@ -52,7 +51,7 @@ export const StoraVarvsgatan6Dealer: IWebMealDealerStatic =  class StoraVarvsgat
 
     public async mealsFromWeb(): Promise<IDealerResult> {
         const mealsForAWeekPromise =  this.getWebMealResultAForAWeek();
-        const dealerResult = new DealerResult( PathotellundRestaurangDealer.baseUrlStatic, mealsForAWeekPromise );
+        const dealerResult = new DealerResult( StoraVarvsgatan6Dealer.baseUrlStatic, mealsForAWeekPromise );
 
         return dealerResult;
     }
