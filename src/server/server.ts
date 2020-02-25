@@ -1,4 +1,5 @@
 #!/usr/bin/env nodejs
+import "dotenv/config";
 import { createConnection } from "typeorm";
 import AdminController from "./admin/AdminController";
 import App from "./app";
