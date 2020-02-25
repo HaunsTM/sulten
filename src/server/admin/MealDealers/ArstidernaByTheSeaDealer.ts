@@ -149,16 +149,21 @@ export const ArstidernaByTheSeaDealer: IWebMealDealerStatic =  class ArstidernaB
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
         try {
-            dishDescription =
+
+            const dishDescriptionUnsanitized =
                 await this.dealerData.textContentFromHtmlDocument(xPath.descriptionXPath);
+            dishDescription = dishDescriptionUnsanitized.match(/(.*)(\s\d+\s?:-)/)[1];
 
-            priceSEK =
-                ( await this.dealerData.textContentFromHtmlDocument(xPath.price_SEKXPath ))
-                .match(/\d+(?=\s?:-)/)[0];
+            const priceSEKUnsanitized =
+                await this.dealerData.textContentFromHtmlDocument(xPath.price_SEKXPath);
+            priceSEK = priceSEKUnsanitized.match(/\d+(?=\s?:-)/)[0];
 
+            const weekIndexWeekNumberUnsanitized =
+                await this.dealerData.textContentFromHtmlDocument(xPath.weekNumberXPath);
             weekIndexWeekNumber =
-                ( await this.dealerData.textContentFromHtmlDocument(xPath.weekNumberXPath ))
-                .match(/(?<=(ecka|[v][.]?)\s*[0]?)\d+/i)[0];
+                weekIndexWeekNumberUnsanitized.match(/(?<=(ecka|[v][.]?)\s*[0]?)\d+/i)[0];
+
+
         } catch ( error ) {
             fetchError = error;
         }
@@ -223,9 +228,9 @@ export const ArstidernaByTheSeaDealer: IWebMealDealerStatic =  class ArstidernaB
             case LabelName.VEGETARIAN:
             case LabelName.FISH_AND_SEAFOOD:
                 result = {
-                    descriptionXPath: `//p[contains(.,'${weekDay}')]/following-sibling::p[contains(.,':-')][${labelIndex}]/span/text()`,
+                    descriptionXPath: `//p[contains(.,'${weekDay}')]/following-sibling::p[contains(.,':-')][${labelIndex}]`,
                     labelXPath: null,
-                    price_SEKXPath: `//p[contains(.,'${weekDay}')]/following-sibling::p[contains(.,':-')][${labelIndex}]/span/strong`,
+                    price_SEKXPath: `//p[contains(.,'${weekDay}')]/following-sibling::p[contains(.,':-')][${labelIndex}]`,
                     weekNumberXPath: commonWeekNumberXPath,
                 };
                 break;
