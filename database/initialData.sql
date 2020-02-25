@@ -70,10 +70,10 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`,
 
 -- Lund - Sjukhuset
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
-	(1, "Bistro A Lund - Centralhallen", "https://www.fazer.se/api/location/menurss/current?pageId=28012&language=sv&restaurant=centralhallen", "55.711565", "13.198454", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset')) 
+	(1, "Bistro A Lund - Centralhallen", "https://www.amica.se/bistroalund?centralhallen", "55.711565", "13.198454", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset')) 
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
-	(1, "Bistro A Lund - Matakuten", "https://www.fazer.se/api/location/menurss/current?pageId=28012&language=sv&restaurant=matakuten", "55.711749", "13.199851", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset')) 
+	(1, "Bistro A Lund - Matakuten", "https://www.amica.se/bistroalund?matakuten", "55.711749", "13.199851", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset')) 
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
 	(1, "Patienthotellet Lund", "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar/", "55.712325", "13.197028", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Sjukhuset')) 
