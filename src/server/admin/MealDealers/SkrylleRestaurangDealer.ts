@@ -205,7 +205,7 @@ export const SkrylleRestaurangDealer: IWebMealDealerStatic =  class SkrylleResta
                 break;
 
             case LabelName.FISH_AND_SEAFOOD:
-                dishHeader = "isk";
+                dishHeader = "Fisk";
                 break;
 
             default:
