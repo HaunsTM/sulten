@@ -33,6 +33,9 @@ import { StoraVarvsgatan6Dealer } from "./MealDealers/StoraVarvsgatan6Dealer";
 import { WhiteSharkDealerDealer } from "./MealDealers/WhiteSharkDealer";
 import { ZenthaiDealer } from "./MealDealers/ZenthaiDealer";
 
+// Södra Sandby - Hardeberga
+import { SkrylleRestaurangDealer } from "./MealDealers/SkrylleRestaurangDealer";
+
 export class DealerCollection {
 
     public static allDealers(): IWebMealDealerStatic[] {
@@ -70,6 +73,8 @@ export class DealerCollection {
             WhiteSharkDealerDealer,
             ZenthaiDealer,
 
+            // Södra Sandby - Hardeberga
+            SkrylleRestaurangDealer,
         ];
 
         return allDealers;
