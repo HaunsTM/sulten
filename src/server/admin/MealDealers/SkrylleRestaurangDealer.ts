@@ -78,6 +78,16 @@ export const SkrylleRestaurangDealer: IWebMealDealerStatic =  class SkrylleResta
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAT, IndexNumber.ONE),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.FISH_AND_SEAFOOD, IndexNumber.ONE),
+
+            this.webMealResult( WeekDayIndex.SATURDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SATURDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SATURDAY, LabelName.MEAT, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SATURDAY, LabelName.FISH_AND_SEAFOOD, IndexNumber.ONE),
+
+            this.webMealResult( WeekDayIndex.SUNDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SUNDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SUNDAY, LabelName.MEAT, IndexNumber.ONE),
+            this.webMealResult( WeekDayIndex.SUNDAY, LabelName.FISH_AND_SEAFOOD, IndexNumber.ONE),
         ];
 
         return mealsForAWeek;
