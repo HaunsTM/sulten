@@ -4,7 +4,7 @@ DROP PROCEDURE IF EXISTS getWeekDayId;
 DROP PROCEDURE IF EXISTS getWeekIndexId;
 DROP PROCEDURE IF EXISTS getOccurenceId;
 DROP PROCEDURE IF EXISTS getRestaurantId;
-DROP PROCEDURE IF EXISTS getPriceIddbsulten;
+DROP PROCEDURE IF EXISTS getPriceId;
 DROP PROCEDURE IF EXISTS getLabelId;
 DROP PROCEDURE IF EXISTS getDishId;
 DROP PROCEDURE IF EXISTS getIndexId;
@@ -166,7 +166,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE deletePossibleOldMeal (
+CREATE PROCEDURE deletePossibleOldMeal_AlternativesMeals (
 	IN pOccurences_Id                       INT,
 	IN pRestaurant_Id                       INT,
 	IN pPrice_Id                  	        INT,
@@ -183,7 +183,8 @@ BEGIN
     SET @pIndexId = pIndexId;
     SET @pLabelId = pLabelId;
 
-	DELETE m
+	SELECT m.id
+        INTO @mealId
 	FROM meals AS m
 		JOIN prices
 			on prices.id =  m.fKPriceId
@@ -212,6 +213,12 @@ BEGIN
                 labels.id = @pLabelId        
         ) AND
         m.error <> '';
+
+    SET @mealIdToDelete = @mealId;
+
+    DELETE FROM `alternativesMeals` WHERE `fKMealId` = @mealIdToDelete;
+    DELETE FROM `meals` WHERE `id` = @mealIdToDelete;
+
 END$$
 DELIMITER ;
 
@@ -256,7 +263,7 @@ BEGIN
 	
 	CALL getAlternativeId(@DishId, @IndexId, @LabelId, @AlternativeId);
 	
-	CALL deletePossibleOldMeal (@pOccurences_Id, @pRestaurant_Id, @pPrice_Id, @pDish_Id, @IndexId, @LabelId);    
+	CALL deletePossibleOldMeal_AlternativesMeals(@pOccurences_Id, @pRestaurant_Id, @pPrice_Id, @pDish_Id, @IndexId, @LabelId);    
 	
 	INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `lastUpdatedUTC`, `error`) VALUES (@PriceId, @OccurenceId, @RestaurantId, @pDish_LastUpdatedUTC, @pMeal_Error)
 		ON DUPLICATE KEY UPDATE `lastUpdatedUTC` = @pDish_LastUpdatedUTC, `id` = LAST_INSERT_ID(`id`);
