@@ -273,6 +273,6 @@ DELIMITER ;
 
 
 
-UPDATE `restaurants` SET `active` = 0;
-UPDATE `restaurants` SET `active` = 1 WHERE `name` = "Skrylle Restaurang";
+-- UPDATE `restaurants` SET `active` = 0;
+-- UPDATE `restaurants` SET `active` = 1 WHERE `name` = "Skrylle Restaurang";
 
