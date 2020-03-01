@@ -118,11 +118,11 @@ CREATE TABLE `weekDays` (
 );
 
 ALTER TABLE `alternatives` ADD FOREIGN KEY (`fKDishId`) REFERENCES `dishes`(`id`);
-ALTER TABLE `alternatives` ADD FOREIGN KEY (`fKDishId`) REFERENCES `dishes`(`id`);
+ALTER TABLE `alternatives` ADD FOREIGN KEY (`fKIndexId`) REFERENCES `indexes`(`id`);
 ALTER TABLE `alternatives` ADD FOREIGN KEY (`fKLabelId`) REFERENCES `labels`(`id`);
 
 ALTER TABLE `alternativesMeals` ADD FOREIGN KEY (`fKAlternativeId`) REFERENCES `alternatives`(`id`);
-ALTER TABLE `alternativesMeals` ADD FOREIGN KEY (`fKMealId`) REFERENCES `meals`(`id`);
+ALTER TABLE `alternativesMeals` ADD FOREIGN KEY (`fKMealId`) REFERENCES `meals`(`id`) ON DELETE CASCADE;
 
 ALTER TABLE `meals` ADD FOREIGN KEY (`fKPriceId`) REFERENCES `prices`(`id`);
 ALTER TABLE `meals` ADD FOREIGN KEY (`fKOccurrenceId`) REFERENCES `occurrences`(`id`);
@@ -142,8 +142,6 @@ ALTER TABLE	`labels` ADD UNIQUE (`name`);
 ALTER TABLE	`alternatives` ADD UNIQUE (`fKDishId`, `fKIndexId`, `fKLabelId`);
 
 ALTER TABLE	`alternativesMeals` ADD UNIQUE (`fKAlternativeId`, `fKMealId`);
-
-ALTER TABLE	`meals` ADD UNIQUE (`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`);
 
 ALTER TABLE	`prices` ADD UNIQUE (`sek`);
 
