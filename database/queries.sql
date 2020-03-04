@@ -17,7 +17,7 @@ DROP PROCEDURE IF EXISTS deletePossibleOldMeal;
 DROP PROCEDURE IF EXISTS createAndGetMealId;
 
 DELIMITER $$
-CREATE PROCEDURE debug_msg(variableName VARCHAR(255), variableValue VARCHAR(255))
+CREATE PROCEDURE debug_msg(variableName TEXT, variableValue TEXT)
 BEGIN
     SELECT CONCAT('** ', variableName, ' = ', variableValue) AS '** DEBUG:';
 END $$
@@ -258,16 +258,16 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE createAndGetMealId (
-	IN pCurrentWeekDay_DayIndex  	                INT,
+	IN pCurrentWeekDay_DayIndex  	            INT,
 	IN pCurrentWeekIndex_WeekNumber	    	    INT,
 	IN pCurrentWeekIndex_WeekYear          	    INT,
 	IN pCurrentRestaurant_MenuUrl          	    VARCHAR(255),
 	IN pCurrentPrice_SEK                   	    DECIMAL(6, 2),
 	IN pCurrentLabel_Name                  	    VARCHAR(255),
 	IN pCurrentIndex_Number				        INT,
-    IN pCurrentDish_Description          	        VARCHAR(255),
+    IN pCurrentDish_Description                 VARCHAR(255),
     IN pCurrentDish_LastUpdatedUTC         	    TIMESTAMP,
-    IN pCurrentMeal_Error	                	    TEXT)
+    IN pCurrentMeal_Error                       TEXT)
 BEGIN
 
     SET @pCurrentWeekDay_DayIndex = pCurrentWeekDay_DayIndex;
@@ -298,11 +298,6 @@ BEGIN
     
 	CALL getAlternativeId(@DishId, @IndexId, @LabelId, @AlternativeId);
 
-    CALL getPossibleOldDishDescriptionAndMealsId(
-        @OccurenceId, @RestaurantId, @IndexId, @LabelId, @PossibleOldDishDescription, @PossibleOldMealsId);
- 
-
-
 
     IF @pCurrentMeal_Error IS NULL OR @pCurrentMeal_Error = '' THEN
         -- input data did not contain any arror
@@ -322,13 +317,14 @@ BEGIN
     ELSE
         -- input data contained error
 
-        IF @PossibleOldDishDescription IS NOT NULL OR @PossibleOldDishDescription != '' THEN
-            -- an earlier dish description existed
-            SELECT @PossibleOldMealsId;
+        CALL getPossibleOldDishDescriptionAndMealsId(
+            @OccurenceId, @RestaurantId, @IndexId, @LabelId, @PossibleOldDishDescription, @PossibleOldMealId);
 
+        IF @PossibleOldDishDescription != '' THEN
+            -- an earlier dish description existed, don't take note of any new errors            
+            SELECT @PossibleOldMealId;
         ELSE
             -- an earlier dish description did not exist
-		
 	        CALL deletePossibleOldMeal(@OccurenceId, @RestaurantId, @IndexId, @LabelId);
 
             INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `lastUpdatedUTC`, `error`) 
@@ -346,9 +342,5 @@ BEGIN
 END$$
 DELIMITER ;
 
-
-
-
- UPDATE `restaurants` SET `active` = 0;
- UPDATE `restaurants` SET `active` = 1 WHERE `name` = "Skrylle Restaurang";
-
+ --UPDATE `restaurants` SET `active` = 0;
+ --UPDATE `restaurants` SET `active` = 1 WHERE `menuUrl` = "https://restaurangkolga.se/lunch/";
