@@ -342,5 +342,5 @@ BEGIN
 END$$
 DELIMITER ;
 
- --UPDATE `restaurants` SET `active` = 0;
- --UPDATE `restaurants` SET `active` = 1 WHERE `menuUrl` = "https://restaurangkolga.se/lunch/";
+ -- UPDATE `restaurants` SET `active` = 0;
+ -- UPDATE `restaurants` SET `active` = 1 WHERE `menuUrl` = "https://restaurangkolga.se/lunch/";
