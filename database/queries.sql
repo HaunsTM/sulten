@@ -12,11 +12,12 @@ DROP PROCEDURE IF EXISTS getDishId;
 DROP PROCEDURE IF EXISTS getIndexId;
 DROP PROCEDURE IF EXISTS getAlternativeId;
 DROP PROCEDURE IF EXISTS getAlternativeMealId;
+DROP PROCEDURE IF EXISTS getPossibleOldDishDescriptionAndMealsId;
 DROP PROCEDURE IF EXISTS deletePossibleOldMeal;
 DROP PROCEDURE IF EXISTS createAndGetMealId;
 
 DELIMITER $$
-CREATE PROCEDURE debug_msg(variableName VARCHAR(255), variableValue VARCHAR(255))
+CREATE PROCEDURE debug_msg(variableName TEXT, variableValue TEXT)
 BEGIN
     SELECT CONCAT('** ', variableName, ' = ', variableValue) AS '** DEBUG:';
 END $$
@@ -214,17 +215,59 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE PROCEDURE getPossibleOldDishDescriptionAndMealsId (
+	IN pOccurences_Id                       INT,
+	IN pRestaurant_Id                       INT,
+	IN pIndexId                 	        INT,
+	IN pLabelId                 	        INT,
+	OUT dishDescription                     TEXT,
+	OUT mealsId                             INT)
+BEGIN
+
+    SET @pOccurences_Id = pOccurences_Id;
+    SET @pRestaurant_Id = pRestaurant_Id;
+    SET @pIndexId = pIndexId;
+    SET @pLabelId = pLabelId;
+
+    SELECT dishes.description, meals.id
+        INTO dishDescription, mealsId
+    FROM alternativesMeals
+        JOIN alternatives
+            on alternatives.id = alternativesMeals.fKAlternativeId
+                JOIN indexes
+                    on indexes.id = alternatives.fKIndexId
+                JOIN labels
+                    on labels.id = alternatives.fKLabelId
+                JOIN dishes
+                    on dishes.id = alternatives.fKDishId
+        JOIN meals
+            on meals.id = alternativesMeals.fKMealId
+                JOIN restaurants
+                    on restaurants.id =  meals.fKRestaurantId
+                JOIN occurrences
+                    on occurrences.id = meals.fKOccurrenceId
+    WHERE
+        indexes.id = @pIndexId AND
+        labels.id = @pLabelId AND
+        restaurants.id = @pRestaurant_Id AND
+        occurrences.id = @pOccurences_Id
+    LIMIT 1;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE PROCEDURE createAndGetMealId (
-	IN pCurrentWeekDay_DayIndex  	                INT,
+	IN pCurrentWeekDay_DayIndex  	            INT,
 	IN pCurrentWeekIndex_WeekNumber	    	    INT,
 	IN pCurrentWeekIndex_WeekYear          	    INT,
 	IN pCurrentRestaurant_MenuUrl          	    VARCHAR(255),
 	IN pCurrentPrice_SEK                   	    DECIMAL(6, 2),
 	IN pCurrentLabel_Name                  	    VARCHAR(255),
 	IN pCurrentIndex_Number				        INT,
-    IN pCurrentDish_Description          	        VARCHAR(255),
+    IN pCurrentDish_Description                 VARCHAR(255),
     IN pCurrentDish_LastUpdatedUTC         	    TIMESTAMP,
-    IN pCurrentMeal_Error	                	    TEXT)
+    IN pCurrentMeal_Error                       TEXT)
 BEGIN
 
     SET @pCurrentWeekDay_DayIndex = pCurrentWeekDay_DayIndex;
@@ -252,27 +295,52 @@ BEGIN
 	CALL getIndexId(@pCurrentIndex_Number, @IndexId);
 	
 	CALL getLabelId(@pCurrentLabel_Name, @LabelId);
-		
-	CALL deletePossibleOldMeal (@OccurenceId, @RestaurantId, @IndexId, @LabelId);    
     
 	CALL getAlternativeId(@DishId, @IndexId, @LabelId, @AlternativeId);
-	
-	INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `lastUpdatedUTC`, `error`) 
-        VALUES (@PriceId, @OccurenceId, @RestaurantId, @CurrentDish_LastUpdatedUTC, @pCurrentMeal_Error)
-		ON DUPLICATE KEY UPDATE `lastUpdatedUTC` = @pDish_LastUpdatedUTC, `id` = LAST_INSERT_ID(`id`);
-	
-	SELECT LAST_INSERT_ID() INTO @MealId;
-	
-	CALL getAlternativeMealId(@AlternativeId, @MealId, @AlternativeMealId);
-	
-	SELECT @MealId;
+
+
+    IF @pCurrentMeal_Error IS NULL OR @pCurrentMeal_Error = '' THEN
+        -- input data did not contain any arror
+		
+	    CALL deletePossibleOldMeal(@OccurenceId, @RestaurantId, @IndexId, @LabelId);
+        
+        INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `lastUpdatedUTC`, `error`) 
+            VALUES (@PriceId, @OccurenceId, @RestaurantId, @CurrentDish_LastUpdatedUTC, NULL)
+            ON DUPLICATE KEY UPDATE `lastUpdatedUTC` = @pDish_LastUpdatedUTC, `id` = LAST_INSERT_ID(`id`);
+        
+        SELECT LAST_INSERT_ID() INTO @MealId;
+        
+        CALL getAlternativeMealId(@AlternativeId, @MealId, @AlternativeMealId);
+        
+        SELECT @MealId;
+
+    ELSE
+        -- input data contained error
+
+        CALL getPossibleOldDishDescriptionAndMealsId(
+            @OccurenceId, @RestaurantId, @IndexId, @LabelId, @PossibleOldDishDescription, @PossibleOldMealId);
+
+        IF @PossibleOldDishDescription != '' THEN
+            -- an earlier dish description existed, don't take note of any new errors            
+            SELECT @PossibleOldMealId;
+        ELSE
+            -- an earlier dish description did not exist
+	        CALL deletePossibleOldMeal(@OccurenceId, @RestaurantId, @IndexId, @LabelId);
+
+            INSERT INTO meals(`fKPriceId`, `fKOccurrenceId`, `fKRestaurantId`, `lastUpdatedUTC`, `error`) 
+                VALUES (@PriceId, @OccurenceId, @RestaurantId, @CurrentDish_LastUpdatedUTC, @pCurrentMeal_Error)
+                ON DUPLICATE KEY UPDATE `lastUpdatedUTC` = @pDish_LastUpdatedUTC, `id` = LAST_INSERT_ID(`id`);
+            
+            SELECT LAST_INSERT_ID() INTO @MealId;
+            
+            CALL getAlternativeMealId(@AlternativeId, @MealId, @AlternativeMealId);
+            
+            SELECT @MealId;
+        END IF;
+    END IF;
 
 END$$
 DELIMITER ;
 
-
-
-
--- UPDATE `restaurants` SET `active` = 0;
--- UPDATE `restaurants` SET `active` = 1 WHERE `name` = "Skrylle Restaurang";
-
+ --UPDATE `restaurants` SET `active` = 0;
+ --UPDATE `restaurants` SET `active` = 1 WHERE `menuUrl` = "https://restaurangkolga.se/lunch/";
