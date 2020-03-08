@@ -4,6 +4,7 @@
         "tslint:recommended"
     ],
     "rules": {
-        "variable-name": false        
+        "unified-signatures":false,
+        "variable-name": false
     }
 }
