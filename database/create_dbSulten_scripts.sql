@@ -154,6 +154,8 @@ ALTER TABLE `occurrences` ADD FOREIGN KEY (`fKWeekDayId`) REFERENCES `weekDays`(
 
 ALTER TABLE	`parts` ADD UNIQUE (`name`);
 
+ALTER TABLE	`partsDishes` ADD UNIQUE (`fKPartId`, `fKDishId`);
+
 ALTER TABLE	`dishes` ADD UNIQUE (`description`);
 
 ALTER TABLE	`indexes` ADD UNIQUE (`number`);
