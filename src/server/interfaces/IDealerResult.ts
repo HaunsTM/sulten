@@ -6,5 +6,7 @@ export interface IDealerResult {
     mealsFromWeb: IWebMealResult[];
     errors: Error[];
 
+    generalError: Error;
+
     fetchMealResultsFromActiveDealers(): Promise<void>;
 }

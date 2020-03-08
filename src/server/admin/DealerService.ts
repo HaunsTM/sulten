@@ -13,32 +13,50 @@ import { RSSFetcher } from "../helpers/RSSFetcher";
 import { IDealerResult } from "../interfaces/IDealerResult";
 import { IWebMealDealerStatic } from "../interfaces/IWebMealDealerStatic";
 import { DealerCollection } from "./DealerCollection";
+import { DealerResult } from "./DealerResult";
 
 export class DealerService {
 
     public static errorsFromActiveDealers(resultsFromActiveDealers: IDealerResult[]): Error[] {
 
-        const errorsFromActiveDealers = resultsFromActiveDealers.flatMap( (d) => {
-            const mealsFromWeb = d.errors;
-            return mealsFromWeb;
-        });
+        const errorsFromActiveDealers = resultsFromActiveDealers
+            .flatMap( (d) => {
+                const mealsFromWeb = d.errors;
+                return mealsFromWeb;
+            })
+            .filter((d) => { return d; });
 
         return errorsFromActiveDealers;
     }
 
     public static mealsFromActiveDealers(resultsFromActiveDealers: IDealerResult[]): IWebMealResult[] {
 
-        const mealsFromActiveDealers = resultsFromActiveDealers.flatMap( (d) => {
-            const mealsFromWeb = d.mealsFromWeb;
-            return mealsFromWeb;
-        });
+        const mealsFromActiveDealers = resultsFromActiveDealers
+            .flatMap( (d) => {
+                const mealsFromWeb = d.mealsFromWeb;
+                return mealsFromWeb;
+            })
+            .filter((d) => { return d; });
 
         return mealsFromActiveDealers;
+    }
+
+    public static generalErrorsFromActiveDealers(resultsFromActiveDealers: IDealerResult[]): Error[] {
+
+        const generalErrorsFromActiveDealers = resultsFromActiveDealers
+            .flatMap( (d) => {
+                const mealsFromWeb = d.generalError;
+                return mealsFromWeb;
+            })
+            .filter( (d) => { return d; } );
+
+        return generalErrorsFromActiveDealers;
     }
 
     public static dealerFetchAndDbInsertReport(resultsFromActiveDealers: IDealerResult[]): string {
         const errorsFromActiveDealers = DealerService.errorsFromActiveDealers(resultsFromActiveDealers);
         const mealsFromActiveDealers = DealerService.mealsFromActiveDealers(resultsFromActiveDealers);
+        const generalErrorsFromActiveDealers = DealerService.generalErrorsFromActiveDealers(resultsFromActiveDealers);
 
         const dealerFetchAndDbInsertReport =
             `<html>
@@ -63,6 +81,9 @@ export class DealerService {
                             ${errorsFromActiveDealers.flatMap( (m) => {
                                 return `<tr><td>${m.name}</td><td>${m.message}</td><td>${m.stack}</td></tr>`;
                             })}
+                            ${generalErrorsFromActiveDealers.flatMap( (m) => {
+                                return `<tr><td>${m.name}</td><td>${m.message}</td><td>${m.stack}</td></tr>`;
+                            })}
                         </table>
                     </article>
                 </body>
@@ -76,7 +97,7 @@ export class DealerService {
         return DealerCollection.allDealers();
     }
 
-    public async activeDealers(weekYear: string, weekIndex: string): Promise<IWebMealDealer[]> {
+    public async activeDealersStatic(weekYear: string, weekIndex: string): Promise<IWebMealDealerStatic[]> {
         const rs = new RestaurantService();
 
         const active = true;
@@ -90,28 +111,26 @@ export class DealerService {
             return activeRestaurantsUrls.includes(dealer.baseUrlStatic);
         });
 
-        const activeDealers = await Promise.all(activeDealersStatic.map( async (d) => {
-            const webMealDealer = await this.dealerDataFactory(d.baseUrlStatic, d, weekYear, weekIndex );
-            return webMealDealer;
-        }));
-
-        return  activeDealers;
+        return  activeDealersStatic;
     }
 
     public async resultsFromActiveDealers(weekYear: string, weekIndex: string): Promise<IDealerResult[]> {
 
-        const activeDealers = await this.activeDealers(weekYear, weekIndex);
-
-        const dealerResults =
-            await Promise.all(
-                activeDealers.map( async (d) => {
-                    const unpreparedDealer = await d.mealsFromWeb();
-                    await unpreparedDealer.fetchMealResultsFromActiveDealers();
-                    const preparedDealer = unpreparedDealer;
-                    return preparedDealer;
-                }),
-            );
-
+        const activeDealersStatic = await this.activeDealersStatic(weekYear, weekIndex);
+        const dealerResults: IDealerResult[] = [];
+        for (const dS of activeDealersStatic) {
+            let webMealDealer: IWebMealDealer = null;
+            let preparedResult: IDealerResult = null;
+            try {
+                webMealDealer = await this.dealerDataFactory(dS.baseUrlStatic, dS, weekYear, weekIndex );
+                const unpreparedResult = await webMealDealer.mealsFromWeb();
+                await unpreparedResult.fetchMealResultsFromActiveDealers();
+                preparedResult = unpreparedResult;
+            } catch (error) {
+                preparedResult = new DealerResult(dS.baseUrlStatic, error);
+            }
+            dealerResults.push(preparedResult);
+          }
         return dealerResults;
     }
     private async dealerDataFactory(
@@ -148,6 +167,8 @@ export class DealerService {
                 webMealDealerStatic =
                     new mealDealer(dealerDataForRSSFeed, initialRestaurantUrl, weekYear, weekIndex);
                 break;
+            default:
+                throw new Error(`Dealer fetcher type not implemented: ${ typeof  mealDealer.fetcherTypeNeededStatic }`);
         }
 
         return webMealDealerStatic;
