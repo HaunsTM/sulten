@@ -250,13 +250,13 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
                 result = {
                     descriptionXPath: `//p[contains(.,'${weekDay}')]/following-sibling::p[${labelIndex}]/span`,
                     labelXPath: null,
-                    price_SEKXPath: `//span[contains(.,'Lunchen kostar')][contains(.,'kr')]`,
+                    price_SEKXPath: `//span[contains(.,'unchen kostar')][contains(.,'kr')]`,
                     weekNumberXPath: commonWeekNumberXPath,
                 };
                 break;
                 case LabelName.A_LA_CARTE:
                     result = {
-                        descriptionXPath: `//p[contains(.,'Affärslunch')]//following-sibling::p[contains(.,'${indexNumber.valueOf()}.')]`,
+                        descriptionXPath: `//p[contains(.,'ffärslunch')]//following-sibling::p[contains(.,'${indexNumber.valueOf()}.')]`,
                         labelXPath: null,
                         price_SEKXPath: `//span[contains(.,'ffärslunchen kostar')][contains(.,'kr')]`,
                         weekNumberXPath: commonWeekNumberXPath,
