@@ -1,7 +1,6 @@
 USE `dbSulten`;
 
 INSERT INTO `areas` (`name`) VALUES ('Lund - Brunnshög') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
-INSERT INTO `areas` (`name`) VALUES ('Lund - Kungsmarken') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `areas` (`name`) VALUES ('Lund - Sjukhuset') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `areas` (`name`) VALUES ('Malmö - Sjukhuset') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `areas` (`name`) VALUES ('Malmö - Stora Bernstorp') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
@@ -61,11 +60,6 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`,
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
 	(1, "Scotland Yard", "https://www.fazerfoodco.se/restauranger/restauranger/scotland-yard/", "55.718141", "13.226665", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Brunnshög')) 
-    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
-
--- Lund - Kungsmarken
-INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
-	(1, "Matstudio Kungsmarken", "https://www.matstudiokungsmarken.com/lunch", "55.712748", "13.275814", (SELECT `id` FROM `areas` WHERE `name`= 'Lund - Kungsmarken')) 
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 
 -- Lund - Sjukhuset
