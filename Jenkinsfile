@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Hi, this is Zulaikha from edureka'
-                sh 'cp /home/pi/data-for-production/api.sulten.se/ormconfig.json $WORKSPACE/ormconfig.json'
+                sh 'cp /home/pi/data-for-production/api.sulten.se/ormconfig.json $WORKSPACE/'
                 sh 'cd $WORKSPACE/ormconfig.json'
                 sh 'ls'
             }
