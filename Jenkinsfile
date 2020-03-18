@@ -4,10 +4,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Hi, this is Zulaikha from edureka'
-                sh 'cp "/home/pi/data-for-production/api.sulten.se/ormconfig.json" "$WORKSPACE/"'
+                echo 'Copying production data'
+                sh '#cp "/home/pi/data-for-production/api.sulten.se/ormconfig.json" "$WORKSPACE/"'
                 sh 'cd "$WORKSPACE"'
                 sh 'ls'
+                sh 'yarn'
+                sh 'yarn build'
             }
         }
 	    stage('Deploy'){
