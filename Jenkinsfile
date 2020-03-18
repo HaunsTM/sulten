@@ -3,9 +3,6 @@ pipeline {
     agent any
     stages {
         stage('Build') {
-                steps {
-                        echo 'Hi, this is Zulaikha from edureka'			
-                }
             steps {
                 echo 'Hi, this is Zulaikha from edureka'
                 sh 'cp /home/pi/data-for-production/api.sulten.se/ormconfig.json $WORKSPACE/ormconfig.json'
