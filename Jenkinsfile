@@ -1,47 +1,24 @@
 pipeline {
+    /* https://www.edureka.co/blog/jenkins-pipeline-tutorial-continuous-delivery */
     agent any
     stages {
-        stage('One') {
+        stage('Build') {
                 steps {
-                        echo 'Hi, this is Zulaikha from edureka'
-			
+                        echo 'Hi, this is Zulaikha from edureka'			
                 }
+            steps {
+                echo 'Hi, this is Zulaikha from edureka'
+                sh 'cp /home/pi/data-for-production/api.sulten.se/ormconfig.json $WORKSPACE/ormconfig.json'
+                sh 'cd $WORKSPACE/ormconfig.json'
+                sh 'ls'
+            }
         }
-	    stage('Two'){
+	    stage('Deploy'){
 		    
-		steps {
-			input('Do you want to proceed?')
-        }
+            steps {
+                input('Do you want to proceed?')
+            }
 	    }
-        stage('Three') {
-                when {
-                        not {
-                                branch "master"
-                        }
-                }
-                steps {
-			echo "Hello"
-                        }
-        }
-        stage('Four') {
-                parallel {
-                        stage('Unit Test') {
-                                steps{
-                                        echo "Running the unit test..."
-                                }
-                        }
-                        stage('Integration test') {
-                        agent {
-                                docker {
-                                        reuseNode false
-					image 'ubuntu'
-                                        }
-			}
-				steps {
-					echo 'Running the integration test..'
-				}
-                               
-			}  }
-        }
+        
     }
 }
