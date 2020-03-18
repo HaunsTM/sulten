@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Copying production data'
                 sh 'cd "$WORKSPACE"'
-                sh 'yarn o'
+                sh 'yarn'
                 sh 'yarn build'
             }
 	    }
