@@ -5,7 +5,8 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
-
+    "postbuild": "cp -R node_modules lib/node_modules",
+    
     "prestart": "yarn build",
     "start": "node .",
     "dev": "ts-node-dev --inspect=9230 -- src/server/server.ts",
