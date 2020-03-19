@@ -22,9 +22,9 @@ pipeline {
             steps {
                 echo 'Clearing possible earlier deployeds artifacts'
                 sh 'rm -rf "/var/www/api.sulten.se/"*'
-                
+
                 echo 'Deploying artifact build'
-                sh 'cp -r "$WORKSPACE/dist/server/"* "/var/www/api.sulten.se/"'
+                sh 'cp -r "$WORKSPACE/"* "/var/www/api.sulten.se/"'
             }
 	    }        
     }
