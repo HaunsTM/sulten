@@ -11,7 +11,7 @@ pipeline {
 	    stage('Build'){
 		    
             steps {
-                echo 'Copying production data'
+                echo 'Copying production data to build step'
                 sh 'cd "$WORKSPACE"'
                 sh 'yarn'
                 sh 'yarn build'
@@ -20,8 +20,11 @@ pipeline {
 	    stage('Deploy'){
 		    
             steps {
+                echo 'Clearing possible earlier deployeds artifacts'
+                sh 'rm -rf "/var/www/api.sulten.se/"*'
+                
                 echo 'Deploying artifact build'
-                sh 'cp -r "$WORKSPACE/dist/server/" "/var/www/api.sulten.se"'
+                sh 'cp -r "$WORKSPACE/dist/server/"* "/var/www/api.sulten.se/"'
             }
 	    }        
     }
