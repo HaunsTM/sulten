@@ -5,9 +5,7 @@ pipeline {
         stage('Preparing workspace') {
             steps {
                 echo 'Copying production data'
-                sh '#cp "/home/pi/data-for-production/api.sulten.se/ormconfig.json" "$WORKSPACE/"'
-                sh 'sudo pm2 stop all'
-                sh 'sudo pm2 restart all'
+                sh 'cp "/home/pi/data-for-production/api.sulten.se/ormconfig.json" "$WORKSPACE/"'
             }
         }
 	    stage('Build'){
@@ -23,11 +21,8 @@ pipeline {
 		    
             steps {
                 echo 'Deploying artifact build'
-                echo 'Stopping PM2'
-                sh 'sudo pm2 stop all'
-                sh 'sudo pm2 restart all'
+                sh 'cp -a "$WORKSPACE/dist/server/" "/var/www/api.sulten.se/"'
             }
-	    }
-        
+	    }        
     }
 }
