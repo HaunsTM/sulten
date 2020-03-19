@@ -21,7 +21,7 @@ pipeline {
 		    
             steps {
                 echo 'Deploying artifact build'
-                sh 'cp -a "$WORKSPACE/dist/server/" "/var/www/api.sulten.se/"'
+                sh 'cp -ar "$WORKSPACE/dist/server" "/var/www/api.sulten.se"'
             }
 	    }        
     }
