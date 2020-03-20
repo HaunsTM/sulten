@@ -26,6 +26,13 @@ pipeline {
                 echo 'Deploying artifact build'
                 sh 'cp -r "$WORKSPACE/"* "/var/www/api.sulten.se/"'
             }
-	    }        
+	    }  
+	    stage('Server'){
+            steps {
+                echo 'Restarting PM2...'
+                sh 'pm2 restart all'
+                echo 'PM2 restarted!'
+            }
+	    }
     }
 }
