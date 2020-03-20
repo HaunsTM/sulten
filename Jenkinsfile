@@ -20,7 +20,7 @@ pipeline {
 	    stage('Server PM2 STOP'){
             steps {
                 echo 'Stopping PM2...'
-                sh 'pm2 stop all'
+                sh 'sudo pm2 stop all'
                 echo 'PM2 Stopped!'
             }
 	    }
@@ -37,7 +37,7 @@ pipeline {
 	    stage('Server PM2 START'){
             steps {
                 echo 'Restarting PM2...'
-                sh 'pm2 restart all'
+                sh 'sudo pm2 restart all'
                 echo 'PM2 restarted!'
             }
 	    }
