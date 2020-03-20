@@ -40,8 +40,8 @@ export default class AdminController implements IController {
 
             await mealService.bulkInsert(mealsFromActiveDealers, lastUpdatedUTCTimestamp);
             response.set('Content-Type', 'text/html');
-            //response.send(dealerFetchAndDbInsertReport);
-response.send("TESTESkuHFHGHGHGGHGHG");
+            response.send(dealerFetchAndDbInsertReport);
+
         } catch (e) {
             next(new HttpException(500, e));
         }
