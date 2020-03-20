@@ -30,7 +30,7 @@ pipeline {
 	    stage('Server PM2'){
             steps {
                 echo 'Restarting PM2...'
-                sh 'pm2 restart /home/pi/pm2-config/ecosystem.config.js'
+                sh 'pm2 restart "api.sulten.se"'
                 echo 'PM2 restarted!'
             }
 	    }
