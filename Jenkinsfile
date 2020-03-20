@@ -20,7 +20,7 @@ pipeline {
 	    stage('Server PM2 - STOP'){
             steps {
                 echo 'Stopping PM2...'
-                sh 'pm2 log'
+                sh 'sudo pm2 log'
                 sh 'sudo pm2 stop "api.sulten.se"'
                 echo 'PM2 stopped!'
             }
