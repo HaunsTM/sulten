@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo 'Restarting PM2...'
                 sh 'pm2 restart /home/pi/pm2-config/ecosystem.config.js'
-                sh 'sudo pm2 restart'
+                sh 'sudo pm2 restart all'
                 echo 'PM2 restarted!'
             }
 	    }
