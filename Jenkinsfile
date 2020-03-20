@@ -17,13 +17,6 @@ pipeline {
                 sh 'yarn build'
             }
 	    }
-	    stage('Server PM2 STOP'){
-            steps {
-                echo 'Stopping PM2...'
-                sh 'sudo pm2 stop all'
-                echo 'PM2 Stopped!'
-            }
-	    }
 	    stage('Deploy'){
 		    
             steps {
@@ -34,10 +27,11 @@ pipeline {
                 sh 'cp -r "$WORKSPACE/"* "/var/www/api.sulten.se/"'
             }
 	    }
-	    stage('Server PM2 START'){
+	    stage('Server PM2'){
             steps {
                 echo 'Restarting PM2...'
-                sh 'sudo pm2 restart all'
+                sh 'pm2 restart /home/pi/pm2-config/ecosystem.config.js'
+                sh 'sudo pm2 restart'
                 echo 'PM2 restarted!'
             }
 	    }
