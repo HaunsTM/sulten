@@ -17,14 +17,6 @@ pipeline {
                 sh 'yarn build'
             }
 	    }
-	    stage('Server PM2 - STOP'){
-            steps {
-                echo 'Stopping PM2...'
-                sh 'sudo pm2 log'
-                sh 'sudo pm2 stop "api.sulten.se"'
-                echo 'PM2 stopped!'
-            }
-	    }
 	    stage('Deploy'){
 		    
             steps {
@@ -35,11 +27,11 @@ pipeline {
                 sh 'cp -r "$WORKSPACE/"* "/var/www/api.sulten.se/"'
             }
 	    }
-	    stage('Server PM2 - START'){
+	    stage('Server PM2'){
             steps {
-                echo 'Starting PM2...'
-                sh 'pm2 start "api.sulten.se"'
-                echo 'PM2 started!'
+                echo 'Restarting PM2...'
+                sh 'pm2 restart "api.sulten.se"'
+                echo 'PM2 restarted!'
             }
 	    }
     }
