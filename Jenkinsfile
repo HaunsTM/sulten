@@ -30,7 +30,7 @@ pipeline {
 	    stage('Server'){
             steps {
                 echo 'Restarting PM2...'
-                sh 'pm2 restart all'
+                sh 'pm2 restart /home/pi/pm2-config/ecosystem.config.js'
                 echo 'PM2 restarted!'
             }
 	    }
