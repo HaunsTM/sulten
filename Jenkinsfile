@@ -30,7 +30,7 @@ pipeline {
 	    stage('Server PM2'){
             steps {
                 echo 'Restarting PM2...'
-                sh 'pm2 restart "api.sulten.se"'
+                sh 'sudo pm2 restart "api.sulten.se"'
                 echo 'PM2 restarted!'
             }
 	    }
