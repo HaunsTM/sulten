@@ -14,7 +14,7 @@ export default class MenuController implements IController {
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.path}/allAreas`,  this.allAreas);
+        this.router.get(`${this.path}/allAreass`,  this.allAreas);
         this.router.get(`${this.path}/mealsPerAreaWeekYear/:areaId/:weekNumber/:weekYear`,
             this.mealsPerAreaWeekYear);
         this.router.get(`${this.path}/mealsPerAreaDayWeekYear/:areaId/:dayIndex/:weekNumber/:weekYear`,

@@ -1,6 +1,7 @@
 pipeline {
     /* https://www.edureka.co/blog/jenkins-pipeline-tutorial-continuous-delivery */
     agent any
+
     stages {
 
         stage('Preparing workspace') {
@@ -10,8 +11,7 @@ pipeline {
             }
         }
 
-	    stage('Build'){
-		    
+	    stage('Build') {		    
             steps {
                 echo 'Copying production data to build step'
                 sh 'cd "$WORKSPACE"'
@@ -20,8 +20,15 @@ pipeline {
             }
 	    }
 
-	    stage('Deploy'){
-		    
+	    stage('PM2 -stop') {
+            steps {
+                echo 'Stopping...'
+                sh 'pm2 stop "api.sulten.se"'
+                echo 'Stopped'
+            }
+	    }
+
+	    stage('Deploy') {
             steps {
                 echo 'Clearing possible earlier deployeds artifacts'
                 sh 'rm -rf "/var/www/api.sulten.se/"*'
@@ -31,14 +38,12 @@ pipeline {
             }
 	    }
 
-	    stage('PM2'){
-		    
+	    stage('PM2 -restart') {		    
             steps {
                 echo 'Restarting'
                 sh 'pm2 restart "api.sulten.se"'
                 echo 'Restarted'
             }
 	    }
-
     }
 }
