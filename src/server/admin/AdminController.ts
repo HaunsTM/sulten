@@ -19,7 +19,7 @@ export default class AdminController implements IController {
         this.router.get(`${this.path}/fetchMenusForArea/:id`, this.fetchMenusForAreaId);
     }
 
-    private async fetchMenusForAllAreas(
+    private async fetchMenusForAllAreass(
         request: express.Request, response: express.Response, next: express.NextFunction) {
 
         try {
