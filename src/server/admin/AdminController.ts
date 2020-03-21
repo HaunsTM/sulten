@@ -15,11 +15,11 @@ export default class AdminController implements IController {
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.path}/fetchMenusForAllAreas/:weekIndex`, this.fetchMenusForAllAreas);
+        this.router.get(`${this.path}/fetchMenusForAllAreass/:weekIndex`, this.fetchMenusForAllAreas);
         this.router.get(`${this.path}/fetchMenusForArea/:id`, this.fetchMenusForAreaId);
     }
 
-    private async fetchMenusForAllAreass(
+    private async fetchMenusForAllAreas(
         request: express.Request, response: express.Response, next: express.NextFunction) {
 
         try {
