@@ -2,12 +2,14 @@ pipeline {
     /* https://www.edureka.co/blog/jenkins-pipeline-tutorial-continuous-delivery */
     agent any
     stages {
+
         stage('Preparing workspace') {
             steps {
                 echo 'Copying production data'
                 sh 'cp "/home/pi/data-for-production/api.sulten.se/ormconfig.json" "$WORKSPACE/"'
             }
         }
+
 	    stage('Build'){
 		    
             steps {
@@ -17,6 +19,7 @@ pipeline {
                 sh 'yarn build'
             }
 	    }
+
 	    stage('Deploy'){
 		    
             steps {
@@ -27,5 +30,15 @@ pipeline {
                 sh 'cp -r "$WORKSPACE/"* "/var/www/api.sulten.se/"'
             }
 	    }
+
+	    stage('PM2'){
+		    
+            steps {
+                echo 'Restarting'
+                sh 'pm2 restart "api.sulten.se"'
+                echo 'Restarted'
+            }
+	    }
+
     }
 }
