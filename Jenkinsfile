@@ -20,14 +20,6 @@ pipeline {
             }
 	    }
 
-	    stage('PM2 -stop') {
-            steps {
-                echo 'Stopping...'
-                sh 'pm2 stop "api.sulten.se"'
-                echo 'Stopped'
-            }
-	    }
-
 	    stage('Deploy') {
             steps {
                 echo 'Clearing possible earlier deployeds artifacts'
