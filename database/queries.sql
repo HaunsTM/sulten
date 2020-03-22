@@ -161,7 +161,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE getAlternativeMealId (
     IN pAlternativeId				    	INT,
-	IN pMealId		    		            INT,
+	IN pMealId		    		            BIGINT,
 	OUT idOut 								INT)
 BEGIN
 
@@ -221,7 +221,7 @@ CREATE PROCEDURE getPossibleOldDishDescriptionAndMealsId (
 	IN pIndexId                 	        INT,
 	IN pLabelId                 	        INT,
 	OUT dishDescription                     TEXT,
-	OUT mealsId                             INT)
+	OUT mealId                              BIGINT)
 BEGIN
 
     SET @pOccurences_Id = pOccurences_Id;
@@ -230,7 +230,7 @@ BEGIN
     SET @pLabelId = pLabelId;
 
     SELECT dishes.description, meals.id
-        INTO dishDescription, mealsId
+        INTO dishDescription, mealId
     FROM alternativesMeals
         JOIN alternatives
             on alternatives.id = alternativesMeals.fKAlternativeId

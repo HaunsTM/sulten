@@ -58,13 +58,13 @@ CREATE TABLE `alternativesMeals` (
 	`id` 							    INT NOT NULL AUTO_INCREMENT, 
 
 	`fKAlternativeId`					INT NOT NULL,
-	`fKMealId`					        INT NOT NULL,
+	`fKMealId`					        BIGINT NOT NULL,
 
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `meals` (
-	`id`								INT NOT NULL AUTO_INCREMENT,
+	`id`								BIGINT NOT NULL AUTO_INCREMENT,
 
     `lastUpdatedUTC`                    TIMESTAMP,
 	`error`								TEXT,
