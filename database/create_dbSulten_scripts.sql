@@ -103,6 +103,16 @@ CREATE TABLE `areas` (
 	`id`								INT NOT NULL AUTO_INCREMENT,
 
 	`name`							    VARCHAR(255) NOT NULL,
+
+	`fKUrbanAreaId`						INT NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `urbanAreas` (
+	`id`								INT NOT NULL AUTO_INCREMENT,
+
+	`name`							    VARCHAR(255) NOT NULL,
 	
 	PRIMARY KEY (`id`)
 );
@@ -149,6 +159,8 @@ ALTER TABLE `meals` ADD FOREIGN KEY (`fKRestaurantId`) REFERENCES `restaurants`(
 
 ALTER TABLE `restaurants` ADD FOREIGN KEY (`fKAreaId`) REFERENCES `areas`(`id`);
 
+ALTER TABLE `areas` ADD FOREIGN KEY (`fKUrbanAreaId`) REFERENCES `urbanAreas`(`id`);
+
 ALTER TABLE `occurrences` ADD FOREIGN KEY (`fKWeekIndexId`) REFERENCES `weekIndexes`(`id`);
 ALTER TABLE `occurrences` ADD FOREIGN KEY (`fKWeekDayId`) REFERENCES `weekDays`(`id`);
 
@@ -170,7 +182,9 @@ ALTER TABLE	`prices` ADD UNIQUE (`sek`);
 
 ALTER TABLE	`restaurants` ADD UNIQUE (`menuUrl`);
 
-ALTER TABLE	`areas` ADD UNIQUE (`name`);
+ALTER TABLE	`areas` ADD UNIQUE (`name`, `fKUrbanAreaId`);
+
+ALTER TABLE	`urbanAreas` ADD UNIQUE (`name`);
 
 ALTER TABLE	`weekIndexes` ADD UNIQUE (`weekNumber`, `weekYear`);
 

@@ -1,11 +1,28 @@
 USE `dbSulten`;
 
-INSERT INTO `areas` (`name`) VALUES ('Lund - Brunnshög') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
-INSERT INTO `areas` (`name`) VALUES ('Lund - Sjukhuset') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
-INSERT INTO `areas` (`name`) VALUES ('Malmö - Sjukhuset') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
-INSERT INTO `areas` (`name`) VALUES ('Malmö - Stora Bernstorp') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
-INSERT INTO `areas` (`name`) VALUES ('Malmö - Västra Hamnen') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
-INSERT INTO `areas` (`name`) VALUES ('Södra Sandby - Hardeberga') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+
+INSERT INTO `urbanAreas` (`name`) VALUES ('Lund') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+INSERT INTO `urbanAreas` (`name`) VALUES ('Malmö') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+INSERT INTO `urbanAreas` (`name`) VALUES ('Södra Sandby') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+
+INSERT INTO `areas` (`name`, `fKUrbanAreaId`) 
+    VALUES ('Brunnshög', (SELECT `id` FROM `areas` WHERE `name`= 'Lund'))
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+INSERT INTO `areas` (`name`, `fKUrbanAreaId`) 
+    VALUES ('Sjukhuset', (SELECT `id` FROM `areas` WHERE `name`= 'Lund'))
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+INSERT INTO `areas` (`name`, `fKUrbanAreaId`) 
+    VALUES ('Sjukhuset', (SELECT `id` FROM `areas` WHERE `name`= 'Malmö'))
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+INSERT INTO `areas` (`name`, `fKUrbanAreaId`) 
+    VALUES ('Stora Bernstorp', (SELECT `id` FROM `areas` WHERE `name`= 'Malmö'))
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+INSERT INTO `areas` (`name`, `fKUrbanAreaId`) 
+    VALUES ('Västra Hamnen', (SELECT `id` FROM `areas` WHERE `name`= 'Malmö'))
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
+INSERT INTO `areas` (`name`, `fKUrbanAreaId`) 
+    VALUES ('Hardeberga', (SELECT `id` FROM `areas` WHERE `name`= 'Södra Sandby'))
+    ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 
 INSERT INTO `labels` (`name`) VALUES ('a_la_carte') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `labels` (`name`) VALUES ('arabic') ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
