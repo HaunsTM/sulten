@@ -26,6 +26,7 @@ export default class MenuController implements IController {
         request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 
         try {
+            // TODO: private async allUrbanAreasWithAreas
             const areaService = new AreaService();
             const allAreas = await areaService.getAllAreas();
 
