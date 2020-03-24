@@ -14,7 +14,7 @@ export default class MenuController implements IController {
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.path}/allAreas`,  this.allAreas);
+        this.router.get(`${this.path}/allAreasPerUrbanAreas`,  this.allAreasPerUrbanAreas);
         this.router.get(`${this.path}/mealsPerAreaWeekYear/:areaId/:weekNumber/:weekYear`,
             this.mealsPerAreaWeekYear);
         this.router.get(`${this.path}/mealsPerAreaDayWeekYear/:areaId/:dayIndex/:weekNumber/:weekYear`,
@@ -22,13 +22,13 @@ export default class MenuController implements IController {
         this.router.get(`${this.path}/restaurantsPerArea/:areaId`,
                 this.restaurantsPerArea);
     }
-    private async allAreas(
+    private async allAreasPerUrbanAreas(
         request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 
         try {
             // TODO: private async allUrbanAreasWithAreas
             const areaService = new AreaService();
-            const allAreas = await areaService.getAllAreas();
+            const allAreas = await areaService.getAreasPerUrbanAreas();
 
             response.status(200);
             response.send(allAreas);
