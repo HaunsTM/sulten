@@ -1,22 +1,32 @@
 import _ from "lodash";
 import { getConnection } from "typeorm";
 import { UrbanAreaAreas } from "../../dto/UrbanAreaAreas";
+import { UrbanArea } from "./entities/UrbanArea";
 
 export class AreaService {
     private readonly ALL_AREAS_PER_URBAN_AREAS_SQL =
         " SELECT" +
-        "	areas.id as areasId, areas.name as areasName, urbanAreas.name AS urbanAreaName " +
+        "	urbanAreas.id AS urbanAreaId , urbanAreas.name AS urbanAreaName, areas.id as areaId, areas.name as areaName" +
         " FROM areas JOIN urbanAreas ON" +
         "	urbanAreas.id = areas.fKUrbanAreaId;";
 
     public async getAreasPerUrbanAreas(): Promise<UrbanAreaAreas[]> {
 
         const allAreasPerUrbanAreasResult = await getConnection().query(this.ALL_AREAS_PER_URBAN_AREAS_SQL);
-        const allAreasPerUrbanAreas = allAreasPerUrbanAreasResult.map( (a: any) => {
-            const tempUrbanAreaWithAreas = new UrbanAreaAreas(a.areasId, a.areasName);
+        const allAreasPerUrbanAreas = _
+            .chain(allAreasPerUrbanAreasResult)
+            .groupBy("urbanAreaId")
+            .map( (uAA: any) => {
+                const tempUrbanArea = new UrbanArea(uAA[0]["urbanAreaId"], uAA[0]["urbanAreaName"]);
+                const tempAreas =
+                    uAA.map( (a: any) => {
+                        return new UrbanArea(a["areaId"], a["areaName"]);
+                    });
+                const tempUrbanAreaWithAreas = new UrbanAreaAreas(tempUrbanArea, tempAreas);
 
-            return tempUrbanAreaWithAreas;
-        });
+                return tempUrbanAreaWithAreas;
+            })
+            .value();
 
         return allAreasPerUrbanAreas;
     }

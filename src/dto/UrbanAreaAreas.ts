@@ -3,7 +3,8 @@ import { UrbanArea } from "../server/repository/entities/UrbanArea";
 
 export class UrbanAreaAreas {
 
-    public urbanArea: UrbanArea;
+    public urbanAreaId: number;
+    public urbanAreaName: string;
 
     public areas: Area[];
 
@@ -11,7 +12,8 @@ export class UrbanAreaAreas {
         urbanArea: UrbanArea,
         areas: Area[]) {
 
-            this.urbanArea = urbanArea;
+            this.urbanAreaId = urbanArea.id;
+            this.urbanAreaName = urbanArea.name;
             this.areas = areas;
     }
 
