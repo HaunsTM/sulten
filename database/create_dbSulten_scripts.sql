@@ -11,7 +11,7 @@ CREATE TABLE `parts` (
 );
 
 CREATE TABLE `partsDishes` (
-	`id` 							    INT NOT NULL AUTO_INCREMENT, 
+	`id` 							    BIGINT NOT NULL AUTO_INCREMENT, 
 
 	`fKPartId`					        INT NOT NULL,
 	`fKDishId`					        INT NOT NULL,
