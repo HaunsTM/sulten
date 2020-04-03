@@ -92,7 +92,7 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`,
 
 -- Malmö - Sjukhuset
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
-	(1, "FreDa 49", "https://www.freda49.se/lunch-malmo", "55.589817", "12.999629", (SELECT `id` FROM `areas` WHERE `name`= 'Sjukhuset' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
+	(1, "FreDa 49", "https://www.freda49.se/lunch-malmo.html", "55.589817", "12.999629", (SELECT `id` FROM `areas` WHERE `name`= 'Sjukhuset' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
 	(1, "Mötesplats CRC", "https://motesplatscrc.se/veckans-lunch/", "55.588726", "12.999257", (SELECT `id` FROM `areas` WHERE `name`= 'Sjukhuset' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))

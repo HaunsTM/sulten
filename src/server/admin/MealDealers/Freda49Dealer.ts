@@ -15,7 +15,7 @@ import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://www.freda49.se/lunch-malmo";
+        const baseUrl = "https://www.freda49.se/lunch-malmo.html";
         return baseUrl;
     }
 
