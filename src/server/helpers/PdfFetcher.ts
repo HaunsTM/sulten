@@ -45,7 +45,6 @@ export class PdfFetcher implements IPdfFetcherHelper {
             throw Error("Couldn't get getTextContent from PDF-document " +
                         `"${this.menuUrl}" on page ${pageNumber}.`);
         }
-
     }
 
     private async pdfDocumentFromWeb(): Promise<pdfjs.PDFDocumentProxy> {
