@@ -5,7 +5,6 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
-
     "prestart": "yarn build",
     "start": "node .",
     "dev": "ts-node-dev --inspect=9230 -- src/server/server.ts",
@@ -19,7 +18,7 @@
     "@types/express": "^4.17.1",
     "@types/node": "^12.12.21",
     "ts-node-dev": "^1.0.0-pre.43",
-    "tslint": "^5.13.1"
+    "tslint": "^5.20.1"
   },
   "dependencies": {
     "@types/jsdom": "^12.2.4",
