@@ -87,7 +87,7 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`,
 	(1, "Bistro A Lund - Matakuten", "https://www.amica.se/bistroalund?matakuten", "55.711749", "13.199851", (SELECT `id` FROM `areas` WHERE `name`= 'Sjukhuset' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Lund')))
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
-	(1, "Patienthotellet Lund", "https://vardgivare.skane.se/patientadministration/maltider-och-matsedlar/", "55.712325", "13.197028", (SELECT `id` FROM `areas` WHERE `name`= 'Sjukhuset' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Lund')))
+	(1, "Patienthotellet Lund", "https://www.amica.se/regionskane", "55.712325", "13.197028", (SELECT `id` FROM `areas` WHERE `name`= 'Sjukhuset' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Lund')))
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 
 -- Malmö - Sjukhuset
@@ -144,7 +144,7 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`,
 	(1, "Zen Thai", "http://www.zenthai.se/", "55.614280", "12.989225", (SELECT `id` FROM `areas` WHERE `name`= 'Västra Hamnen' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
-	(1, "Årstiderna by the sea", "http://arstidernabythesea.se/lunch/", "55.615184", "12.988667", (SELECT `id` FROM `areas` WHERE `name`= 'Västra Hamnen' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
+	(0, "Årstiderna by the sea", "http://arstidernabythesea.se/lunch/", "55.615184", "12.988667", (SELECT `id` FROM `areas` WHERE `name`= 'Västra Hamnen' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 
 -- Södra Sandby - Hardeberga
