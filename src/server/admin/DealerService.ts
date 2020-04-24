@@ -36,7 +36,7 @@ export class DealerService {
                 const mealsFromWeb = d.mealsFromWeb;
                 return mealsFromWeb;
             })
-            .filter((d) => { return d; });
+            .filter( (d) => { return d; });
 
         return mealsFromActiveDealers;
     }
@@ -205,8 +205,7 @@ export class DealerService {
     private async dealerDataForPdfDocument(menuUrl: string): Promise<string> {
         try {
             const pdfFetcher = new PdfFetcher( menuUrl );
-            const pageNumber = 1;
-            const textContentFromPdfDocument =  await pdfFetcher.textContentFromPdfDocument(pageNumber);
+            const textContentFromPdfDocument =  await pdfFetcher.textContentFromPdfDocument();
 
             return textContentFromPdfDocument;
 

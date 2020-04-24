@@ -29,7 +29,18 @@ export class PdfFetcher implements IPdfFetcherHelper {
         this.menuUrl = baseUrl;
     }
 
-    public async textContentFromPdfDocument( pageNumber: number ): Promise<string> {
+    public async textContentFromPdfDocument( ): Promise<string> {
+        const maxPages = (await (this.pdfDocumentFromWeb())).numPages;
+        const pageTextPromises = [];
+        for (let pageNo = 1; pageNo <= maxPages; pageNo += 1) {
+          pageTextPromises.push(this.getPageText(pageNo));
+        }
+        const pageTextsArray = await Promise.all(pageTextPromises);
+        const pageTexts = pageTextsArray.join(" ");
+        return pageTexts;
+    }
+
+    private async getPageText( pageNumber: number ): Promise<string> {
 
         try {
             const pdfDocumentFromWeb = await this.pdfDocumentFromWeb();
