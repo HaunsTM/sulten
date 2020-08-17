@@ -55,23 +55,18 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
 
         const mealsForAWeek: Array<Promise<IWebMealResult>>  = [
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.MONDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.TUESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.TUESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.WEDNESDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.THURSDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.THURSDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.ONE),
-            this.webMealResult( WeekDayIndex.FRIDAY, LabelName.MEAL_OF_THE_DAY, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.VEGETARIAN, IndexNumber.ONE),
 
             this.webMealResult( WeekDayIndex.MONDAY, LabelName.A_LA_CARTE, IndexNumber.ONE),
@@ -98,6 +93,7 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.A_LA_CARTE, IndexNumber.TWO),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.A_LA_CARTE, IndexNumber.THREE),
             this.webMealResult( WeekDayIndex.FRIDAY, LabelName.A_LA_CARTE, IndexNumber.FOUR),
+
         ];
 
         return mealsForAWeek;
@@ -174,22 +170,30 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
         let dishPriceWeekNumber: DishPriceWeekNumber = null;
 
         try {
-            const regDishDescription = /(?:.*(?:[:]|(?:\d[.]))\s*)?(.+$)/;
             const unsanitizedDishDescription =
                 await this.dealerData.textContentFromHtmlDocument(xPath.descriptionXPath);
+            const unsanitizedPrice =
+                await this.dealerData.textContentFromHtmlDocument(xPath.price_SEKXPath);
+            const unsanitizedWeekNumber =
+                await this.dealerData.textContentFromHtmlDocument(xPath.weekNumberXPath);
+
+            const regDishDescription = /(?:.*(?:[:]|(?:\d[.]))\s*)?(.+$)/;
             const dishDescriptionMatches = unsanitizedDishDescription.match(regDishDescription);
 
-            dishDescription =
-                dishDescriptionMatches[1] ?
-                dishDescriptionMatches[1].replace(/^\w/, (c) => c.toUpperCase() ) : "";
+            try {
+                dishDescription =
+                    dishDescriptionMatches[1] ?
+                    dishDescriptionMatches[1].replace(/^\w/, (c) => c.toUpperCase() ) : "";
+
+            } catch (e) {
+                let i = 0;
+            }
 
             priceSEK =
-                ( await this.dealerData.textContentFromHtmlDocument(xPath.price_SEKXPath ))
-                .match(/\d+(?=\s?kr)/)[0];
+                unsanitizedPrice.match(/\d+(?=\s?kr)/)[0];
 
             weekIndexWeekNumber =
-                ( await this.dealerData.textContentFromHtmlDocument(xPath.weekNumberXPath ))
-                .match(/(?<=[vecka.]+\s?)\d+/)[0];
+                unsanitizedWeekNumber.match(/(?<=eny V+\s?)\d+/)[0];
         } catch ( error ) {
             fetchError = error;
         }
@@ -210,9 +214,6 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
                     case IndexNumber.ONE:
                         paragraphIndexAfterDayNameParagraph = 1;
                         break;
-                    case IndexNumber.TWO:
-                        paragraphIndexAfterDayNameParagraph = 2;
-                        break;
                     default:
                         throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
                 }
@@ -221,7 +222,7 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
             case LabelName.VEGETARIAN:
                 switch (indexNumber) {
                     case IndexNumber.ONE:
-                        paragraphIndexAfterDayNameParagraph = 3;
+                        paragraphIndexAfterDayNameParagraph = 2;
                         break;
                     default:
                         throw Error(`Bad indexNumber = ${indexNumber} for label ${label}`);
@@ -242,7 +243,7 @@ export const Freda49Dealer: IWebMealDealerStatic =  class Freda49DealerLocal {
         let result: IXPathDishProviderResult;
 
         const labelIndex = this.getXpathDishLabelIndex( label, indexNumber );
-        const commonWeekNumberXPath = `//span[contains(.,'unch')][contains(.,'ecka')]`;
+        const commonWeekNumberXPath = `//span[contains(.,'eny ')][contains(.,'V')]`;
 
         switch (label) {
             case LabelName.MEAL_OF_THE_DAY:
