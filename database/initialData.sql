@@ -135,7 +135,7 @@ INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`,
 	(1, "Restaurang Variation", "https://www.nyavariation.se/matsedel/", "55.607987", "12.981666", (SELECT `id` FROM `areas` WHERE `name`= 'Västra Hamnen' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
-	(1, "Stora Varvsgatan 6", "https://www.storavarvsgatan6.se/projects.html", "55.612268", "12.991715", (SELECT `id` FROM `areas` WHERE `name`= 'Västra Hamnen' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
+	(1, "Stora Varvsgatan 6", "https://storavarvsgatan6.se/meny.html", "55.612268", "12.991715", (SELECT `id` FROM `areas` WHERE `name`= 'Västra Hamnen' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))
     ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id`);
 INSERT INTO `restaurants` (`active`, `name`, `menuUrl`, `latitude`, `longitude`, `fKAreaId`) VALUES 
 	(1, "White Shark", "https://whiteshark.gastrogate.com/lunch/", "55.615005", "12.986016", (SELECT `id` FROM `areas` WHERE `name`= 'Västra Hamnen' AND `fKUrbanAreaId`= (SELECT `id` FROM `urbanAreas` WHERE `name`= 'Malmö')))

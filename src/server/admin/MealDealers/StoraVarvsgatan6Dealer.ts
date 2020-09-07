@@ -17,7 +17,7 @@ import { DishPriceWeekNumber } from "./DishPriceWeekNumber";
 export const StoraVarvsgatan6Dealer: IWebMealDealerStatic =  class StoraVarvsgatan6Local {
 
     public static get baseUrlStatic(): string {
-        const baseUrl = "https://www.storavarvsgatan6.se/projects.html";
+        const baseUrl = "https://storavarvsgatan6.se/meny.html";
         return baseUrl;
     }
 
