@@ -43,14 +43,16 @@ export class WebMealResult implements IWebMealResult {
     }
 
     public get dishDescription(): string {
-        return this._dishDescription.trim();
+        const dishDescription = this._dishDescription ? this._dishDescription.trim() : null;
+        return dishDescription;
     }
     public set dishDescription(value: string) {
         this._dishDescription = value;
     }
 
     public get price_SEK(): string {
-        return this._priceSEK.trim();
+        const price_SEK = this._priceSEK ? this._priceSEK.trim() : null;
+        return price_SEK;
     }
     public set price_SEK(value: string) {
         this._priceSEK = value;
@@ -59,13 +61,16 @@ export class WebMealResult implements IWebMealResult {
     public get labelName(): LabelName {
         return this._labelName;
     }
+
     public set labelName(value: LabelName) {
         this._labelName = value;
     }
 
     public get menuUrl(): string {
-        return this._menuUrl.trim();
+        const menuUrl = this._menuUrl ? this._menuUrl.trim() : null;
+        return menuUrl;
     }
+
     public set menuUrl(value: string) {
         this._menuUrl = value;
     }
@@ -73,19 +78,22 @@ export class WebMealResult implements IWebMealResult {
     public get weekDayJavascriptDayIndex(): WeekDayIndex {
         return this._weekDayIndex;
     }
+
     public set weekDayJavascriptDayIndex(value: WeekDayIndex) {
         this._weekDayIndex = value;
     }
 
     public get weekNumber(): string {
-        return this._weekNumber.trim();
+        const weekNumber = this._weekNumber ? this._weekNumber.trim() : null;
+        return weekNumber;
     }
     public set weekNumber(value: string) {
         this._weekNumber = value;
     }
 
     public get weekYear(): string {
-        return this._weekYear.trim();
+        const weekYear = this._weekYear ? this._weekYear.trim() : null;
+        return weekYear;
     }
     public set weekYear(value: string) {
         this._weekYear = value;
