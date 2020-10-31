@@ -7,8 +7,8 @@ pipeline {
         stage('Preparing workspace') {
             steps {
                 echo 'Copying production data'
-                sh 'cp "/home/pi/data-for-production/api.sulten.se/ormconfig.json" "$WORKSPACE/"'
-                sh 'cp "/home/pi/data-for-production/api.sulten.se/secretData.json" "$WORKSPACE/"'
+                sh 'cp "/home/hans/data-for-production/api.sulten.se/ormconfig.json" "$WORKSPACE/"'
+                sh 'cp "/home/hans/data-for-production/api.sulten.se/secretData.json" "$WORKSPACE/"'
             }
         }
 
