@@ -31,11 +31,11 @@ pipeline {
             }
 	    }
 
-	    stage('PM2 -restart') {		    
+	    stage('PM2 watching') {		    
             steps {
-                echo 'Restarting'
-                sh 'pm2 delete api.sulten.se 2> /dev/null || true && pm2 start /var/www/api.sulten.se/dist/src/server/server.js --name api.sulten.se'
-                echo 'Restarted'
+                echo 'the deploy directory is being watched for changes, the following command were issued during setup'
+                echo 'pm2 start /var/www/api.sulten.se/dist/src/server/server.js --watch --name api.sulten.se'
+                echo 'pm2 save'
             }
 	    }
     }
