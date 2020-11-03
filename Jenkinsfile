@@ -34,7 +34,7 @@ pipeline {
 	    stage('PM2 -restart') {		    
             steps {
                 echo 'Restarting'
-                sh 'pm2 restart "api.sulten.se"'
+                sh 'pm2 delete api.sulten.se 2> /dev/null || true && pm2 start /var/www/api.sulten.se/dist/src/server/server.js --name api.sulten.se'
                 echo 'Restarted'
             }
 	    }
