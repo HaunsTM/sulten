@@ -1,6 +1,5 @@
 #!/usr/bin/env nodejs
 import express from "express";
-import { logger } from "./helpers/default.logger";
 import Controller from "./interfaces/IController";
 // import errorMiddleware from "./middleware/error.middleware";
 
@@ -21,7 +20,7 @@ export default class App {
 
   public listen() {
     this.app.listen(this.PORT, () => {
-      logger.info(`Server listens at port:${this.PORT}`);
+      console.log(`Server listens at port:${this.PORT}`);
     });
   }
 

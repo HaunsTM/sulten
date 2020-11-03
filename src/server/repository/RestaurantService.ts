@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { getConnection } from "typeorm";
 import { AreaRestaurants } from "../../dto/AreaRestaurants";
-import { logger } from "../helpers/default.logger";
 import { Area } from "./entities/Area";
 import { Restaurant } from "./entities/Restaurant";
 
@@ -94,7 +93,7 @@ export class RestaurantService {
 
         } catch (error) {
 
-            logger.error(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
+            console.log(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
             // since we have errors lets rollback changes we made
             await queryRunner.rollbackTransaction();
 

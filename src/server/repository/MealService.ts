@@ -3,7 +3,6 @@ import { getConnection } from "typeorm";
 import { AlternativeLabelDishPriceDay } from "../../dto/AlternativeLabelDishPriceDay";
 import { RestaurantMeal } from "../../dto/RestaurantMeal";
 import { RestaurantMealDay } from "../../dto/RestaurantMealDay";
-import { logger } from "../helpers/default.logger";
 import { IDbWebMealResult } from "../interfaces/IDbWebMealResult";
 import { IWebMealResult } from "../interfaces/IWebMealResult";
 
@@ -70,7 +69,7 @@ export class MealService {
             return mealId;
 
         } catch ( error ) {
-            logger.error(`Error invoking ${sql}.\n\n ${error.stack}`);
+            console.log(`Error invoking ${sql}.\n\n ${error.stack}`);
             await queryRunner.rollbackTransaction();
 
         } finally {
@@ -138,7 +137,7 @@ export class MealService {
 
         } catch (error) {
 
-            logger.error(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
+            console.log(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
             // since we have errors lets rollback changes we made
             await queryRunner.rollbackTransaction();
 
@@ -201,12 +200,12 @@ export class MealService {
                     })
                     .value();
 
-            logger.debug(`Performed getMealsPerAreaAndDayAndWeekAndYear(${areaId}, ${dayIndex}, ${weekNumber}, ${weekYear}). Returning ${restaurantsMeals.length} restaurantsMeals.`);
+            console.log(`Performed getMealsPerAreaAndDayAndWeekAndYear(${areaId}, ${dayIndex}, ${weekNumber}, ${weekYear}). Returning ${restaurantsMeals.length} restaurantsMeals.`);
             return restaurantsMeals;
 
         } catch (error) {
 
-            logger.error(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
+            console.log(`Error invoking ${filteredSQL}.\n\n ${error.stack}`);
             // since we have errors lets rollback changes we made
             await queryRunner.rollbackTransaction();
 

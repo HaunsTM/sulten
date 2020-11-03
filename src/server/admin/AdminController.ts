@@ -1,6 +1,5 @@
 import * as express from "express";
 import HttpException from "../exceptions/HttpException";
-import { logger } from "../helpers/default.logger";
 import { EpochHelper } from "../helpers/EpochHelper";
 import IController from "../interfaces/IController";
 import { MealService } from "../repository/MealService";
@@ -39,8 +38,6 @@ export default class AdminController implements IController {
             response.send(messageOrderIsBeingProcessed);
 
             dealerFetchAndDbInsertReport = await this.fetchMenusFromInternetAndSaveToDb(weekYear, weekIndex);
-
-            logger.info(dealerFetchAndDbInsertReport);
 
         } catch (e) {
             dealerFetchAndDbInsertReport = e;

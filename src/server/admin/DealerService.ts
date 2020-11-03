@@ -1,5 +1,4 @@
 import { FetcherType } from "../enum/FetcherType";
-import { logger } from "../helpers/default.logger";
 import { HtmlDocumentParser } from "../helpers/HtmlDocumentParser";
 import { HtmlFetcher } from "../helpers/HtmlFetcher";
 import { PdfFetcher } from "../helpers/PdfFetcher";
